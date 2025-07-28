@@ -7,7 +7,7 @@ to `what is special about his leadership/administration`. He also talked a lot a
 __
 # **2nd Question**
 > *Give 1-3 key points from SONA 2025 that you found weird for any reason (explaining is optional)*
-- I found the fact that BBM was generally more focused on delivering the speech `"to the people, for the people"`. BBM also `seemed to avoid talking about international relations, or vaguely talk about PH trade relations`
+- I found the fact that BBM was generally more focused on delivering the speech `"to the people, for the people"`. BBM also `seemed to avoid talking about international relations, or vaguely talk about PH trade relations`.
 
 __
 # **3rd Question**
