@@ -1,5 +1,4 @@
-__
-# **Take on SONA July 2025 of Pres. Ferdinand R. Marcos Jr.
+# Take on SONA July 2025 of Pres. Ferdinand R. Marcos Jr.
 > **By ROBANG, Amelia S. - K25, Batch 2029**
 ![BBM Sona Photo](SONA-HIGHLIGHTS-BBM-2024-.png)
 
