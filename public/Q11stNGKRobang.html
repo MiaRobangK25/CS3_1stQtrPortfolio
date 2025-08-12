@@ -1,0 +1,24 @@
+<script>
+
+let age = window.prompt("What is your AGE?", "14");
+let maxAge = window.prompt("Enter HOW LONG you want to live that is greater than your CURRENT AGE", '100');
+let numPerDay = window.prompt('How many TIMES do you consume your favorite snack daily?','6');
+
+let sure = window.confirm("Are you sure all of these are correct?")
+
+if(sure==true)
+{
+    console.log("Alright! Let's get to computing...")
+
+    let totalRequired = (numPerDay * 365) * (maxAge - age);
+
+document.write("You will need" + totalRequired + 
+"to last you until the ripe old age of" + maxAge + '.');
+}
+else
+{
+    console.log("Please verify your information! hala..");
+}
+
+
+</script> 
