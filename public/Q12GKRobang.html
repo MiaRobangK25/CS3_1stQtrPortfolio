@@ -1,36 +1,47 @@
 <!DOCTYPE html>
 <html>
 <body>
-    <h2> Q1 2nd Graded Excercise : Submitted by ROBANG, Amelia of 9Potassium </h2>
+    <h2> Q1 2nd Graded Excercise : Submitted by ROBANG, Amelia of 9 Potassium </h2>
 
-    <div> What was the price of your meal?
+    <div> <b>Meal Price: </b>
+        <br /> 
         <br /> 
         <input id="inp_mp">
-        <button id="btn_submit/">Submit</button>
     </div> 
 
-    <div> How much are you going to tip? 
+    <br />
+
+    <div> <b>Tip: </b>
+        <br /> 
         <br /> 
         <input id="inp_tip">
-        <button id="btn_submit/">Submit</button>
     </div>
 
-    <div> What is the price of your Serviice Charge? 
+    <br />
+
+    <div> <b>Service Charge: </b>
         <br />
+        <br /> 
         <input id="inp_sc">
-        <button id="btn_submit/">Submit</button>
     </div>
 
-    
-    <script type="text/javascript">
-    const btn = document.getElementById("btn_submit");
-    const mp = document.getElementById("inp_mp");
-    const tip = document.getElementById("int_tip");
-    const sc = document.getElementById('int_sc');
+    <br />
+
+    <button onclick="totalMeal()">Submit</button>
+
+    <p id="totalOutput"></p>
+
+    <script>
 
     function totalMeal()
         {
-            var 
+           var mp = parseFloat(document.getElementById("inp_mp").value)
+           var tip = parseFloat(document.getElementById("inp_tip").value)
+           var sc = parseFloat(document.getElementById("inp_sc").value)
+
+           var totalCost = mp + tip + (sc / 100 * mp);
+
+           document.getElementById("totalOutput").innerHTML = "Total Meal: " + totalCost.toFixed(2);
         }
     </script>
 </body>
