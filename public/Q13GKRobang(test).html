@@ -7,6 +7,8 @@
    <p> Guess the number: **** </p>
 
    <p> The number is from <b>1 to 100</b> </p>
+   <p> ___________________________________</p>
+
    <br />
 
    <div> <b>Enter your Guess: </b>
@@ -15,8 +17,10 @@
    
    <br />
 
-   <button onclick="checkIt()">Check It</button>
+   <button onclick="checkIt()"><p><b>Check It</b></p></button>
+   <p> ___________________________________</p>
 
+   <h2>The answer is... </h2>
    <p id="Result"></p>
 
     <script>
@@ -29,17 +33,17 @@
               
         if (guess < dNumber)
         {
-            document.getElementById("Result").innerText = "Result: Hiigher...";
+            document.getElementById("Result").innerText = "Hiigher...";
         }
 
         else if (guess > dNumber)
         {
-            document.getElementById("Result").innerText = "Result: Lowerr...";
+            document.getElementById("Result").innerText = "Lowerr...";
         }
 
         else if (guess == dNumber)
         {
-            document.getElementById("Result").innerText = "Result: " + "You are correct! Yipeeee";
+            document.getElementById("Result").innerText = "What you said! Yipeeee";
         }
          
         }
