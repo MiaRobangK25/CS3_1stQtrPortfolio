@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    <h2 style="color:rgb(33, 9, 38);">Q1 3rd Graded Excercise : Submitted by ROBANG, Amelia of 9 Potassium </h2>
+
+    <p> Your job is to...
+    <b>Guess the number: **** </b></p>
+
+    <p>If you enter any number NOT within the range, a number in fraction form, or in decimal form-- I'll be sad :[ </p>
+
+   <p> The number is from <b>1 to 100</b> </p>
+   <p> ___________________________________</p>
+
+   <div> <h2>Enter your Guess: </h2>
+        <input id="inp_guess">
+   </div>
+   
+   <br />
+
+   <button onclick="checkIt()"><h2><b>Click this button if you THINK you're sure..</b></h2></button>
+
+   <br />
+
+   <h2> If you're not sure... I can give you a hint! </H2>
+   
+   <button onclick="notSure()"><h2><b>Click this button if YOU'RE NOT you're sure..</b></h2></button>
+   <p> ___________________________________</p>
+
+   <p>The answer is... </p>
+   <p id="Result"></p>
+
+    <script>
+
+        var dNumber = Math.floor(Math.random() * 100) + 1; // generates a number from 1  to 100 when the page loads
+
+        function checkIt() 
+        {
+            var guess = parseInt(document.getElementById("inp_guess").value);
+              
+        if (guess < dNumber)
+        {
+            document.getElementById("Result").innerHTML = "<h2> A little bit Hiigher...</h2>";
+        }
+
+        else if (guess > dNumber)
+        {
+            document.getElementById("Result").innerHTML = "<h2>Just a lil' Lowerr...</h2>";
+        }
+
+        else if (guess == dNumber)
+        {
+            document.getElementById("Result").innerHTML = "<h2> Definitely what you said! Yipeeee</h2>";
+        }
+         
+        }
+
+        function notSure()
+        {
+            var guess = parseInt(document.getElementById("inp_guess").value);
+
+        if (dNumber >= 50)
+        {
+
+            document.getElementById("Result").innerHTML = "<h2> Definitely a number from 1-100 hehe... Joke lang! Hint: Number is >= 50. </h2>";
+        }
+
+        if (dNumber <= 49)
+        {
+            document.getElementById("Result").innerHTML = "<h2> Definitely a number from 1-100 hehe... Okay but actually, Hint: Number is <= 49 </h2>";
+        }
+            
+        }
+    </script>
+
+</body>
+
+</html>
+
