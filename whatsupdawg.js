@@ -20,22 +20,28 @@ function get_inputs(line)
 
 rli.on('close',get_the_channel)
 
-function get_the_channel(line) // define what a line IS 
+function get_the_channel() // define what a line is 
 {
-    switch(line)
-    {
-    case "5":
-        console.log("tv5")
-        break; 
-    case "2":
-        console.log('abscbn')
-        break;
-    case "7":
-        console.log('GMA')
-        break;
-    case "4":
-        console.log('PTV')
-        break;
+    for(let i=0; i<inputs.length; i++){
+        switch(inputs[i]){
+            case "5":
+                console.log("tv5")
+                break;
+            case "2":
+                console.log("abscbn")
+                break;
+            case "7":
+                console.log("gma")
+                break;
+            case "13":
+                console.log("ibc")
+                break;
+            case "4":
+                console.log("ptv")
+                break;
+            default:
+                console.log("Unknown channel")
+        }
     }
 }
 
