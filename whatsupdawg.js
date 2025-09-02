@@ -9,6 +9,24 @@ rl = require('readline') // add library
 rli = rl.createInterface({
     input : process.stdin,
 })
+
+/*
+    rl = require('readline)
+    rli = rl.createInterface({
+        input : process.stdin,
+    })
+    rli.on('line',get_the_channel)
+    function get_inputs(line)
+    {
+        inputs=[]
+        inputs.push(line)
+        var inputs = []
+    }
+    rli.on('close',get_the_channel)
+    
+    function declearation deN 
+*/ 
+
 rli.on('line', get_the_channel) //creating interface for input, using function of lines 9-10 library
 // this is an INFINITE LOOP, and it's identifying / labelling the stuff we need 
 function get_inputs(line)
