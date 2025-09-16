@@ -1,0 +1,114 @@
+<body style="
+  background-image: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), 
+                    url('PurpleFlowers.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  text-align: center;
+  margin: 0;
+">
+
+  <h1 style="background-color:rgb(150, 97, 181); border:2px solid rgb(146, 94, 159); 
+             color:rgb(230, 203, 255); font-size: 50px; font-family:'Helvetica'; 
+             border-radius: 15px; padding: 10px;">
+    ˚ ༘♡ ⋆｡˚ Guess My Word ˚ ༘♡ ⋆｡˚
+  </h1>
+
+  <h2 style="background-color:rgb(177, 130, 205); border:2px solid rgb(177, 130, 205); 
+             color:rgb(202, 169, 232); font-size: 40px; font-family:'Helvetica'; 
+             border-radius: 15px; padding: 8px;">
+    ... Guess a LETTER! If you get it WRONG, don't SPAM CLICK the GUESS BUTTON :[
+  </h2>
+
+  <p id="wordDisplay" 
+     style="font-size: 60px; color:rgb(47, 37, 56); font-family:'Trebuchet MS';">
+  </p>
+
+  <input type="text" id="guessInput" maxlength="1" 
+         style="width: 80px; height: 80px; font-size: 40px; text-align: center; 
+                color: rgb(47, 37, 56); font-family: 'Trebuchet MS'; border-radius: 10px;">
+
+  <br><br>
+
+  <button onclick="makeGuess()" 
+          style="font-size: 30px; color:rgb(255, 255, 255); background-color:rgb(107, 84, 126); 
+                 font-family:'Trebuchet MS'; width: 180px; height: 80px; border-radius: 15px; 
+                 border: none; cursor: pointer;">
+    <b>Make a GUESS!</b>
+  </button>
+
+  <p id="message" 
+  style="font-size: 40px; font-family:'Trebuchet MS'; font-weight: bold; 
+         text-align: center; margin-top: 20px;">
+  </p>
+
+  <p id="attempts" 
+     style="font-size: 40px; color:rgb(232, 210, 250); font-family:'Trebuchet MS'; 
+            background-color:rgb(177, 130, 205); border:2px solid rgb(177, 130, 205); 
+            border-radius: 10px; padding: 5px;">
+  </p>
+
+</body>
+
+<script>
+  let secretWord = ["a", "m", "b", "i", "t", "i", "o", "u", "s", " ", "a", "m", "y"];
+  let guessedWord = [];
+  for (let i = 0; i<= secretWord.length; i++)
+  {
+    if( secretWord[i]===" ")
+    {
+      guessedWord.push(" ");
+    }
+    else 
+    {
+      guessedWord.push("_")
+    }
+  } 
+
+  let remainingAttempts = 9; 
+
+  function guessesDisplay()
+  {
+    document.getElementById("wordDisplay").textContent = guessedWord.join(" ");
+    document.getElementById("attempts").textContent = "You can only guess wrong this many times..." + remainingAttempts;
+  }
+
+  guessesDisplay();
+
+  function makeGuess() 
+  {
+    let guess = document.getElementById("guessInput").value.toLowerCase();
+    let correct = false;
+
+    for (let i = 0; i < secretWord.length; i++) 
+    {
+      if (secretWord[i] === guess) 
+      {
+        guessedWord[i] = guess;
+        correct = true;
+      }
+    }
+
+    if (!correct) 
+      remainingAttempts--;
+
+  guessesDisplay();
+
+  if (guessedWord.join("") === secretWord.join("")) {
+  document.getElementById("message").textContent = "🎉 You win!";
+  document.getElementById("message").style.color = "green";
+} else if (remainingAttempts <= 0) {
+  document.getElementById("message").textContent = "💀 Game Over!";
+  document.getElementById("message").style.color = "red";
+} else {
+  if (correct) {
+    document.getElementById("message").textContent = "✅ Correct!";
+    document.getElementById("message").style.color = "green";
+  } else {
+    document.getElementById("message").textContent = "❌ Wrong!";
+    document.getElementById("message").style.color = "red";
+  }
+}
+
+}
+</script>
