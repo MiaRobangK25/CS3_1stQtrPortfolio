@@ -1,0 +1,14 @@
+<h1>My Favorite Numbers</h1>
+<ul id="numberList"></ul>
+
+<script>
+  let list = document.getElementById("numberList");
+  let outputEven = 0; 
+
+  for (let i = 1; i <= 10; i++) 
+  {
+    outputEven+=2;
+    list.innerHTML += `<li>Number ${outputEven}</li>`;
+  }
+
+</script>
