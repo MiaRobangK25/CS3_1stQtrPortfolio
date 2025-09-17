@@ -2,7 +2,7 @@
 > **By ROBANG, Amelia S. - K25, Batch 2029**
 > **Reflections as of SEPTEMBER 17, 2025 &...**
 
-## `Is this really the end? No, it's just the START!`
+`Is this really the end? No, it's just the START!`
 
 # **1st Question**
 > *List and describe at least 5 topics that we discussed in class that you know very well. Each description should be at least 1 paragraph with two to five sentences.*
