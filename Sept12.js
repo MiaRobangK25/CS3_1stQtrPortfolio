@@ -53,7 +53,7 @@ ARROW --> const name = (...) =>
 
 REMEMBER: What will JAVASCRIPT prioritize in order (MOST to LEAST)?
 
-- (1) Javascript will first prioritize the EXCLAMATION POINT (not)
+- (1) Javascript will first prioritize the EXCLAMATION POINT ( not, ! )
 - (2) Javascript will also prioritize <, >, <=, >= NEXT
 - (3) Then will prioritize 
 { == equal to}, {=== strictly equal}, {!= not equal to} {!==strictly not equal to}
