@@ -1,7 +1,15 @@
+<!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8" />
+  <title>Schedule</title>
   <style>
-    /* 🌸 NAVIGATION BAR */
+    /*  NAVIGATION BAR 
+    
+    This shows me the different styles/design that I did
+    It's similar to the way you originally design it-- it's just tailored for the navbar specifically
+
+    */
     ul.navbar {
       list-style-type: none;
       margin: 0;
@@ -13,44 +21,69 @@
       width: 90%;
       margin: 20px auto;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      position: sticky;       /* ✅ keeps it on top when scrolling */
+      position: sticky;
+      /* This makes it so that the navbar stays at the top, as you scroll down for example */       
       top: 10px;
-      z-index: 1000;          /* ✅ ensures it's always clickable */
+      z-index: 1000;        
     }
 
     li {
       float: left;
     }
 
+    /* This makes it so that the sections of the navbar, specifically the days
+    Are going to increasingly go to the left
+    
+    It's placing them all next to each other horizontally-- condensing it to the LEFT 
+
+    */
+
     li a {
       display: block;
+      /*this makes it so that the entire block of CODE tells you that you can CLICK THE ENTIRE BUTTON
+      not just the text --> it's not barebones/kinda faulty when u try to use it*/
       color: rgb(239, 222, 255);
       text-align: center;
       padding: 14px 20px;
       text-decoration: none;
       font-size: 18px;
       transition: background-color 0.3s ease;
+      /*animation*/
       border-radius: 15px;
-      cursor: pointer;        /* ✅ ensures it shows clickable pointer */
+      /*corner rounding*/
+      cursor: pointer;    
+      /*turns ur cursor into a pointer, js to make life look niice*/   
     }
+
+  /* the entire purpose of li a{} is to make it work properly, minimize errors WHEN clicking
+  also js to look nice heh */
 
     li a:hover {
       background-color: rgba(137, 99, 164, 0.8);
     }
+    /*makes it so that when you hover over the navbar, it changes color
+    & is pretty kewl hehe*/
 
     .active {
       background-color: rgb(183, 123, 231);
       color: white;
       font-weight: bold;
     }
+    /*this is similar to li a:hover{}, but the difference is that this is WHEN you are actually in the tab itself
+    the tab of the navbar
+    Therefore the color is brightmore/more in your face than when you hover over it*/
 
     ul.navbar::after {
       content: "";
       clear: both;
       display: table;
     }
+    /*this makes it so the navbar does not glitch out/go through a crisis
+    it's so when you interact w/ the bar it doesn't collapse into itself
+    EG. So the display:table keeps the height of the navbar consistent
+    */
 
-    /* 🪷 BODY + BACKGROUND */
+    /* BODY + BACKGROUND --> SIMILAR TO OLD BONUS, CHANGED BACKGROUND IMAGE */
     body {
       background-image: linear-gradient(rgba(255, 255, 255, 0.26), rgba(255,255,255,0.7)), 
                         url('PurpleLilac.jpg');
@@ -62,7 +95,7 @@
       font-family: "Poppins", sans-serif;
     }
 
-    /* 🩰 TABLE STYLES */
+    /* TABLE STYLE FOR EACH PART/SECTION */
     table {
       border-collapse: collapse;
       width: 90%;
@@ -74,6 +107,8 @@
       overflow: hidden;
       animation: fadeIn 0.6s ease-in-out;
     }
+
+    /*this is the general style for when you load this part/section of the navbar*/
 
     th {
       background-color: #4a2c50;
@@ -93,13 +128,27 @@
     }
 
     tr:hover td {
-      background-color: rgba(137, 99, 164, 0.15);
+      background-color: rgba(196, 161, 221, 0.662);
       font-weight: bold;
       transform: scale(1.01);
       transition: all 0.3s ease;
     }
+    /* this is what happens when you hover over this part of the table
+    So this applies to all tables, so when you hover over a teachers name itll be BOLD
+    when you hover over a subject it'll be BOLDED
+    
+    
+    Although there are some parts that if you hover specifically, have assigned/specific animations */
 
-    /* ✨ ANIMATIONS */
+
+    /* ANIMATIONS
+    
+    this is also what happens when you click the navbar tab, to make the animation smooth
+    It A) fades in, especially because once you click the tab it originally wasn't there
+
+    Then it B) SLIDES IN as it is fading in/loading 
+
+    */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
@@ -110,7 +159,8 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* 🪩 HEADINGS */
+
+    /* HEADINGS */
     h1 {
       background-color: rgba(69, 31, 92, 0.596);
       border: 2px solid rgb(204, 189, 207);
@@ -124,31 +174,40 @@
       position: relative;
       z-index: 1;
     }
+    /*This is for all of the h1 heading of the table, which makes my life EASIER (& organized)*/
 
-    /* Hide other sections */
+    /* HIDE OTHER SECTIONS */
     .schedule-section {
       display: none;
     }
+    /*this quite literally hides all of the other sections, and shows ONLY the active one
+    So it's hiding what you did not click, what you did not want to see*/
 
     .active-section {
       display: block;
       animation: fadeIn 0.6s ease-in-out;
     }
+    /*this is the section you are in-- like the header & table
+    & it acts like a block kamo as the section/table (not as separate elements) */
 
     a.email {
       color: #4a2c50;
       text-decoration: none;
       font-weight: 600;
     }
+    /*this is the general look of each email, when you're not hovering over it
+    So this is the general style/color assigned to the emails specifically */
 
     a.email:hover {
       text-decoration: underline;
     }
+  /* literally js underlines the email you're hovering over */
+
   </style>
 </head>
 
 <body style="top: 50px">
-  <!-- 💜 NAVIGATION BAR -->
+  <!-- NAVIGATION BAR -->
   <ul class="navbar">
     <li><a class="active" onclick="showDay('monday', this)">Monday</a></li>
     <li><a onclick="showDay('tuesday', this)">Tuesday</a></li>
@@ -157,91 +216,198 @@
     <li><a onclick="showDay('friday', this)">Friday</a></li>
     <li><a onclick="showDay('directory', this)">Teachers Directory</a></li>
   </ul>
+  <!-- 
+  
+  THE FIRST LINE BELOW THE FIRST COMMENT SAYING IT'S A NAVBAR TELLS U ALL OF THE TABS YOU WANT TO HAVE IN THE NAVBAR
+  IT'S ALSO THE LIST OF NAMES/ITEMS YOU ACTL SEE IN THE NAVBAR ITSELF
+  SO THIS ENTIRE THING TELLS U THIS IS HOW THE NAVBAR IIS W/ ALL THE CLICKABLE ITEMS 
 
-  <!-- 🗓️ MONDAY -->
+  HERE, THE FIRST LINE ONCE YOU LOAD THE LIVE SERVE IN SETS MONDAY TO THE ACTIVE TAB
+  IT'S THE FIRST THING YOU SEE ONCE YOU LOAD THE SITE-- AND ITS AUTOMATICALLY DONE FOR YOU
+   
+  THEN THE FF. LINES HAVE ONCLICK: BECAUSE MONDAY IS AUTOMATICALLY OPENED FIRST
+  SHOWDAY() REFERS TO THE JAVASCRIPT PART THAT SWITCHES THE TAB
+  & THIS REFERS TO THE BUTTON U LITERALLY JS CLICKED
+
+  BASICALLY THIS PART LINKS TOGETHER ALL PARTS OF THE CODE, SO: 
+  HTML BUTTONS PART
+  JAVASCRIPT TAB SWITCHING
+  CSS DESIGNS/STYLE
+
+  ALSO <LI> <A> PARTS ARE LITERALLY JUST HOW YOU CREATE A TAB FOR THE NAVBAR, JS THE CODE ITSELF NO BIGGIE
+
+  -->
+
+  <!-- MONDAY -->
   <div id="monday" class="schedule-section active-section">
+    <!-- AHH YES SO THIS PART IS IMPORTANT! IT'S JUST GIVING AN ID TO THE SECTION
+     & THE CLASS PART, PART OF THE <DIV> THAT GROUPS STUFF TOGETHER CALLS ON THE .SCHEDULE-SECTION & .ACTIVE-SECTION
+      THAT I EXPLAINED EAARLIER 
+      
+      THIS PART BASICALLY JS EXISTS TO SWITCH THE DATA IN EACH TAB/PART OF THE NAVBAR
+    -->
     <h1>MONDAY SCHEDULE</h1>
     <table>
       <tr><th>Time</th><th>Subject</th></tr>
-      <tr><td>7:30 - 9:00 AM</td><td>Filipino 3 (SHB 306)</td></tr>
+
+      <tr>
+        <td>7:30 - 8:15 AM</td>
+        <td rowspan="2">Filipino 3 (SHB 306)</td>
+      </tr>
+      <tr>
+        <td>8:15 - 9:00 AM</td>
+      </tr>
+
       <tr><td>9:00 - 9:10 AM</td><td>Break</td></tr>
       <tr><td>9:10 - 9:55 AM</td><td>Biology 1 (SHB 111)</td></tr>
       <tr><td>9:55 - 10:40 AM</td><td>Chemistry 1 (SHB 306)</td></tr>
-      <tr><td>10:40 - 11:25 PM</td><td>Study Period</td></tr>
+      <tr><td>10:40 - 11:25 AM</td><td>Study Period</td></tr>
       <tr><td>11:25 - 12:10 PM</td><td>Music 3 (Gym)</td></tr>
       <tr><td>12:10 - 1:05 PM</td><td>Lunch</td></tr>
-      <tr><td>1:05 - 2:35 PM</td><td>Statistics (SHB 404)</td></tr>
+
+      <tr>
+        <td>1:05 - 1:50 PM</td>
+        <td rowspan="2">Statistics (SHB 404)</td>
+      </tr>
+      <tr>
+        <td>1:50 - 2:35 PM</td>
+      </tr>
+
+      <tr><td>2:35 - 2:45 PM</td><td>Break</td></tr>
+
       <tr><td>2:45 - 3:30 PM</td><td>Study Period</td></tr>
       <tr><td>3:30 - 4:15 PM</td><td>Values Education (SHB 306)</td></tr>
     </table>
   </div>
 
-  <!-- 🪷 TUESDAY -->
+  <!-- TUESDAY -->
   <div id="tuesday" class="schedule-section">
     <h1>TUESDAY SCHEDULE</h1>
     <table>
       <tr><th>Time</th><th>Subject</th></tr>
-      <tr><td>7:30 - 9:00 AM</td><td>Physics 1 (SHB 101)</td></tr>
+
+      <tr>
+        <td>7:30 - 8:15 AM</td>
+        <td rowspan="2">Physics 1 (SHB 101)</td>
+      </tr>
+      <tr>
+        <td>8:15 - 9:00 AM</td>
+      </tr>
+
       <tr><td>9:00 - 9:10 AM</td><td>Break</td></tr>
       <tr><td>9:10 - 9:55 AM</td><td>English 3 (SHB 306)</td></tr>
       <tr><td>9:55 - 10:40 AM</td><td>Study Period</td></tr>
-      <tr><td>10:40 - 11:25 PM</td><td>Social Science 3 (SHB 306)</td></tr>
+      <tr><td>10:40 - 11:25 AM</td><td>Social Science 3 (SHB 306)</td></tr>
       <tr><td>11:25 - 12:10 PM</td><td>Health 3 (SHB 306)</td></tr>
       <tr><td>12:10 - 1:05 PM</td><td>Lunch</td></tr>
-      <tr><td>1:05 - 2:35 PM</td><td>Computer Science 3 (ASTB EDGE)</td></tr>
+
+      <tr>
+        <td>1:05 - 1:55 PM</td>
+        <td rowspan="2">Computer Science 3 (ASTB EDGE)</td>
+      </tr>
+      <tr>
+        <td>1:55 - 2:45 AM</td>
+      </tr>
+
       <tr><td>2:45 - 3:30 PM</td><td>Study Period</td></tr>
       <tr><td>3:30 - 4:15 PM</td><td>Mathematics 3 (SHB 306)</td></tr>
     </table>
   </div>
 
-  <!-- 🌷 WEDNESDAY -->
+  <!-- WEDNESDAY -->
   <div id="wednesday" class="schedule-section">
     <h1>WEDNESDAY SCHEDULE</h1>
     <table>
       <tr><th>Time</th><th>Club / Activity</th></tr>
-      <tr><td>7:30 - 9:00 AM</td><td>Invictus: Speech & Debate</td></tr>
+      <tr>
+        <td>7:30 - 8:15 AM</td>
+        <td rowspan="2">Invictus: Speech & Debate Club</td>
+      </tr>
+      <tr>
+        <td>8:15 - 9:00 AM</td>
+      </tr>
       <tr><td>9:00 - 9:10 AM</td><td>Break between Club A & B</td></tr>
-      <tr><td>9:10 - 10:40 AM</td><td>Free Period</td></tr>
+      <tr>
+        <td>9:10 - 9:55 AM</td> - 9:55 AM</td>
+        <td rowspan="2">Free Period </td>
+      </tr>
+      <tr>
+        <td>9:55 - 10:40 AM</td>
       <tr><td>10:40 - 10:55 AM</td><td>Break between Club B & HR Period</td></tr>
-      <tr><td>10:55 - 12:15 PM</td><td>Homeroom Period</td></tr>
+      <tr>
+        <td>10:40 - 11:25 AM</td>
+        <td rowspan="2">Homeroom Period</td>
+      </tr>
+      <tr>
+        <td>11:25 - 12:10 PM</td>
     </table>
   </div>
 
-  <!-- 💐 THURSDAY -->
+  <!-- THURSDAY -->
   <div id="thursday" class="schedule-section">
     <h1>THURSDAY SCHEDULE</h1>
     <table>
       <tr><th>Time</th><th>Subject</th></tr>
-      <tr><td>7:30 - 9:00 AM</td><td>Biology 1 (SHB 111)</td></tr>
+      <tr>
+        <td>7:30 - 8:15 AM</td>
+        <td rowspan="2">Biology 1 (SHB 111)</td>
+      </tr>
+      <tr>
+        <td>8:15 - 9:00 AM</td>
       <tr><td>9:00 - 9:10 AM</td><td>Break</td></tr>
-      <tr><td>9:10 - 10:40 AM</td><td>Chemistry 1 (SHB 105)</td></tr>
-      <tr><td>10:40 - 11:25 PM</td><td>Study Period</td></tr>
+      <tr>
+        <td>9:10 - 9:55 AM</td>
+        <td rowspan="2">Chemistry 1 (SHB 105)</td>
+      </tr>
+      <tr>
+        <td>9:55 - 10:40 AM</td>
+      <tr><td>10:40 - 11:25 AM</td><td>Study Period</td></tr>
       <tr><td>11:25 - 12:10 PM</td><td>Filipino 3 (SHB 306)</td></tr>
       <tr><td>12:10 - 1:05 PM</td><td>Lunch</td></tr>
       <tr><td>1:05 - 1:50 PM</td><td>Statistics (SHB 404)</td></tr>
       <tr><td>1:50 - 2:35 PM</td><td>Values Education (SHB 306)</td></tr>
       <tr><td>2:35 - 2:45 PM</td><td>Break</td></tr>
-      <tr><td>2:45 - 4:15 PM</td><td>Physical Education 3 (Gym)</td></tr>
+      <tr>
+        <td>2:45 - 3:30 PM</td>
+        <td rowspan="2">Physical Education (Gym)</td>
+      </tr>
+      <tr>
+        <td>3:30 - 4:15 PM</td>
     </table>
   </div>
 
-  <!-- 🪻 FRIDAY -->
+  <!-- FRIDAY -->
   <div id="friday" class="schedule-section">
     <h1>FRIDAY SCHEDULE</h1>
     <table>
       <tr><th>Time</th><th>Subject</th></tr>
       <tr><td>7:30 - 8:15 AM</td><td>Physics 1 (SHB 111)</td></tr>
       <tr><td>8:15 - 9:10 AM</td><td>Study Period</td></tr>
-      <tr><td>9:10 - 10:40 AM</td><td>English 3 (SHB 306)</td></tr>
-      <tr><td>10:40 - 12:10 PM</td><td>Social Science 3 (SHB 306)</td></tr>
+      <tr>
+        <td>9:10 - 9:55 AM</td>
+        <td rowspan="2">English 3 (SHB 306)</td>
+      </tr>
+      <tr>
+        <td>9:55 - 10:40 AM</td>
+        <tr>
+          <td>10:40 - 11:25 AM</td>
+          <td rowspan="2">Social Science (SHB 306) </td>
+        </tr>
+        <tr>
+          <td>11:25 - 12:10 PM</td>
       <tr><td>12:10 - 1:05 PM</td><td>Lunch</td></tr>
       <tr><td>1:05 - 1:50 PM</td><td>Computer Science 3 (ASTB EDGE)</td></tr>
       <tr><td>1:50 - 2:45 PM</td><td>Study Period</td></tr>
-      <tr><td>2:45 - 4:15 PM</td><td>Mathematics 3 (SHB 306)</td></tr>
+      <tr>
+        <td>2:45 - 3:30 PM</td>
+        <td rowspan="2">Mathematics 3 (SHB 306)</td>
+      </tr>
+      <tr>
+        <td>3:30 - 4:15 PM</td>
     </table>
   </div>
 
-  <!-- 🧑‍🏫 TEACHERS DIRECTORY -->
+  <!-- TEACHERS DIRECTORY -->
   <div id="directory" class="schedule-section">
     <h1>SUBJECT TEACHERS DIRECTORY</h1>
     <table>
@@ -263,20 +429,48 @@
     </table>
   </div>
 
-  <!-- 🌈 JAVASCRIPT -->
+  <!-- JAVASCRIPT: for-loop version (kept as you requested) -->
   <script>
-    function showDay(dayId, element) {
-      const sections = document.querySelectorAll('.schedule-section');
-      const tabs = document.querySelectorAll('.navbar a');
+    function showDay(dayId, clickedButton) 
+    {
+      let allSchedules = document.getElementsByClassName("schedule-section");
+      for (let i = 0; i < allSchedules.length; i++) {
+        allSchedules[i].style.display = "none";
+      }
 
-      sections.forEach(section => section.classList.remove('active-section'));
-      tabs.forEach(tab => tab.classList.remove('active'));
+      let allButtons = document.querySelectorAll(".navbar a");
+      for (let i = 0; i < allButtons.length; i++) {
+        allButtons[i].classList.remove("active");
+      }
 
-      document.getElementById(dayId).classList.add('active-section');
-      element.classList.add('active');
+      let dayToShow = document.getElementById(dayId);
+      dayToShow.style.display = "block";
+      clickedButton.classList.add("active");
     }
   </script>
+
+  <!-- 
+
+  LET'S EXPLAIN THE JAVASCRIPT PART OF THIS CODE 
+  I PRIORITIZED USING FOR LOOPS-- CUS THEY'RE EASIER
+  ALSO BECAUSE FUNCTIONS ARE STILL MY OPPS/NOT MY FRIEND
+
+  2 LOCAL VARIABLES, IN THE () KAMO
+
+  THE FIRST FOR LOOPS SET ALL OF THE TABS TO NOT ACTIVE, THAT'S WHY IT'S "NONE"
+  THEREFORE, IT WON'T ACTIVATE ALL THE ANIMATIONS/SHOW THE SCHED UNLESS U CLICK IT
+
+  THE LET ALLBUTTONS MAKES SURE ALL THE HIGHLIGHTS ARE REMOVED ONCE YOU SWITCH/HIGHLIGHTED BEFORE
+  THE FOR LOOP ALSO DOES THIS FOR THE NAVBAR
+  (SO THIS IS APLLIED TO BUTTONS ++ THE NAVBAR)
+
+  THE LETDAYTOSHOW LEGIT JUST FINDS THE <DIV> ID OR LABEL WE ADDED TO IT IN THE TABLES ITSELF
+    & IT DISPLAYS IT AS A BLOCK ALREAADY, SO IT'S MATCHING THE ALL THE PARTS TOGETHER
+
+  THE LAST LINE OF CODE THEN INCLUDES THE TAB/BUTTON YOU CLICKED ACTIVE
+  SO THIS IS WHERE ALL OF THE HIGHLIGHTS/STYLES WILL COME THRU
+
+  -->
   
 </body>
 </html>
-
