@@ -15,6 +15,8 @@
     ul.navbar 
     {
       list-style-type: none;
+      /*solves the problem of black dots beside each page-- it removes the markers on the pages
+      so it looks more consistent for the navbar pages specifically*/
       margin: 0;
       padding: 0;
       overflow: hidden;
@@ -22,12 +24,15 @@
       border-radius: 15px;
       font-family: "Poppins", sans-serif;
       width: 90%;
+      /*width,,, just in percentage*/
       margin: 20px auto;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      /*has a decimal just so it can consider more colors*/
       position: sticky;
       /* This makes it so that the navbar stays at the top, as you scroll down for example */       
       top: 10px;
-      z-index: 1000;        
+      z-index: 1000;     
+      /*this shows you the stacking order-- whether it should be infront/behind other elements*/   
     }
 
     li 
@@ -89,6 +94,8 @@
     /*this makes it so the navbar does not glitch out/go through a crisis
     it's so when you interact w/ the bar it doesn't collapse into itself
     EG. So the display:table keeps the height of the navbar consistent
+
+    it also lets me play around with the efffects
     */
 
     /* BODY + BACKGROUND --> SIMILAR TO OLD BONUS, CHANGED BACKGROUND IMAGE */
