@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Mia's Study with Pandas</title>
+  <link rel="icon" type="image/jpeg" href="PandaFavicon.jpeg">
+
+  <style>
+    /*  NAVIGATION BAR 
+    
+    This shows me the different styles/design that I did
+    It's similar to the way you originally design it-- it's just tailored for the navbar specifically
+
+    */
+    ul.navbar 
+    {
+      list-style-type: none;
+      /*solves the problem of black dots beside each page-- it removes the markers on the pages
+      so it looks more consistent for the navbar pages specifically*/
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: rgba(28, 13, 37, 0.808);
+      border-radius: 15px;
+      font-family: "Poppins", sans-serif;
+      width: 90%;
+      /*width,,, just in percentage*/
+      margin: 20px auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      /*has a decimal just so it can consider more colors*/
+      position: sticky;
+      /* This makes it so that the navbar stays at the top, as you scroll down for example */       
+      top: 10px;
+      z-index: 1000;     
+      /*this shows you the stacking order-- whether it should be infront/behind other elements*/   
+    }
+
+    li 
+    {
+      float: left;
+    }
+
+    /* This makes it so that the sections of the navbar, specifically the days
+    Are going to increasingly go to the left
+    
+    It's placing them all next to each other horizontally-- condensing it to the LEFT 
+
+    */
+
+    li a 
+    {
+      display: block;
+      /*this makes it so that the entire block of CODE tells you that you can CLICK THE ENTIRE BUTTON
+      not just the text --> it's not barebones/kinda faulty when u try to use it*/
+      color: rgb(239, 222, 255);
+      text-align: center;
+      padding: 14px 20px;
+      text-decoration: none;
+      font-size: 18px;
+      transition: background-color 0.3s ease;
+      /*animation*/
+      border-radius: 15px;
+      /*corner rounding*/
+      cursor: pointer;    
+      /*turns ur cursor into a pointer, js to make life look niice*/   
+    }
+
+  /* the entire purpose of li a{} is to make it work properly, minimize errors WHEN clicking
+  also js to look nice heh */
+
+    li a:hover 
+    {
+      background-color: rgba(137, 99, 164, 0.8);
+    }
+    /*makes it so that when you hover over the navbar, it changes color
+    & is pretty kewl hehe*/
+
+    .active 
+    {
+      background-color: rgb(183, 123, 231);
+      color: white;
+      font-weight: bold;
+    }
+    /*this is similar to li a:hover{}, but the difference is that this is WHEN you are actually in the tab itself
+    the tab of the navbar
+    Therefore the color is brightmore/more in your face than when you hover over it*/
+
+    ul.navbar::after 
+    {
+      content: "";
+      clear: both;
+      display: table;
+    }
+    /*this makes it so the navbar does not glitch out/go through a crisis
+    it's so when you interact w/ the bar it doesn't collapse into itself
+    EG. So the display:table keeps the height of the navbar consistent
+
+    it also lets me play around with the efffects
+    */
+
+    /* BODY + BACKGROUND --> SIMILAR TO OLD BONUS, CHANGED BACKGROUND IMAGE */
+    body 
+    {
+    background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.26), rgba(255,255,255,0.7)), 
+    url('PurpleLilac.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+    text-align: center;
+    margin: 0;
+    height: 100vh;               
+    font-family: "Poppins", sans-serif;
+    }
+
+
+    /* TABLE STYLE FOR EACH PART/SECTION */
+    table 
+    {
+      border-collapse: collapse;
+      width: 90%;
+      margin: 30px auto;
+      font-size: 18px;
+      text-align: left;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    /*this is the general style for when you load this part/section of the navbar*/
+
+    th 
+    {
+      background-color: #4a2c50;
+      color: white;
+      padding: 16px 20px;
+      font-size: 20px;
+    }
+
+    td 
+    {
+      padding: 14px 20px;
+      border-bottom: 1px solid #ddd;
+      transition: all 0.3s ease;
+    }
+
+    tr 
+    {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover td 
+    {
+      background-color: rgba(196, 161, 221, 0.662);
+      font-weight: bold;
+      transform: scale(1.01);
+      transition: all 0.3s ease;
+    }
+    /* this is what happens when you hover over this part of the table
+    So this applies to all tables, so when you hover over a teachers name itll be BOLD
+    when you hover over a subject it'll be BOLDED
+    
+    
+    Although there are some parts that if you hover specifically, have assigned/specific animations */
+
+
+    /* ANIMATIONS
+    
+    this is also what happens when you click the navbar tab, to make the animation smooth
+    It A) fades in, especially because once you click the tab it originally wasn't there
+
+    Then it B) SLIDES IN as it is fading in/loading 
+
+    */
+
+    @keyframes fadeIn 
+    {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideDown 
+    {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+
+    /* HEADINGS */
+    h1 
+    {
+      background-color: rgba(69, 31, 92, 0.596);
+      border: 2px solid rgb(204, 189, 207);
+      color: rgb(239, 222, 255);
+      font-size: 60px;
+      border-radius: 15px;
+      padding: 10px;
+      width: 90%;
+      margin: 40px auto 20px;
+      animation: slideDown 0.5s ease-out;
+      position: relative;
+      z-index: 1;
+    }
+
+    h2
+    {
+      background-color: rgba(123, 71, 156, 0.757);
+      border: 2px solid rgb(194, 165, 200);
+      color: rgb(239, 222, 255);
+      font-size: 35px;
+      border-radius: 15px;
+      padding: 10px;
+      width: 90%;
+      margin: 40px auto 20px;
+      animation: slideDown 0.5s ease-out;
+      position: relative;
+      z-index: 1;
+    }
+    /*This is for all of the h1 heading of the table, which makes my life EASIER (& organized)*/
+
+    /* HIDE OTHER SECTIONS */
+    .schedule-section
+    {
+      display: none;
+    }
+    /*this quite literally hides all of the other sections, and shows ONLY the active one
+    So it's hiding what you did not click, what you did not want to see*/
+
+    .active-section 
+    {
+      display: block;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+    /*this is the section you are in-- like the header & table
+    & it acts like a block kamo as the section/table (not as separate elements) */
+
+    a.email 
+    {
+      color: #4a2c50;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    /*this is the general look of each email, when you're not hovering over it
+    So this is the general style/color assigned to the emails specifically */
+
+    a.email:hover 
+    {
+      text-decoration: underline;
+    }
+  /* literally js underlines the email you're hovering over */
+
+  </style>
+</head>
+
+<body style="top: 50px">
+  <!-- NAVIGATION BAR -->
+  <ul class="navbar">
+    <li><a class="active" onclick="showDay('home', this)">Home</a></li>
+    <li><a onclick="showDay('monday', this)">Monday</a></li>
+    <li><a onclick="showDay('tuesday', this)">Tuesday</a></li>
+    <li><a onclick="showDay('wednesday', this)">Wednesday</a></li>
+    <li><a onclick="showDay('thursday', this)">Thursday</a></li>
+    <li><a onclick="showDay('friday', this)">Friday</a></li>
+    <li><a onclick="showDay('directory', this)">Teachers Directory</a></li>
+  </ul>
+  <!-- 
+  
+  THE FIRST LINE BELOW THE FIRST COMMENT SAYING IT'S A NAVBAR TELLS U ALL OF THE TABS YOU WANT TO HAVE IN THE NAVBAR
+  IT'S ALSO THE LIST OF NAMES/ITEMS YOU ACTL SEE IN THE NAVBAR ITSELF
+  SO THIS ENTIRE THING TELLS U THIS IS HOW THE NAVBAR IIS W/ ALL THE CLICKABLE ITEMS 
+
+  HERE, THE FIRST LINE ONCE YOU LOAD THE LIVE SERVE IN SETS MONDAY TO THE ACTIVE TAB
+  IT'S THE FIRST THING YOU SEE ONCE YOU LOAD THE SITE-- AND ITS AUTOMATICALLY DONE FOR YOU
+   
+  THEN THE FF. LINES HAVE ONCLICK: BECAUSE MONDAY IS AUTOMATICALLY OPENED FIRST
+  SHOWDAY() REFERS TO THE JAVASCRIPT PART THAT SWITCHES THE TAB
+  & THIS REFERS TO THE BUTTON U LITERALLY JS CLICKED
+
+  BASICALLY THIS PART LINKS TOGETHER ALL PARTS OF THE CODE, SO: 
+  HTML BUTTONS PART
+  JAVASCRIPT TAB SWITCHING
+  CSS DESIGNS/STYLE
+
+  ALSO <LI> <A> PARTS ARE LITERALLY JUST HOW YOU CREATE A TAB FOR THE NAVBAR, JS THE CODE ITSELF NO BIGGIE
+
+  -->
+
+  <div id="home" class="schedule-section active-section">
+    <h1>
+      Mia's Site : Study With Pandas 💜🤍
+    </h1>
+
+    <h2>
+      This website was MADE WITH LOVE by Mia :>> 
+      I love Lilac Flowers, and Pandas! So, I added it to This Live Server
+      and I just continued adding to my Salitan File that I originally made. This took me a long time...
+      I'm very tired
+
+      <br/> <br/>
+    
+      For every day of the week, a PANDA VIDEO/PHOTO will accompany you! 
+      Aside from that, so will the Class Schedule of every week. 
+
+    </h2>
+
+    <h1>
+      Here's a little bit about me... Mia's Slambook 
+    </h1>
+
+    <table>
+      <tr><th>Category</th><th>My Answer (heh) </th></tr>
+      <tr><td>Section</td><td>POTASSIUM! K25</td></tr>
+      <tr><td>Favorite Color</td><td>All Shades of Purple</td></tr>
+      <tr><td>Favorite Anime</td><td>(FRIEREN ONTOP RIGHT NOW) but there are too many to list..</td></tr>
+      <tr><td>Hobbies</td><td>Debate, Arts & Crafts, & more</td></tr>
+      <tr><td>Favorite Plant</td><td>All plants-- but specifically Lilacs!</td></tr>
+      <tr><td>Favorite Show/s</td><td>Brooklyn 99, Big Bang Theory, & more.. </td></tr>
+      <tr><td>Favorite Animal</td><td>Pandas...</td></tr>
+      <tr><td>Personality</td><td>Great Question! I'd say I'm ambitious at a cost</td></tr>
+      <tr><td>Current status?</td><td>Tryharding, failing, but try harding again!... :[ </td></tr>
+    </table>
+
+    <h2>
+      For the sake of my 2Q1GKRobang Score, 
+      <br/>
+      <a href="https://pdmfestejo-2029.github.io/CS3_1stQtrPortfolio_PotassiumFESTEJO/public/2Q1GPotassiumFestejo.html">Pio's Site!</a>
+      <br/>
+      <a href="https://sl33p-eepy.github.io/CS3_2ndQtrPortfolio_PotassiumCarpiso/public/Q21GKCarpiso.html">Chiara's Site!</a>
+      <br/>
+      <a href="https://mustardkendrickmango.github.io/CS3_2ndQtr_Potassium/">Teo's Site!</a>
+    </h2>
+
+    <footer
+    style= 
+    "color:#36143e;
+    font-size: 20px; 
+    font-weight: bold;
+    font: 'Poppins';
+    ">
+      For the Sake of the CS3 Q2 Graded 1 Requirements,
+      <br/>
+      © 2025 Mia's Site : Study with Pandas
+      <br/>
+    Youtube.com 
+      <br/>
+    Adobe Stock 
+      <br/> 
+    w3schools.com 
+      <br/>
+    Andrea Robang (my sister) who codes..
+      <br/>
+    My Sisters' (Rhea's) boyfriend who also codes...
+
+    </footer>
+  </div>
+
+  <!-- MONDAY -->
+  <div id="monday" class="schedule-section">
+    <!-- AHH YES SO THIS PART IS IMPORTANT! IT'S JUST GIVING AN ID TO THE SECTION
+     & THE CLASS PART, PART OF THE <DIV> THAT GROUPS STUFF TOGETHER CALLS ON THE .SCHEDULE-SECTION & .ACTIVE-SECTION
+      THAT I EXPLAINED EAARLIER 
+      
+      THIS PART BASICALLY JS EXISTS TO SWITCH THE DATA IN EACH TAB/PART OF THE NAVBAR
+    -->
+    <h1>MONDAY SCHEDULE</h1>
+    <table>
+      <tr><th>Time</th><th>Subject</th></tr>
+
+      <tr>
+        <td>7:30 - 8:15 AM</td>
+        <td rowspan="2">Filipino 3 (SHB 306)</td>
+      </tr>
+      <tr>
+        <td>8:15 - 9:00 AM</td>
+      </tr>
+
+      <tr><td>9:00 - 9:10 AM</td><td>Break</td></tr>
+      <tr><td>9:10 - 9:55 AM</td><td>Biology 1 (SHB 111)</td></tr>
+      <tr><td>9:55 - 10:40 AM</td><td>Chemistry 1 (SHB 306)</td></tr>
+      <tr><td>10:40 - 11:25 AM</td><td>Study Period</td></tr>
+      <tr><td>11:25 - 12:10 PM</td><td>Music 3 (Gym)</td></tr>
+      <tr><td>12:10 - 1:05 PM</td><td>Lunch</td></tr>
+
+      <tr>
+        <td>1:05 - 1:50 PM</td>
+        <td rowspan="2">Statistics (SHB 404)</td>
+      </tr>
+      <tr>
+        <td>1:50 - 2:35 PM</td>
+      </tr>
+
+      <tr><td>2:35 - 2:45 PM</td><td>Break</td></tr>
+
+      <tr><td>2:45 - 3:30 PM</td><td>Study Period</td></tr>
+      <tr><td>3:30 - 4:15 PM</td><td>Values Education (SHB 306)</td></tr>
+    </table>
+
+    <h1>1ST PANDA VIDEO OF THE WEEK!</h1>
+
+    <iframe width="550" height="445"
+    src="https://www.youtube.com/embed/l73rmrLTHQc"
+    frameborder="0"
+    style="border-radius: 15;"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+    </iframe>
+    <!--src tells you special embed to put a version of the link there, frameborder is basically format,
+    allow gives it special permissions to play around with the video
+    allowfull screen... allows u to full screen...-->
+  
+  </div>
+
+  <!-- TUESDAY -->
+  <div id="tuesday" class="schedule-section">
+    <h1>TUESDAY SCHEDULE</h1>
+    <table>
+      <tr><th>Time</th><th>Subject</th></tr>
+
+      <tr>
+        <td>7:30 - 8:15 AM</td>
+        <td rowspan="2">Physics 1 (SHB 101)</td>
+      </tr>
+      <tr>
+        <td>8:15 - 9:00 AM</td>
+      </tr>
+
+      <tr><td>9:00 - 9:10 AM</td><td>Break</td></tr>
+      <tr><td>9:10 - 9:55 AM</td><td>English 3 (SHB 306)</td></tr>
+      <tr><td>9:55 - 10:40 AM</td><td>Study Period</td></tr>
+      <tr><td>10:40 - 11:25 AM</td><td>Social Science 3 (SHB 306)</td></tr>
+      <tr><td>11:25 - 12:10 PM</td><td>Health 3 (SHB 306)</td></tr>
+      <tr><td>12:10 - 1:05 PM</td><td>Lunch</td></tr>
+
+      <tr>
+        <td>1:05 - 1:55 PM</td>
+        <td rowspan="2">Computer Science 3 (ASTB EDGE)</td>
+      </tr>
+      <tr>
+        <td>1:55 - 2:45 AM</td>
+      </tr>
+
+      <tr><td>2:45 - 3:30 PM</td><td>Study Period</td></tr>
+      <tr><td>3:30 - 4:15 PM</td><td>Mathematics 3 (SHB 306)</td></tr>
+    </table>
+
+    <h1>2ND PANDA VIDEO OF THE WEEK!</h1>
+
+    <iframe width="550" height="445"
+    src="https://www.youtube.com/embed/D7xWXk5T3-g"
+    frameborder="0"
+    style="border-radius: 15;"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+    </iframe>
+
+  </div>
+
+  <!-- WEDNESDAY -->
+  <div id="wednesday" class="schedule-section">
+    <h1>WEDNESDAY SCHEDULE</h1>
+    <table>
+      <tr><th>Time</th><th>Club / Activity</th></tr>
+      <tr>
+        <td>7:30 - 8:15 AM</td>
+        <td rowspan="2">Invictus: Speech & Debate Club</td>
+      </tr>
+      <tr>
+        <td>8:15 - 9:00 AM</td>
+      </tr>
+      <tr><td>9:00 - 9:10 AM</td><td>Break between Club A & B</td></tr>
+      <tr>
+        <td>9:10 - 9:55 AM</td></td>
+        <td rowspan="2">Free Period </td>
+      </tr>
+      <tr>
+        <td>9:55 - 10:40 AM</td>
+      <tr><td>10:40 - 10:55 AM</td><td>Break between Club B & HR Period</td></tr>
+      <tr>
+        <td>10:55 - 11:25 AM</td>
+        <td rowspan="2">Homeroom Period</td>
+      </tr>
+      <tr>
+        <td>11:25 - 12:10 PM</td>
+    </table>
+
+    <h1>Take your WELL-DESERVED BREAK! Here, have this panda resting</h1>
+
+    <img src="PandaResting.jpg"
+    style=
+    "display: block; 
+    margin: 20px auto; 
+    border: 5px solid rgb(235, 224, 245); 
+    border-radius: 15px; 
+    box-shadow: 0 0 20px rgb(230, 203, 255);"
+    width="800">
+
+  </div>
+
+  <!-- THURSDAY -->
+  <div id="thursday" class="schedule-section">
+    <h1>THURSDAY SCHEDULE</h1>
+    <table>
+      <tr><th>Time</th><th>Subject</th></tr>
+      <tr>
+        <td>7:30 - 8:15 AM</td>
+        <td rowspan="2">Biology 1 (SHB 111)</td>
+      </tr>
+      <tr>
+        <td>8:15 - 9:00 AM</td>
+      <tr><td>9:00 - 9:10 AM</td><td>Break</td></tr>
+      <tr>
+        <td>9:10 - 9:55 AM</td>
+        <td rowspan="2">Chemistry 1 (SHB 105)</td>
+      </tr>
+      <tr>
+        <td>9:55 - 10:40 AM</td>
+      <tr><td>10:40 - 11:25 AM</td><td>Study Period</td></tr>
+      <tr><td>11:25 - 12:10 PM</td><td>Filipino 3 (SHB 306)</td></tr>
+      <tr><td>12:10 - 1:05 PM</td><td>Lunch</td></tr>
+      <tr><td>1:05 - 1:50 PM</td><td>Statistics (SHB 404)</td></tr>
+      <tr><td>1:50 - 2:35 PM</td><td>Values Education (SHB 306)</td></tr>
+      <tr><td>2:35 - 2:45 PM</td><td>Break</td></tr>
+      <tr>
+        <td>2:45 - 3:30 PM</td>
+        <td rowspan="2">Physical Education (Gym)</td>
+      </tr>
+      <tr>
+        <td>3:30 - 4:15 PM</td>
+    </table>
+
+    <h1>3RD PANDA VIDEO OF THE WEEK!</h1>
+
+    <iframe width="550" height="445"
+    src="https://www.youtube.com/embed/v_cpPMjE0vU"
+    frameborder="0"
+    style="border-radius: 15;"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+    </iframe>
+
+  </div>
+
+  <!-- FRIDAY -->
+  <div id="friday" class="schedule-section">
+    <h1>FRIDAY SCHEDULE</h1>
+    <table>
+      <tr><th>Time</th><th>Subject</th></tr>
+      <tr><td>7:30 - 8:15 AM</td><td>Physics 1 (SHB 111)</td></tr>
+      <tr><td>8:15 - 9:10 AM</td><td>Study Period</td></tr>
+      <tr>
+        <td>9:10 - 9:55 AM</td>
+        <td rowspan="2">English 3 (SHB 306)</td>
+      </tr>
+      <tr>
+        <td>9:55 - 10:40 AM</td>
+        <tr>
+          <td>10:40 - 11:25 AM</td>
+          <td rowspan="2">Social Science (SHB 306) </td>
+        </tr>
+        <tr>
+          <td>11:25 - 12:10 PM</td>
+      <tr><td>12:10 - 1:05 PM</td><td>Lunch</td></tr>
+      <tr><td>1:05 - 1:50 PM</td><td>Computer Science 3 (ASTB EDGE)</td></tr>
+      <tr><td>1:50 - 2:45 PM</td><td>Study Period</td></tr>
+      <tr>
+        <td>2:45 - 3:30 PM</td>
+        <td rowspan="2">Mathematics 3 (SHB 306)</td>
+      </tr>
+      <tr>
+        <td>3:30 - 4:15 PM</td>
+    </table>
+
+    <h1>4TH PANDA VIDEO OF THE WEEK!</h1>
+
+    <iframe width="550" height="445"
+    src="https://www.youtube.com/embed/DeznJthKCFY"
+    frameborder="0"
+    style="border-radius: 15;"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+    </iframe>
+
+  </div>
+
+  <!-- TEACHERS DIRECTORY -->
+  <div id="directory" class="schedule-section">
+    <h1>SUBJECT TEACHERS DIRECTORY</h1>
+    <table>
+      <tr><th>Subject</th><th>Teacher</th><th>Email</th></tr>
+      <tr><td>Homeroom Adviser</td><td>Lester D. Mendoza</td><td><a class="email" href="mailto:ldgmendoza@pshs.edu.ph">ldgmendoza@pshs.edu.ph</a></td></tr>
+      <tr><td>Biology 1</td><td>Maria Elena D. Pinlac</td><td><a class="email" href="mailto:medpinlac@pshs.edu.ph">medpinlac@pshs.edu.ph</a></td></tr>
+      <tr><td>Chemistry 1</td><td>Lester D. Mendoza</td><td><a class="email" href="mailto:ldgmendoza@pshs.edu.ph">ldgmendoza@pshs.edu.ph</a></td></tr>
+      <tr><td>Physics 1</td><td>Anna Carmela B. Bonifacio</td><td><a class="email" href="mailto:cbbonifacio@pshs.edu.ph">cbbonifacio@pshs.edu.ph</a></td></tr>
+      <tr><td>Mathematics 3</td><td>Lady Diane F. Estonilo</td><td><a class="email" href="mailto:ldfestonilo@pshs.edu.ph">ldfestonilo@pshs.edu.ph</a></td></tr>
+      <tr><td>Statistics</td><td>Lady Diane F. Estonilo</td><td><a class="email" href="mailto:ldfestonilo@pshs.edu.ph">ldfestonilo@pshs.edu.ph</a></td></tr>
+      <tr><td>Computer Science 3</td><td>Roy Vincent L. Canseco</td><td><a class="email" href="mailto:rvlcanseco@pshs.edu.ph">rvlcanseco@pshs.edu.ph</a></td></tr>
+      <tr><td>English 3</td><td>Joana M. Soriano</td><td><a class="email" href="mailto:jmsoriano@pshs.edu.ph">jmsoriano@pshs.edu.ph</a></td></tr>
+      <tr><td>Filipino 3</td><td>Simoun Rober G. Monzon</td><td><a class="email" href="mailto:srgmonzon@pshs.edu.ph">srgmonzon@pshs.edu.ph</a></td></tr>
+      <tr><td>Social Science 3</td><td>Jhon Glenn D. Espino</td><td><a class="email" href="mailto:jgdespino@pshs.edu.ph">jgdespino@pshs.edu.ph</a></td></tr>
+      <tr><td>Values Education 3</td><td>Diannmar J. Briones</td><td><a class="email" href="mailto:djbriones@pshs.edu.ph">djbriones@pshs.edu.ph</a></td></tr>
+      <tr><td>Physical Education 3</td><td>Robert G. Duliesco</td><td><a class="email" href="mailto:rgduliesco@pshs.edu.ph">rgduliesco@pshs.edu.ph</a></td></tr>
+      <tr><td>Health 3</td><td>Jennifer Joy P. Balangue</td><td><a class="email" href="mailto:jjpbalangue@pshs.edu.ph">jjpbalangue@pshs.edu.ph</a></td></tr>
+      <tr><td>Music 3</td><td>Anthony Ryan Cruz</td><td><a class="email" href="mailto:arcruz@pshs.edu.ph">arcruz@pshs.edu.ph</a></td></tr>
+    </table>
+  </div>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    function showDay(dayId, clickedButton) 
+    {
+      let allSchedules = document.getElementsByClassName("schedule-section");
+      for (let i = 0; i < allSchedules.length; i++) 
+      {
+        allSchedules[i].style.display = "none";
+      }
+
+      let allButtons = document.querySelectorAll(".navbar a");
+      for (let i = 0; i < allButtons.length; i++) 
+      {
+        allButtons[i].classList.remove("active");
+      }
+
+      let dayToShow = document.getElementById(dayId);
+      dayToShow.style.display = "block";
+      clickedButton.classList.add("active");
+    }
+  </script>
+
+  <!-- 
+
+  LET'S EXPLAIN THE JAVASCRIPT PART OF THIS CODE 
+  I PRIORITIZED USING FOR LOOPS-- CUS THEY'RE EASIER
+  ALSO BECAUSE FUNCTIONS ARE STILL MY OPPS/NOT MY FRIEND
+
+  2 LOCAL VARIABLES, IN THE () KAMO
+
+  THE FIRST FOR LOOPS SET ALL OF THE TABS TO NOT ACTIVE, THAT'S WHY IT'S "NONE"
+  THEREFORE, IT WON'T ACTIVATE ALL THE ANIMATIONS/SHOW THE SCHED UNLESS U CLICK IT
+
+  THE LET ALLBUTTONS MAKES SURE ALL THE HIGHLIGHTS ARE REMOVED ONCE YOU SWITCH/HIGHLIGHTED BEFORE
+  THE FOR LOOP ALSO DOES THIS FOR THE NAVBAR
+  (SO THIS IS APLLIED TO BUTTONS ++ THE NAVBAR)
+
+  THE LETDAYTOSHOW LEGIT JUST FINDS THE <DIV> ID OR LABEL WE ADDED TO IT IN THE TABLES ITSELF
+    & IT DISPLAYS IT AS A BLOCK ALREAADY, SO IT'S MATCHING THE ALL THE PARTS TOGETHER
+
+  THE LAST LINE OF CODE THEN INCLUDES THE TAB/BUTTON YOU CLICKED ACTIVE
+  SO THIS IS WHERE ALL OF THE HIGHLIGHTS/STYLES WILL COME THRU
+
+  -->
+  
+</body>
+</html>
