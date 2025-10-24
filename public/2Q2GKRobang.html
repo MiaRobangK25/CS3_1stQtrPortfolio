@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <title>Mia's Study with Pandas</title>
   <link rel="icon" type="image/jpeg" href="PandaFavicon.jpeg">
+  <link rel="stylesheet" href="style.css">
 
   <style>
     /*  NAVIGATION BAR 
@@ -20,13 +21,13 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
-      background-color: rgba(28, 13, 37, 0.808);
+      background-color: rgba(116, 119, 92, 0.808);
       border-radius: 15px;
       font-family: "Poppins", sans-serif;
       width: 90%;
       /*width,,, just in percentage*/
       margin: 20px auto;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 10px rgba(255, 248, 205, 0.512);
       /*has a decimal just so it can consider more colors*/
       position: sticky;
       /* This makes it so that the navbar stays at the top, as you scroll down for example */       
@@ -52,7 +53,7 @@
       display: block;
       /*this makes it so that the entire block of CODE tells you that you can CLICK THE ENTIRE BUTTON
       not just the text --> it's not barebones/kinda faulty when u try to use it*/
-      color: rgb(239, 222, 255);
+      color: rgb(255, 255, 255);
       text-align: center;
       padding: 14px 20px;
       text-decoration: none;
@@ -70,14 +71,14 @@
 
     li a:hover 
     {
-      background-color: rgba(137, 99, 164, 0.8);
+      background-color: rgba(136, 170, 120, 0.8);
     }
     /*makes it so that when you hover over the navbar, it changes color
     & is pretty kewl hehe*/
 
     .active 
     {
-      background-color: rgb(183, 123, 231);
+      background-color: rgb(211, 200, 154);
       color: white;
       font-weight: bold;
     }
@@ -102,8 +103,8 @@
     body 
     {
     background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.26), rgba(255,255,255,0.7)), 
-    url('PurpleLilac.jpg');
+    linear-gradient(rgba(10, 34, 15, 0.529), rgba(88, 99, 62, 0.7)), 
+    url('BambooForest.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -133,7 +134,7 @@
 
     th 
     {
-      background-color: #4a2c50;
+      background-color: #454e36;
       color: white;
       padding: 16px 20px;
       font-size: 20px;
@@ -153,7 +154,7 @@
 
     tr:hover td 
     {
-      background-color: rgba(196, 161, 221, 0.662);
+      background-color: rgba(161, 221, 165, 0.662);
       font-weight: bold;
       transform: scale(1.01);
       transition: all 0.3s ease;
@@ -191,14 +192,14 @@
     /* HEADINGS */
     h1 
     {
-      background-color: rgba(69, 31, 92, 0.596);
-      border: 2px solid rgb(204, 189, 207);
-      color: rgb(239, 222, 255);
+      background-color: rgba(31, 92, 31, 0.596);
+      border: 2px solid rgb(194, 207, 189);
+      color: rgb(251, 255, 241);
       font-size: 60px;
       border-radius: 15px;
-      padding: 10px;
+      padding: 5px;
       width: 90%;
-      margin: 40px auto 20px;
+      margin: 40px auto 10px;
       animation: slideDown 0.5s ease-out;
       position: relative;
       z-index: 1;
@@ -206,14 +207,14 @@
 
     h2
     {
-      background-color: rgba(123, 71, 156, 0.757);
-      border: 2px solid rgb(194, 165, 200);
-      color: rgb(239, 222, 255);
+      background-color: rgba(98, 156, 71, 0.757);
+      border: 2px solid rgb(182, 200, 165);
+      color: rgb(241, 255, 222);
       font-size: 35px;
       border-radius: 15px;
-      padding: 10px;
+      padding: 5px;
       width: 90%;
-      margin: 40px auto 20px;
+      margin: 40px auto 10px;
       animation: slideDown 0.5s ease-out;
       position: relative;
       z-index: 1;
@@ -238,7 +239,7 @@
 
     a.email 
     {
-      color: #4a2c50;
+      color: #2c5044;
       text-decoration: none;
       font-weight: 600;
     }
@@ -250,6 +251,37 @@
       text-decoration: underline;
     }
   /* literally js underlines the email you're hovering over */
+
+    a:hover {
+    color: #f2fff0; 
+    font-weight: 600;
+    }  
+
+    .image-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* this js helps us see the display: flex, or flexbox in the CENTER
+    positioning them on the x-axis, horizontally */
+    gap: 20px;
+    width: 100%;
+    margin: 20px auto;
+    }
+
+    .image-text img {
+    width: 540px;
+    border-radius: 10px;
+    display: block;
+    }
+
+    .image-text p {
+    color: white;
+    font-size: 40px;
+      max-width: 350px;
+    text-align: left;
+    font-weight:bold; 
+    }
+
 
   </style>
 </head>
@@ -289,14 +321,13 @@
 
   <div id="home" class="schedule-section active-section">
     <h1>
-      Mia's Site : Study With Pandas 💜🤍
+      Mia's Site 2.0 : Study With Pandas 🤍
     </h1>
 
     <h2>
-      This website was MADE WITH LOVE by Mia :>> 
-      I love Lilac Flowers, and Pandas! So, I added it to This Live Server
-      and I just continued adding to my Salitan File that I originally made. This took me a long time...
-      I'm very tired
+      This website was MADE WITH LOVE by Mia :>> For my 2nd Graded Excercise, our table-- consisting of Pio Festejo,
+      Chiara Carpiso, and Teodoro Salandanan wanted to make our websites match in theme! Our idea was to make our websites
+      all centralized tomwards this one theme, PLANTS/NATURE! The way I just did it was thr 
 
       <br/> <br/>
     
@@ -323,23 +354,21 @@
     </table>
 
     <h2>
-      For the sake of my 2Q1GKRobang Score, 
+      For the sake of my 2Q2GKRobang Score, 
       <br/>
-      <a href="https://pdmfestejo-2029.github.io/CS3_1stQtrPortfolio_PotassiumFESTEJO/public/2Q1GPotassiumFestejo.html">Pio's Site!</a>
+      <a href="https://miarobangk25.github.io/CS3_1stQtrPortfolio/public/2Q1GKRobang.html">Mia's 2Q1GKRobang Excercise!</a>
       <br/>
-      <a href="https://sl33p-eepy.github.io/CS3_2ndQtrPortfolio_PotassiumCarpiso/public/Q21GKCarpiso.html">Chiara's Site!</a>
+      <a href="https://sample.html">Pio's Site!</a>
       <br/>
-      <a href="https://mustardkendrickmango.github.io/CS3_2ndQtr_Potassium/">Teo's Site!</a>
+      <a href="https://sample.html">Chiara's Site!</a>
+      <br/>
+      <a href="https://sample.html">Teo's Site!</a>
     </h2>
 
-    <footer
-    style= 
-    "color:#36143e;
-    font-size: 20px; 
-    font-weight: bold;
-    font: 'Poppins';
-    ">
-      For the Sake of the CS3 Q2 Graded 1 Requirements,
+    <footer class="main-ceeses">
+      <br/>
+      For the Sake of the CS3 Q2 Graded 2 Requirements,
+      <br/>
       <br/>
       © 2025 Mia's Site : Study with Pandas
       <br/>
@@ -352,7 +381,8 @@
     Andrea Robang (my sister) who codes..
       <br/>
     My Sisters' (Rhea's) boyfriend who also codes...
-
+      <br/>
+      <br/>
     </footer>
   </div>
 
@@ -485,16 +515,19 @@
         <td>11:25 - 12:10 PM</td>
     </table>
 
-    <h1>Take your WELL-DESERVED BREAK! Here, have this panda resting</h1>
-
-    <img src="PandaResting.jpg"
-    style=
-    "display: block; 
-    margin: 20px auto; 
-    border: 5px solid rgb(235, 224, 245); 
-    border-radius: 15px; 
-    box-shadow: 0 0 20px rgb(230, 203, 255);"
-    width="800">
+  <section>
+    <div class="image-text">
+      <img src="PandaResting.jpg" alt="Resting Panda"
+      style=
+      "display: block; 
+      border: 5px solid rgb(231, 245, 224); 
+      border-radius: 15px; 
+      box-shadow: 0 0 20px rgb(157, 198, 157);"
+      width="800">
+      <p>Like this panda-- this is a quick reminder to take a BREAK every now and then. Take care of yourself!
+        (It's for the pandas... TRUST)</p>
+    </div>
+  </section>
 
   </div>
 
