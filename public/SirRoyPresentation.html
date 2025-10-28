@@ -1,0 +1,844 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lecture Presentation</title>
+    <style>
+        * { box-sizing: border-box; }
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        
+        #slide-container {
+            width: 100%;
+            min-height: 100vh;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            padding: 3rem 2rem 200px 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        #slide-container h1 { font-size: 2.5em; margin: 0.5em 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        #slide-container h2 { font-size: 2em; margin: 0.5em 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        #slide-container h3 { font-size: 1.5em; margin: 0.5em 0; }
+        #slide-container p { font-size: 1.2em; line-height: 1.6; max-width: 800px; margin: 0.5em auto; }
+        #slide-container img { max-width: 100%; height: auto; border-radius: 8px; margin: 1.5rem 0; }
+        #slide-container ul, #slide-container ol { text-align: left; max-width: 600px; margin: 1em auto; font-size: 1.1em; }
+        #slide-container code { background: #333; padding: 0.2em 0.4em; border-radius: 3px; }
+        #slide-container pre { 
+            background: #2d2d2d; 
+            padding: 1em; 
+            border-radius: 8px; 
+            overflow-x: visible; 
+            text-align: left;
+            font-family: 'Courier New', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-size: 0.8em;
+            line-height: 1.4;
+            max-width: 100%;
+            white-space: pre;
+        }
+        
+        #slide-container pre code {
+            font-family: inherit;
+            font-size: inherit;
+            background: transparent;
+            padding: 0;
+        }
+        
+        /* Start Overlay */
+        #start-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            z-index: 1000;
+        }
+        
+        #status-message {
+            font-size: 1.1em;
+            color: #aaa;
+            margin: 0;
+            min-height: 1.5em;
+        }
+        
+        #status-message.success { color: #4CAF50; }
+        #status-message.warning { color: #FF9800; }
+        #status-message.error { color: #f44336; }
+        
+        /* Mode Selection */
+        #mode-selection {
+            margin: 1.5em 0;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        #mode-selection fieldset {
+            border: 2px solid #555;
+            border-radius: 8px;
+            padding: 1em;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        #mode-selection legend {
+            padding: 0 0.5em;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .mode-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .mode-option:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .mode-option input[type="radio"] {
+            margin-top: 4px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .mode-option-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .mode-option strong {
+            font-size: 1.1em;
+            color: #fff;
+        }
+        
+        .mode-option small {
+            font-size: 0.85em;
+            color: #aaa;
+            line-height: 1.3;
+        }
+        
+        #controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            padding: 1em;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        
+        #voice-controls-container.hidden {
+            display: none;
+        }
+        
+        #voice-select {
+            min-width: 200px;
+            padding: 0.5em;
+            font-size: 1em;
+            border-radius: 4px;
+            border: 1px solid #555;
+            background: #2d2d2d;
+            color: #fff;
+        }
+        
+        label {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+        
+        input[type="range"] {
+            width: 120px;
+        }
+        
+        #start-button {
+            font-size: 1.3em;
+            padding: 0.8em 2em;
+            border-radius: 8px;
+            border: none;
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        #start-button:hover:not(:disabled) {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+        
+        #start-button:disabled {
+            background: #555;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        /* Navigation Controls */
+        #nav-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+        
+        #nav-controls.visible { display: flex; }
+        
+        #progress-indicator {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            text-align: center;
+            border: 1px solid #555;
+        }
+        
+        .nav-button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(76, 175, 80, 0.9);
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .nav-button:hover { background: rgba(69, 160, 73, 1); transform: scale(1.05); }
+        .nav-button:disabled { background: rgba(85, 85, 85, 0.5); cursor: not-allowed; }
+        
+        #pause-button {
+            background: rgba(255, 152, 0, 0.9);
+        }
+        
+        #pause-button:hover:not(:disabled) {
+            background: rgba(245, 124, 0, 1);
+        }
+        
+        #pause-button.paused {
+            background: rgba(76, 175, 80, 0.9);
+        }
+        
+        #pause-button.paused:hover {
+            background: rgba(69, 160, 73, 1);
+        }
+        
+        #pause-button.hidden {
+            display: none;
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #4CAF50;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            #slide-container { padding: 2rem 1rem; }
+            #slide-container h1 { font-size: 1.8em; }
+            #slide-container h2 { font-size: 1.5em; }
+            #slide-container p { font-size: 1em; }
+            #controls { flex-direction: column; }
+            #nav-controls { bottom: 10px; right: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <main id="slide-container">
+        <div id="start-overlay">
+            <div class="spinner"></div>
+            <p id="status-message">Initializing presentation...</p>
+            
+            <div id="mode-selection">
+                <fieldset>
+                    <legend>Choose Playback Mode</legend>
+                    <label class="mode-option">
+                        <input type="radio" name="playback-mode" value="auto" checked>
+                        <span class="mode-option-content">
+                            <strong>Auto-play with voice</strong>
+                            <small>Slides advance automatically with narration</small>
+                        </span>
+                    </label>
+                    <label class="mode-option">
+                        <input type="radio" name="playback-mode" value="manual">
+                        <span class="mode-option-content">
+                            <strong>Manual navigation</strong>
+                            <small>Use Next/Previous buttons to control pace (recommended for Linux + Chrome)</small>
+                        </span>
+                    </label>
+                </fieldset>
+            </div>
+            
+            <div id="voice-controls-container">
+                <div id="controls">
+                    <label>
+                        Voice
+                        <select id="voice-select">
+                            <option>Loading voices...</option>
+                        </select>
+                    </label>
+                    <label>
+                        Rate
+                        <input id="rate" type="range" min="0.6" max="1.3" step="0.05" value="0.95">
+                        <span id="rate-value">0.95x</span>
+                    </label>
+                    <label>
+                        Pitch
+                        <input id="pitch" type="range" min="0.6" max="1.5" step="0.05" value="1.0">
+                        <span id="pitch-value">1.0</span>
+                    </label>
+                </div>
+            </div>
+            
+            <button id="start-button" disabled>Initializing...</button>
+        </div>
+    </main>
+    
+    <div id="nav-controls">
+        <div id="progress-indicator">Slide 1 of 1</div>
+        <button id="pause-button" class="nav-button hidden">⏸ Pause</button>
+        <button id="prev-button" class="nav-button">⬅ Previous</button>
+        <button id="next-button" class="nav-button">Next ➡</button>
+    </div>
+    
+    <script id="slides-data" type="application/json">[{"html":"<h1>Introduction to CSS</h1>\n<p>Welcome to today's lesson on <strong>Cascading Style Sheets (CSS)</strong>! </p>\n<p>CSS is what makes websites beautiful. Today we'll learn how to add colors, fonts, and layouts to web pages.</p>"},{"html":"<h2>What is CSS?</h2>\n<p>CSS stands for <strong>Cascading Style Sheets</strong>.</p>\n<p>Think of HTML as the skeleton of a website, and CSS as the clothing and makeup that makes it look good!</p>\n<p><strong>Key points:</strong></p>\n<ul>\n<li>HTML provides structure (headings, paragraphs, images)</li>\n<li>CSS provides style (colors, fonts, spacing)</li>\n<li>Together, they create beautiful websites</li>\n</ul>"},{"html":"<h2>Why \"Cascading\"?</h2>\n<p>The word \"cascading\" means styles flow down like a waterfall. </p>\n<p>If you style a parent element, the children inherit those styles automatically!</p>\n<p><img src=\"https://roycan.github.io/lecture_creator/assets/css-cascade-flow.png\" alt=\"CSS Cascade Flow\"></p>\n<p><strong>Example:</strong></p>\n<ul>\n<li>If you make a <code>&lt;div&gt;</code> blue, everything inside it becomes blue too</li>\n<li>Unless you override it with a different style</li>\n</ul>"},{"html":"<h2>Basic CSS Syntax</h2>\n<p>CSS follows a simple pattern:</p>\n<pre><code class=\"language-css\">selector {\n    property: value;\n}\n</code></pre>\n<p><img src=\"https://roycan.github.io/lecture_creator/assets/css-style-breakdown.png\" alt=\"CSS Syntax Breakdown\"></p>\n<p><strong>Let's break it down:</strong></p>\n<ul>\n<li><strong>Selector:</strong> What element you want to style (e.g., <code>h1</code>, <code>p</code>, <code>.class</code>)</li>\n<li><strong>Property:</strong> What you want to change (e.g., <code>color</code>, <code>font-size</code>)</li>\n<li><strong>Value:</strong> How you want to change it (e.g., <code>red</code>, <code>20px</code>)</li>\n</ul>\n<p><strong>Example:</strong></p>\n<pre><code class=\"language-css\">h1 {\n    color: blue;\n    font-size: 32px;\n}\n</code></pre>\n<p>This makes all <code>&lt;h1&gt;</code> headings blue and 32 pixels tall!</p>"},{"html":"<h2>Three Ways to Add CSS</h2>\n<p><img src=\"https://roycan.github.io/lecture_creator/assets/css-application-methods.png\" alt=\"CSS Application Methods\"></p>"},{"html":"<h3>1. Inline CSS (Inside HTML tags)</h3>\n<pre><code class=\"language-html\">&lt;p style=\"color: red;\"&gt;This text is red!&lt;/p&gt;\n</code></pre>\n<p>✅ <strong>Good for:</strong> Quick single changes<br>❌ <strong>Bad for:</strong> Styling multiple elements (too repetitive)</p>"},{"html":"<h3>2. Internal CSS (In the <code>&lt;style&gt;</code> tag)</h3>\n<pre><code class=\"language-html\">&lt;style&gt;\n    p {\n        color: green;\n        font-size: 16px;\n    }\n&lt;/style&gt;\n</code></pre>\n<p>✅ <strong>Good for:</strong> Styling one page<br>❌ <strong>Bad for:</strong> Multi-page websites (can't reuse)</p>"},{"html":"<h3>3. External CSS (Separate .css file)</h3>\n<pre><code class=\"language-html\">&lt;link rel=\"stylesheet\" href=\"styles.css\"&gt;\n</code></pre>\n<p>✅ <strong>Good for:</strong> Professional websites, reusable styles<br>✅ <strong>Best practice:</strong> Use this for real projects!</p>"},{"html":"<h2>CSS Selectors - Part 1</h2>\n<p><img src=\"https://roycan.github.io/lecture_creator/assets/css-selector-types.png\" alt=\"CSS Selector Types\"></p>"},{"html":"<h3>Element Selectors</h3>\n<p>Style all elements of a type:</p>\n<pre><code class=\"language-css\">p {\n    color: navy;\n}\n\nh1 {\n    color: purple;\n}\n</code></pre>\n<p>This styles <strong>ALL</strong> paragraphs and <strong>ALL</strong> h1 headings.</p>"},{"html":"<h3>Class Selectors</h3>\n<p>Style specific elements with a class:</p>\n<pre><code class=\"language-html\">&lt;p class=\"highlight\"&gt;Important text&lt;/p&gt;\n&lt;p&gt;Normal text&lt;/p&gt;\n</code></pre>\n<pre><code class=\"language-css\">.highlight {\n    background-color: yellow;\n    font-weight: bold;\n}\n</code></pre>\n<p>Only the first paragraph gets highlighted! 🎨</p>"},{"html":"<h3>ID Selectors</h3>\n<p>Style a single unique element:</p>\n<pre><code class=\"language-html\">&lt;div id=\"header\"&gt;Website Header&lt;/div&gt;\n</code></pre>\n<pre><code class=\"language-css\">#header {\n    background-color: black;\n    color: white;\n    padding: 20px;\n}\n</code></pre>\n<p><strong>Remember:</strong> IDs should be unique - use only once per page!</p>"},{"html":"<h2>CSS Colors</h2>\n<p><img src=\"https://roycan.github.io/lecture_creator/assets/css-color-systems.png\" alt=\"CSS Color Systems\"></p>"},{"html":"<h3>Named Colors</h3>\n<pre><code class=\"language-css\">color: red;\ncolor: blue;\ncolor: coral;\n</code></pre>\n<p>There are 140+ named colors in CSS!</p>"},{"html":"<h3>Hex Colors</h3>\n<pre><code class=\"language-css\">color: #FF5733;  /* Orange-red */\ncolor: #00FF00;  /* Green */\ncolor: #000000;  /* Black */\n</code></pre>\n<p>Hex codes use 6 characters: RRGGBB (Red, Green, Blue)</p>"},{"html":"<h3>RGB Colors</h3>\n<pre><code class=\"language-css\">color: rgb(255, 87, 51);  /* Same orange-red */\ncolor: rgb(0, 255, 0);     /* Green */\n</code></pre>\n<p><strong>Pro tip:</strong> Use rgb() when you need transparency with rgba()!</p>\n<pre><code class=\"language-css\">background-color: rgba(255, 0, 0, 0.5);  /* 50% transparent red */\n</code></pre>"},{"html":"<h2>Text Styling Properties</h2>"},{"html":"<h3>Font Properties</h3>\n<pre><code class=\"language-css\">p {\n    font-family: Arial, sans-serif;\n    font-size: 16px;\n    font-weight: bold;\n    font-style: italic;\n}\n</code></pre>\n<p><strong>Common font families:</strong></p>\n<ul>\n<li>Arial, Helvetica (clean, modern)</li>\n<li>Times New Roman (formal, traditional)</li>\n<li>Courier New (looks like typewriter)</li>\n<li>Georgia (elegant for reading)</li>\n</ul>"},{"html":"<h3>Text Decoration</h3>\n<pre><code class=\"language-css\">a {\n    text-decoration: none;  /* Remove underline */\n}\n\n.strikethrough {\n    text-decoration: line-through;\n}\n</code></pre>"},{"html":"<h3>Text Alignment</h3>\n<pre><code class=\"language-css\">h1 {\n    text-align: center;\n}\n\np {\n    text-align: justify;\n}\n</code></pre>\n<p>Options: <code>left</code>, <code>right</code>, <code>center</code>, <code>justify</code></p>"},{"html":"<h2>The Box Model</h2>\n<p>Every HTML element is a rectangular box with four parts:</p>\n<p><img src=\"https://roycan.github.io/lecture_creator/assets/css-box-model-nested-structure.png\" alt=\"CSS Box Model Nested Structure\"></p>\n<pre><code>┌─────────────────────────────────┐\n│         Margin (space)          │\n│  ┌───────────────────────────┐  │\n│  │     Border (outline)      │  │\n│  │  ┌─────────────────────┐  │  │\n│  │  │  Padding (cushion)  │  │  │\n│  │  │  ┌───────────────┐  │  │  │\n│  │  │  │   Content     │  │  │  │\n│  │  │  │  (text/image) │  │  │  │\n│  │  │  └───────────────┘  │  │  │\n│  │  └─────────────────────┘  │  │\n│  └───────────────────────────┘  │\n└─────────────────────────────────┘\n</code></pre>\n<p><strong>Example:</strong></p>\n<pre><code class=\"language-css\">div {\n    width: 200px;\n    padding: 20px;      /* Space inside */\n    border: 2px solid black;\n    margin: 10px;       /* Space outside */\n}\n</code></pre>"},{"html":"<h2>Borders and Backgrounds</h2>"},{"html":"<h3>Borders</h3>\n<pre><code class=\"language-css\">.box {\n    border: 3px solid red;\n    border-radius: 10px;  /* Rounded corners */\n}\n</code></pre>\n<p>Border parts:</p>\n<ul>\n<li><strong>Width:</strong> How thick (1px, 5px, etc.)</li>\n<li><strong>Style:</strong> solid, dashed, dotted, double</li>\n<li><strong>Color:</strong> red, #333, rgb(0,0,0)</li>\n</ul>"},{"html":"<h3>Backgrounds</h3>\n<pre><code class=\"language-css\">body {\n    background-color: lightblue;\n}\n\n.hero {\n    background-image: url('sunset.jpg');\n    background-size: cover;\n}\n</code></pre>\n<p><strong>Cool background tricks:</strong></p>\n<pre><code class=\"language-css\">.gradient {\n    background: linear-gradient(to right, red, yellow);\n}\n</code></pre>"},{"html":"<h2>Width, Height, and Spacing</h2>"},{"html":"<h3>Sizing Elements</h3>\n<pre><code class=\"language-css\">.container {\n    width: 800px;      /* Fixed width */\n    height: 400px;     /* Fixed height */\n}\n\n.responsive {\n    width: 80%;        /* Relative to parent */\n    max-width: 1200px; /* Won't exceed this */\n}\n</code></pre>"},{"html":"<h3>Margin and Padding</h3>\n<pre><code class=\"language-css\">/* All sides */\nmargin: 20px;\n\n/* Top/Bottom, Left/Right */\nmargin: 10px 20px;\n\n/* Top, Right, Bottom, Left (clockwise) */\nmargin: 10px 20px 30px 40px;\n\n/* Individual sides */\nmargin-top: 10px;\nmargin-right: 20px;\nmargin-bottom: 30px;\nmargin-left: 40px;\n</code></pre>\n<p><strong>Same pattern works for padding!</strong></p>"},{"html":"<h2>Practice Challenge! 🎯</h2>\n<p><strong>Create a card design:</strong></p>\n<ol>\n<li>Use a div with class \"card\"</li>\n<li>Add padding: 20px</li>\n<li>Add border: 2px solid gray</li>\n<li>Add border-radius: 8px</li>\n<li>Add background-color: lightgray</li>\n<li>Make heading inside blue</li>\n<li>Make paragraph text 14px</li>\n</ol>\n<p><strong>Solution:</strong></p>\n<pre><code class=\"language-css\">.card {\n    padding: 20px;\n    border: 2px solid gray;\n    border-radius: 8px;\n    background-color: lightgray;\n}\n\n.card h2 {\n    color: blue;\n}\n\n.card p {\n    font-size: 14px;\n}\n</code></pre>"},{"html":"<h2>Common Mistakes to Avoid ⚠️</h2>"},{"html":"<h3>Mistake 1: Forgetting Semicolons</h3>\n<pre><code class=\"language-css\">/* ❌ Wrong */\np {\n    color: red\n    font-size: 16px\n}\n\n/* ✅ Correct */\np {\n    color: red;\n    font-size: 16px;\n}\n</code></pre>"},{"html":"<h3>Mistake 2: Mixing up Classes and IDs</h3>\n<pre><code class=\"language-css\">/* ❌ Wrong - using # for class */\n#myClass {\n    color: red;\n}\n\n/* ✅ Correct - using . for class */\n.myClass {\n    color: red;\n}\n</code></pre>"},{"html":"<h3>Mistake 3: Not Using Quotes for Fonts with Spaces</h3>\n<pre><code class=\"language-css\">/* ❌ Wrong */\nfont-family: Times New Roman;\n\n/* ✅ Correct */\nfont-family: \"Times New Roman\", serif;\n</code></pre>"},{"html":"<h2>Real-World Example: Simple Navigation Bar</h2>\n<p><img src=\"https://roycan.github.io/lecture_creator/assets/simple-navigation-bar-structure.png\" alt=\"Simple Navigation Bar Structure\"></p>\n<p><strong>HTML:</strong></p>\n<pre><code class=\"language-html\">&lt;nav&gt;\n    &lt;a href=\"#home\"&gt;Home&lt;/a&gt;\n    &lt;a href=\"#about\"&gt;About&lt;/a&gt;\n    &lt;a href=\"#contact\"&gt;Contact&lt;/a&gt;\n&lt;/nav&gt;\n</code></pre>\n<p><strong>CSS:</strong></p>\n<pre><code class=\"language-css\">nav {\n    background-color: #333;\n    padding: 15px;\n    text-align: center;\n}\n\nnav a {\n    color: white;\n    text-decoration: none;\n    margin: 0 20px;\n    font-size: 18px;\n}\n\nnav a:hover {\n    color: orange;\n}\n</code></pre>\n<p><strong>Result:</strong> A professional dark navigation bar with links that turn orange when you hover! 🎨</p>"},{"html":"<h2>CSS Best Practices</h2>"},{"html":"<h3>1. Keep it Organized</h3>\n<pre><code class=\"language-css\">/* Group related styles together */\n\n/* Typography */\nh1, h2, h3 { font-family: Arial; }\np { line-height: 1.6; }\n\n/* Layout */\n.container { width: 1200px; }\n.sidebar { width: 300px; }\n</code></pre>"},{"html":"<h3>2. Use Comments</h3>\n<pre><code class=\"language-css\">/* Main header styles */\nheader {\n    background: blue;\n}\n\n/* Footer with copyright info */\nfooter {\n    color: gray;\n    font-size: 12px;\n}\n</code></pre>"},{"html":"<h3>3. Use Meaningful Class Names</h3>\n<pre><code class=\"language-css\">/* ❌ Avoid */\n.xyz123 { ... }\n.box1 { ... }\n\n/* ✅ Better */\n.product-card { ... }\n.main-navigation { ... }\n</code></pre>"},{"html":"<h2>Summary: Key Takeaways</h2>\n<p><strong>Remember these CSS essentials:</strong></p>\n<ol>\n<li>✅ CSS adds style to HTML structure</li>\n<li>✅ Three ways: Inline, Internal, External (use External!)</li>\n<li>✅ Selectors: element, .class, #id</li>\n<li>✅ Box model: Content → Padding → Border → Margin</li>\n<li>✅ Colors: named, hex (#FF0000), rgb(255,0,0)</li>\n<li>✅ Always end declarations with semicolons ;</li>\n<li>✅ Classes can be reused, IDs are unique</li>\n<li>✅ Practice, practice, practice!</li>\n</ol>"},{"html":"<h2>Homework Assignment 📝</h2>\n<p><strong>Create your personal profile card:</strong></p>\n<ol>\n<li>Create an HTML file with your name, favorite hobby, and a fun fact</li>\n<li>Style it with CSS:<ul>\n<li>Center all text</li>\n<li>Use a nice color scheme (background + text colors)</li>\n<li>Add padding and border to make it card-like</li>\n<li>Use at least 3 different fonts properties</li>\n<li>Make it look professional!</li>\n</ul>\n</li>\n</ol>\n<p><strong>Bonus:</strong> Add a hover effect that changes the background color!</p>"},{"html":"<h2>Resources for Learning More</h2>\n<p><strong>Great websites to practice CSS:</strong></p>\n<ul>\n<li>W3Schools CSS Tutorial</li>\n<li>MDN Web Docs (Mozilla)</li>\n<li>CSS-Tricks.com</li>\n<li>CodePen.io (see examples)</li>\n</ul>\n<p><strong>CSS Games to Practice:</strong></p>\n<ul>\n<li>Flexbox Froggy (learn layout)</li>\n<li>CSS Diner (learn selectors)</li>\n<li>Grid Garden (learn CSS Grid)</li>\n</ul>"},{"html":"<h2>Questions to Think About 🤔</h2>\n<ol>\n<li>What's the difference between padding and margin?</li>\n<li>When would you use a class vs. an ID?</li>\n<li>Why is external CSS better than inline CSS?</li>\n<li>How would you make a button that changes color when you hover over it?</li>\n<li>What does \"cascading\" mean in CSS?</li>\n</ol>\n<p><strong>Discuss these with your classmates!</strong></p>"},{"html":"<h2>Thank You! 🎉</h2>\n<p>Great job learning CSS today! Remember:</p>\n<ul>\n<li>Start simple and build up your skills</li>\n<li>Experiment with different properties</li>\n<li>View source code on websites you like</li>\n<li>Practice every day</li>\n</ul>\n<p><strong>Next class:</strong> We'll learn about <strong>CSS Flexbox</strong> for amazing layouts!</p>\n<p>Keep coding! 💻✨</p>"}]</script>
+    <script>
+(function() {
+    'use strict';
+    
+    // Console logging helper
+    function log(msg, level) {
+        var prefix = '[Lecture Player] ';
+        if (level === 'error') console.error(prefix + msg);
+        else if (level === 'warn') console.warn(prefix + msg);
+        else console.log(prefix + msg);
+    }
+    
+    // State
+    var slides = [];
+    var currentSlide = 0;
+    var isPlaying = false;
+    var autoAdvance = true;
+    var manualMode = false;
+    var isPaused = false;
+    var availableVoices = [];
+    var selectedVoice = null;
+    
+    // DOM Elements
+    var container = document.getElementById('slide-container');
+    var startOverlay = document.getElementById('start-overlay');
+    var startButton = document.getElementById('start-button');
+    var statusMessage = document.getElementById('status-message');
+    var voiceSelect = document.getElementById('voice-select');
+    var rateInput = document.getElementById('rate');
+    var pitchInput = document.getElementById('pitch');
+    var rateValue = document.getElementById('rate-value');
+    var pitchValue = document.getElementById('pitch-value');
+    var navControls = document.getElementById('nav-controls');
+    var progressIndicator = document.getElementById('progress-indicator');
+    var prevButton = document.getElementById('prev-button');
+    var nextButton = document.getElementById('next-button');
+    var pauseButton = document.getElementById('pause-button');
+    var spinner = document.querySelector('.spinner');
+    var voiceControlsContainer = document.getElementById('voice-controls-container');
+    
+    // Update rate/pitch displays
+    rateInput.addEventListener('input', function() {
+        rateValue.textContent = parseFloat(rateInput.value).toFixed(2) + 'x';
+    });
+    pitchInput.addEventListener('input', function() {
+        pitchValue.textContent = parseFloat(pitchInput.value).toFixed(1);
+    });
+    
+    // Setup mode selection
+    function setupModeSelection() {
+        var modeRadios = document.querySelectorAll('input[name="playback-mode"]');
+        
+        for (var i = 0; i < modeRadios.length; i++) {
+            modeRadios[i].addEventListener('change', function(e) {
+                manualMode = (e.target.value === 'manual');
+                
+                if (manualMode) {
+                    // Hide voice controls
+                    voiceControlsContainer.classList.add('hidden');
+                    
+                    // Update status and button
+                    updateStatus('Manual mode selected - ready to start', 'success');
+                    startButton.textContent = 'Start (Manual Navigation)';
+                    startButton.disabled = false;
+                    
+                    // Hide spinner
+                    spinner.style.display = 'none';
+                    
+                    log('Manual mode selected by user');
+                } else {
+                    // Show voice controls
+                    voiceControlsContainer.classList.remove('hidden');
+                    
+                    // Check voice status
+                    if (availableVoices.length > 0) {
+                        updateStatus('Auto-play mode - ' + availableVoices.length + ' voices available', 'success');
+                        startButton.textContent = 'Start Presentation';
+                        startButton.disabled = false;
+                        spinner.style.display = 'none';
+                    } else {
+                        updateStatus('Loading voices...', '');
+                        startButton.textContent = 'Initializing...';
+                        startButton.disabled = true;
+                        spinner.style.display = 'block';
+                        // Re-trigger voice loading
+                        initializeVoiceLoading();
+                    }
+                    
+                    log('Auto-play mode selected by user');
+                }
+            });
+        }
+    }
+    
+    // Load slides
+    try {
+        var slidesData = document.getElementById('slides-data');
+        if (!slidesData) {
+            throw new Error('Slides data not found');
+        }
+        slides = JSON.parse(slidesData.textContent || '[]');
+        if (!slides || slides.length === 0) {
+            throw new Error('No slides found');
+        }
+        log('Loaded ' + slides.length + ' slides');
+    } catch (e) {
+        log('Failed to load slides: ' + e.message, 'error');
+        updateStatus('Failed to load presentation', 'error');
+        startButton.textContent = 'Error: No Slides';
+        return;
+    }
+    
+    // Update status message
+    function updateStatus(msg, type) {
+        statusMessage.textContent = msg;
+        statusMessage.className = type || '';
+    }
+    
+    // Split text into sentences
+    function splitIntoSentences(text) {
+        var sentences = [];
+        var buffer = '';
+        for (var i = 0; i < text.length; i++) {
+            var ch = text[i];
+            buffer += ch;
+            if (ch === '.' || ch === '!' || ch === '?' || ch === '\n') {
+                var trimmed = buffer.trim();
+                if (trimmed) sentences.push(trimmed);
+                buffer = '';
+            }
+        }
+        var remaining = buffer.trim();
+        if (remaining) sentences.push(remaining);
+        return sentences.length > 0 ? sentences : [text];
+    }
+    
+    // Select best voice
+    function selectBestVoice(voices) {
+        if (!voices || voices.length === 0) return null;
+        
+        // Try US English first
+        for (var i = 0; i < voices.length; i++) {
+            if (/en-us/i.test(voices[i].lang)) {
+                log('Selected US English voice: ' + voices[i].name);
+                return voices[i];
+            }
+        }
+        
+        // Try any English
+        for (var j = 0; j < voices.length; j++) {
+            if (/^en/i.test(voices[j].lang)) {
+                log('Selected English voice: ' + voices[j].name);
+                return voices[j];
+            }
+        }
+        
+        // Use first available
+        log('Using first available voice: ' + voices[0].name);
+        return voices[0];
+    }
+    
+    // Populate voice select
+    function populateVoices() {
+        try {
+            availableVoices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+            voiceSelect.innerHTML = '';
+            
+            if (!availableVoices || availableVoices.length === 0) {
+                var opt = document.createElement('option');
+                opt.textContent = 'System default voice';
+                voiceSelect.appendChild(opt);
+                log('No voices available, using system default', 'warn');
+                return false;
+            }
+            
+            // Populate dropdown
+            for (var i = 0; i < availableVoices.length; i++) {
+                var voice = availableVoices[i];
+                var option = document.createElement('option');
+                option.value = i;
+                option.textContent = voice.name + ' (' + voice.lang + ')';
+                voiceSelect.appendChild(option);
+            }
+            
+            // Select best voice
+            selectedVoice = selectBestVoice(availableVoices);
+            if (selectedVoice) {
+                for (var k = 0; k < availableVoices.length; k++) {
+                    if (availableVoices[k] === selectedVoice) {
+                        voiceSelect.selectedIndex = k;
+                        break;
+                    }
+                }
+            }
+            
+            log('Populated ' + availableVoices.length + ' voices');
+            return true;
+        } catch (e) {
+            log('Error populating voices: ' + e.message, 'error');
+            return false;
+        }
+    }
+    
+    // Wait for voices with timeout
+    function waitForVoices(callback) {
+        var startTime = Date.now();
+        var maxWait = 3000; // 3 seconds
+        
+        function check() {
+            var hasVoices = populateVoices();
+            if (hasVoices) {
+                log('Voices loaded successfully');
+                callback(true);
+                return;
+            }
+            
+            if (Date.now() - startTime > maxWait) {
+                log('Voice loading timeout, continuing with defaults', 'warn');
+                callback(false);
+                return;
+            }
+            
+            setTimeout(check, 200);
+        }
+        
+        check();
+    }
+    
+    // Speak text with error handling
+    function speakText(text, onComplete) {
+        if (!text || !text.trim()) {
+            log('Empty text, skipping speech');
+            setTimeout(onComplete, 500);
+            return;
+        }
+        
+        if (!window.speechSynthesis) {
+            log('Speech synthesis not available', 'warn');
+            setTimeout(onComplete, 1000);
+            return;
+        }
+        
+        try {
+            var sentences = splitIntoSentences(text);
+            var index = 0;
+            
+            function speakNext() {
+                if (index >= sentences.length) {
+                    onComplete();
+                    return;
+                }
+                
+                var sentence = sentences[index++];
+                if (!sentence.trim()) {
+                    setTimeout(speakNext, 200);
+                    return;
+                }
+                
+                var utterance = new SpeechSynthesisUtterance(sentence);
+                
+                // Apply voice if available
+                var voiceIndex = parseInt(voiceSelect.value, 10);
+                if (!isNaN(voiceIndex) && availableVoices[voiceIndex]) {
+                    utterance.voice = availableVoices[voiceIndex];
+                } else if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+                
+                utterance.rate = parseFloat(rateInput.value) || 0.95;
+                utterance.pitch = parseFloat(pitchInput.value) || 1.0;
+                
+                utterance.onend = function() {
+                    setTimeout(speakNext, 220);
+                };
+                
+                utterance.onerror = function(e) {
+                    log('Speech error: ' + e.error, 'warn');
+                    setTimeout(speakNext, 250);
+                };
+                
+                window.speechSynthesis.speak(utterance);
+            }
+            
+            speakNext();
+        } catch (e) {
+            log('Error in speakText: ' + e.message, 'error');
+            setTimeout(onComplete, 500);
+        }
+    }
+    
+    // Display slide
+    function displaySlide(index) {
+        if (index < 0 || index >= slides.length) {
+            log('Invalid slide index: ' + index, 'error');
+            return;
+        }
+        
+        currentSlide = index;
+        var slide = slides[index];
+        
+        try {
+            container.innerHTML = slide.html;
+            progressIndicator.textContent = 'Slide ' + (index + 1) + ' of ' + slides.length;
+            
+            // Update navigation buttons
+            prevButton.disabled = (index === 0);
+            nextButton.disabled = (index === slides.length - 1);
+            
+            log('Displaying slide ' + (index + 1));
+        } catch (e) {
+            log('Error displaying slide: ' + e.message, 'error');
+            container.innerHTML = '<h1>Error displaying slide</h1>';
+        }
+    }
+    
+    // Play slide with speech
+    function playSlide(index) {
+        if (index >= slides.length) {
+            container.innerHTML = '<h1>End of Presentation</h1><p>Press Previous to review slides</p>';
+            isPlaying = false;
+            log('Presentation complete');
+            return;
+        }
+        
+        displaySlide(index);
+        
+        // In manual mode, just display slide and wait for user navigation
+        if (manualMode) {
+            log('Manual mode - waiting for user navigation (slide ' + (index + 1) + ')');
+            return;
+        }
+        
+        // Check if paused - wait for resume
+        if (isPaused) {
+            log('Paused - waiting for resume (slide ' + (index + 1) + ')');
+            return;
+        }
+        
+        // Extract text for speech (auto mode only)
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = slides[index].html;
+        var text = tempDiv.textContent || tempDiv.innerText || '';
+        
+        if (autoAdvance) {
+            speakText(text, function() {
+                if (isPlaying && !isPaused) {
+                    playSlide(index + 1);
+                }
+            });
+        }
+    }
+    
+    // Navigation handlers
+    function nextSlide() {
+        if (currentSlide < slides.length - 1) {
+            if (!manualMode) {
+                // In auto mode, disable auto-advance when manually overriding
+                autoAdvance = false;
+                window.speechSynthesis.cancel();
+            }
+            playSlide(currentSlide + 1);
+        }
+    }
+    
+    function prevSlide() {
+        if (currentSlide > 0) {
+            if (!manualMode) {
+                // In auto mode, disable auto-advance when manually overriding
+                autoAdvance = false;
+                window.speechSynthesis.cancel();
+            }
+            playSlide(currentSlide - 1);
+        }
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (!isPlaying) return;
+        
+        if (e.key === ' ') {
+            e.preventDefault();
+            if (manualMode) {
+                // In manual mode, spacebar advances slide
+                nextSlide();
+            } else {
+                // In auto mode, spacebar toggles pause/resume
+                togglePause();
+            }
+        } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevSlide();
+        }
+    });
+    
+    // Start presentation
+    function startPresentation() {
+        log('Starting presentation in ' + (manualMode ? 'manual' : 'auto') + ' mode');
+        startOverlay.style.display = 'none';
+        navControls.classList.add('visible');
+        isPlaying = true;
+        isPaused = false;
+        
+        if (!manualMode) {
+            // Auto mode: enable auto-advance and try voice one more time
+            autoAdvance = true;
+            populateVoices();
+            // Show pause button in auto mode
+            pauseButton.classList.remove('hidden');
+        } else {
+            // Manual mode: no auto-advance, no voice needed
+            autoAdvance = false;
+            // Hide pause button in manual mode
+            pauseButton.classList.add('hidden');
+        }
+        
+        playSlide(0);
+    }
+    
+    // Toggle pause/resume
+    function togglePause() {
+        if (manualMode) return; // No pause in manual mode
+        
+        isPaused = !isPaused;
+        
+        if (isPaused) {
+            // Paused state
+            window.speechSynthesis.cancel();
+            pauseButton.textContent = '▶ Resume';
+            pauseButton.classList.add('paused');
+            log('Presentation paused');
+        } else {
+            // Resumed state
+            pauseButton.textContent = '⏸ Pause';
+            pauseButton.classList.remove('paused');
+            log('Presentation resumed');
+            // Resume playing current slide
+            if (autoAdvance && currentSlide < slides.length) {
+                playSlide(currentSlide);
+            }
+        }
+    }
+    
+    // Button handlers
+    startButton.addEventListener('click', startPresentation);
+    nextButton.addEventListener('click', nextSlide);
+    prevButton.addEventListener('click', prevSlide);
+    pauseButton.addEventListener('click', togglePause);
+    
+    // Voice loading wrapper
+    function initializeVoiceLoading() {
+        if (manualMode) {
+            log('Manual mode - skipping voice initialization');
+            return;
+        }
+        
+        if (!window.speechSynthesis) {
+            log('Speech synthesis not supported', 'error');
+            updateStatus('Text-to-speech not supported in this browser', 'warning');
+            startButton.disabled = false;
+            startButton.textContent = 'Start (Manual Mode)';
+            spinner.style.display = 'none';
+            return;
+        }
+        
+        // Setup voice change listener
+        if (window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = populateVoices;
+        }
+        
+        // Wait for voices
+        waitForVoices(function(success) {
+            if (manualMode) return; // User switched to manual while loading
+            
+            spinner.style.display = 'none';
+            if (success) {
+                updateStatus('Ready! ' + availableVoices.length + ' voices available', 'success');
+                startButton.textContent = 'Start Presentation';
+            } else {
+                updateStatus('Continuing with system default voice', 'warning');
+                startButton.textContent = 'Start Anyway';
+            }
+            startButton.disabled = false;
+        });
+    }
+    
+    // Initialize
+    log('Initializing lecture player');
+    setupModeSelection();
+    updateStatus('Choose playback mode above', '');
+    
+    // Start voice loading for auto mode (default)
+    initializeVoiceLoading();
+    
+    log('Initialization complete');
+})();
+    </script>
+</body>
+</html>
