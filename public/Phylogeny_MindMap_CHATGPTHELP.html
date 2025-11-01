@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Phylogeny_Mindmap_AllFormats_Full</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<style>
+  /* Print & page */
+  @page { size: A4 landscape; margin: 12mm; }
+  body { font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color:#222; margin:12px; }
+  .container { max-width: 1400px; margin: 0 auto; }
+  h1 { background:#dae8fc; color:#08385a; padding:14px 18px; border-radius:6px; font-size:28px; margin-bottom:6px; }
+  h2 { margin:12px 0 6px 0; color:#08385a; }
+  h3 { margin:8px 0; color:#2f6b2f; }
+  p { margin:8px 0; line-height:1.45; }
+  /* nodes */
+  .node { margin:12px 0; padding:12px 14px; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+  .marker { font-weight:800; padding:6px 10px; border-radius:5px; display:inline-block; margin-bottom:10px; }
+  .short { font-style:italic; margin-bottom:8px; display:block; color:#333; }
+  .details { margin-top:8px; white-space:pre-wrap; }
+  /* semantic colors */
+  .blue { background:#dae8fc; border-left:6px solid #6c8ebf; color:#08385a; }      /* key concepts */
+  .green { background:#dff0d9; border-left:6px solid #3b923b; color:#12591f; }     /* examples/species */
+  .red { background:#fbe0df; border-left:6px solid #d04b4b; color:#7a2d2d; }       /* processes/methods */
+  .purple { background:#efe5f6; border-left:6px solid #8a4da6; color:#442a63; }   /* figures/diagrams */
+  .orange { background:#fff3e0; border-left:6px solid #d79b00; color:#6b3f00; }   /* definitions */
+  .yellow { background:#fff8d6; border-left:6px solid #d6b656; color:#5e4700; }   /* relationships */
+  /* layout */
+  .branch { display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap; }
+  .col { flex:1 1 45%; min-width:360px; }
+  details summary { cursor:pointer; font-weight:700; }
+  .figure { font-size:0.95em; color:#333; margin-top:6px; padding-left:8px; border-left:3px solid rgba(0,0,0,0.06); }
+  mark.term { background:#fff176; padding:0 3px; border-radius:3px; }
+  footer { margin-top:20px; font-size:0.9em; color:#444; }
+  .qa { margin-left:14px; }
+  .monospace { font-family:monospace; background:#f7f7f7; padding:6px; border-radius:6px; display:inline-block; }
+  @media print { details { display:block !important; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>🔵 PHYLOGENY AND THE TREE OF LIFE — Complete Expand/Collapse Mindmap (Full Text)</h1>
+  <p><em>Complete, textbook-based summary of Sections 15.14–15.19 including figures, examples, chapter review, and highlighted key terms for efficient study.</em></p>
+
+  <!-- CENTRAL OVERVIEW -->
+  <section class="node blue">
+    <div class="marker">🔵 Central Overview</div>
+    <div class="short">Phylogeny = evolutionary history; <mark class="term">systematics</mark> integrates classification and evolutionary relationships using homologies, cladistics, and molecular evidence.</div>
+    <details open>
+      <summary>Full explanation (expand/collapse)</summary>
+      <div class="details">
+The evolutionary history of a species or group of species is called <strong>phylogeny</strong>. The fossil record provides a chronicle of evolutionary change that helps trace phylogeny but is incomplete.
+
+Biologists combine fossil evidence with morphological, developmental, and molecular data to build hypotheses of evolutionary relationships. Distinguishing <strong>homology</strong> (similarity due to common ancestry) from analogy (convergent evolution) is essential.
+
+These hypotheses are depicted as <mark class="term">phylogenetic tree</mark>s—branching diagrams representing descent hypotheses, which are revised as new data are collected.
+      </div>
+    </details>
+  </section>
+
+  <!-- 15.14 -->
+  <section class="node orange">
+    <div class="marker">🟠 15.14 — Phylogenies based on homologies reflect evolutionary history</div>
+    <div class="short"><strong>Short:</strong> Homologous structures and molecular sequences provide evidence of common ancestry; analogous traits arise through convergent evolution.</div>
+    <details>
+      <summary>Full explanation (expand/collapse)</summary>
+      <div class="details">
+Homologies are similarities due to shared ancestry. Homologous structures may look or function differently but retain fundamental structural similarity because they evolved from the same ancestral structure.
+
+Analogy results from convergent evolution, where unrelated lineages independently evolve similar features because of similar selective pressures. Distinguishing homology from analogy is critical in <mark class="term">systematics</mark>.
+
+Example: The Australian "mole" (a marsupial) and the North American mole (a eutherian) show similar digging adaptations (enlarged forepaws, reduced eyes), yet their reproductive strategies differ (marsupial pouch vs. placental gestation). Genetic and fossil evidence indicate their last common ancestor lived ~140 million years ago and was not mole-like — hence these similarities are analogous (Figure 15.14).
+      </div>
+    </details>
+    <div class="figure">Figure 15.14: Australian "mole" (marsupial) vs North American mole (eutherian) — analogous burrowing adaptations; last common ancestor ~140 MYA.</div>
+  </section>
+
+  <!-- 15.15 -->
+  <section class="node blue">
+    <div class="marker">🔵 15.15 — <mark class="term">Systematics</mark> connects classification with evolutionary history</div>
+    <div class="short"><strong>Short:</strong> <mark class="term">Systematics</mark> (taxonomy + phylogeny) aims to classify organisms to reflect evolutionary relationships; Linnaean names persist.</div>
+    <details>
+      <summary>Full explanation (expand/collapse)</summary>
+      <div class="details">
+<mark class="term">Systematics</mark> is the discipline that classifies organisms and determines evolutionary relationships. Taxonomy (naming) is part of systematics. Each species has a two-part (binomial) Latinized name (genus + specific epithet), e.g., <em>Felis catus</em>.
+
+Linnaean ranks: species → genus → family → order → class → phylum → kingdom → domain. Each named group is a <mark class="term">taxon</mark> (plural: taxa). Modern approaches aim to make classification reflect phylogeny, favoring monophyletic groups (include common ancestor and all descendants). The PhyloCode is an approach that names strictly monophyletic groups without ranks.
+
+Figure 15.15A: Hierarchical classification example for the domestic cat: species <em>Felis catus</em> nested within genus <em>Felis</em>, family Felidae, order Carnivora, class Mammalia, phylum Chordata, kingdom Animalia, domain Eukarya.
+
+Figure 15.15B: Phylogenetic tree of selected Carnivora showing relationships among Felidae, Canidae, Mustelidae, etc. Note: trees show patterns of descent, not dates unless explicitly calibrated.
+      </div>
+    </details>
+    <div class="figure">Figure 15.15A/B: Cat classification and a phylogenetic tree of Carnivora (illustrates nested classification and relationships).</div>
+  </section>
+
+  <!-- 15.16 -->
+  <section class="node red">
+    <div class="marker">🔴 15.16 — Shared characters are used to construct phylogenetic trees</div>
+    <div class="short"><strong>Short:</strong> <mark class="term">Cladistics</mark> groups organisms into clades using <mark class="term">shared derived character</mark>s; <mark class="term">outgroup</mark> comparison polarizes characters; parsimony selects simplest trees.</div>
+    <details>
+      <summary>Full explanation (expand/collapse)</summary>
+      <div class="details">
+<mark class="term">Cladistics</mark> groups organisms by common ancestry into clades (a clade is monophyletic). Cladistics distinguishes <mark class="term">shared ancestral character</mark>s (characters inherited from an earlier ancestor) from <mark class="term">shared derived character</mark>s (novel traits that define a clade).
+
+To infer phylogeny, systematists score taxa for characters (presence=1, absence=0) and use an <mark class="term">outgroup</mark> (a lineage known to have diverged earlier) to determine polarity (ancestral vs derived). Parsimony favors trees requiring the fewest character changes.
+
+Example (Figure 15.16A): taxa = frog (outgroup), iguana, duck-billed platypus, kangaroo, beaver. Characters include amnion, hair+mammary glands, gestation, long gestation. The platypus (egg-laying mammal) branches early among mammals; kangaroo shows short gestation (pouch), beaver long gestation typical of placentals.
+
+Trees are hypotheses: molecular and morphological data sometimes redraw relationships. Example (Figure 15.16B): birds nest within reptiles (dinosaur clade), making "Reptilia" excluding birds non-<mark class="term">monophyletic</mark>. Fossil evidence like Oviraptor fossils (Fig. 15.16C) supports predictions (e.g., brooding behavior).
+      </div>
+    </details>
+    <div class="figure">Figure 15.16A: Character matrix → cladogram (frog outgroup; platypus branches early). Figure 15.16B: Reptile–bird phylogeny (birds nested within dinosaurs). Figure 15.16C: Oviraptor fossil with eggs suggests brooding.</div>
+  </section>
+
+  <!-- 15.17 -->
+  <section class="node green">
+    <div class="marker">🟢 15.17 — An organism's evolutionary history is documented in its genome</div>
+    <div class="short"><strong>Short:</strong> Molecular systematics uses DNA/RNA/proteins to infer relationships; different genes are useful at different time scales (e.g., rRNA slow, mtDNA fast).</div>
+    <details>
+      <summary>Full explanation (expand/collapse)</summary>
+      <div class="details">
+Molecular sequences accumulate changes over time; closely related species have more similar sequences. <mark class="term">Molecular systematics</mark> leverages DNA, RNA, and protein data to reconstruct phylogenies spanning deep and recent divergences.
+
+Example: the red panda — previously linked to giant pandas or raccoons by morphology — molecular data suggest it forms its own lineage closer to raccoons/weasels. Figure 15.17 shows a molecular phylogeny of bears, raccoons, weasels, and the red panda with an approximate timeline.
+
+Genome comparisons reveal wide homology: ~99% of human genes have homologs in mice; ~50% with yeast. Gene duplication fuels innovation. Gene number alone doesn’t explain complexity — regulatory elements, alternative splicing, and gene versatility matter.
+      </div>
+    </details>
+    <div class="figure">Figure 15.17: Molecular phylogeny of bears, raccoons, red panda, and relatives; timeline based on fossil calibration and molecular data.</div>
+  </section>
+
+  <!-- 15.18 -->
+  <section class="node purple">
+    <div class="marker">🟣 15.18 — Molecular clocks help track evolutionary time</div>
+    <div class="short"><strong>Short:</strong> Molecular clocks estimate divergence times from sequence differences calibrated against fossils; clocks can be noisy and are improved with many genes.</div>
+    <details>
+      <summary>Full explanation (expand/collapse)</summary>
+      <div class="details">
+Some gene regions change at approximately steady rates; by comparing sequence divergence to fossil-calibrated dates, researchers can estimate divergence times (molecular clocks).
+
+Example: HIV molecular clock — sequence data including a 1959 sample reveal clocklike evolution; extrapolation dates origin of widespread HIV-1 M to ~1930s (Fig. 15.18). Clock reliability varies among genes, taxa, and times. Multigene approaches reduce error.
+
+Large analyses using many genes have produced divergence estimates consistent with fossil records but remain uncertain for very ancient events (e.g., >1 billion years) because of rate variation and calibration limits.
+      </div>
+    </details>
+    <div class="figure">Figure 15.18: Plot of HIV sequence differences vs sampling year; line used to estimate earliest human infection (~1930s).</div>
+  </section>
+
+  <!-- 15.19 -->
+  <section class="node yellow">
+    <div class="marker">🟡 15.19 — Constructing the tree of life is a work in progress</div>
+    <div class="short"><strong>Short:</strong> Modern classification recognizes three domains (Bacteria, Archaea, Eukarya); extensive early horizontal gene exchange suggests network or ring models alongside tree models.</div>
+    <details>
+      <summary>Full explanation (expand/collapse)</summary>
+      <div class="details">
+Phylogenetic trees are hypotheses and are revised. Classification evolved from two kingdoms to five kingdoms and now three domains: Bacteria, Archaea, Eukarya. rRNA phylogenies suggest bacteria diverged first, with archaea closer to eukaryotes.
+
+Comparisons of whole genomes reveal early <mark class="term">horizontal gene transfer</mark> (HGT) between lineages (via plasmids, viruses, endosymbiosis). Key transfers include genes from mitochondrial and chloroplast ancestors to eukaryotic ancestors (endosymbiotic events). Because of HGT, some propose network/ring models for early life (Figure 15.19B), where eukaryotes may have arisen from fusion of an archaeal and a bacterial lineage.
+      </div>
+    </details>
+    <div class="figure">Figure 15.19A/B: rRNA-based three-domain tree and alternative ring model showing gene fusion/HGT events.</div>
+  </section>
+
+  <!-- Figures aggregated summary -->
+  <section class="node purple">
+    <div class="marker">🟣 Figures & Captions (Integrated)</div>
+    <details>
+      <summary>Expand figure summaries</summary>
+      <div class="details">
+• <strong>Fig. 15.14</strong> — Australian "mole" vs North American mole: analogy via convergent evolution; last common ancestor ~140 MYA.  
+• <strong>Fig. 15.15A</strong> — Hierarchical classification of <em>Felis catus</em> (species → genus → family → order → class → phylum → kingdom → domain).  
+• <strong>Fig. 15.15B</strong> — Phylogenetic tree of Carnivora linking classification to evolutionary relationships.  
+• <strong>Fig. 15.16A</strong> — Cladistic character table (frog outgroup; iguana, platypus, kangaroo, beaver) leading to cladogram.  
+• <strong>Fig. 15.16B</strong> — Reptile–bird phylogeny showing birds nested within dinosaurs (Reptilia non-monophyletic without birds).  
+• <strong>Fig. 15.16C</strong> — Oviraptor fossil & eggs suggesting brooding behavior.  
+• <strong>Fig. 15.17</strong> — Molecular tree of bears, raccoons, weasels, red panda with timeline.  
+• <strong>Fig. 15.18</strong> — HIV molecular clock graph (sequence divergence vs sampling year).  
+• <strong>Fig. 15.19A/B</strong> — Tree of life (three domains) and ring/network models showing HGT and fusion events.
+      </div>
+    </details>
+  </section>
+
+  <!-- CHAPTER REVIEW -->
+  <section class="node blue">
+    <div class="marker">📘 Chapter Review — Concepts & Questions (Full)</div>
+    <details open>
+      <summary>Expand review & practice items</summary>
+      <div class="details">
+<strong>Reviewing the Concepts (summary bullets):</strong>
+• Early Earth & origin of life (15.1–15.3): first prokaryotes, protocells, abiotic synthesis.  
+• Major events (15.4–15.6): radiometric dating, fossil record, colonization of land.  
+• Mechanisms of macroevolution (15.7–15.13): plate tectonics, mass extinctions, adaptive radiations, evo-devo.  
+• Phylogeny & tree of life (15.14–15.19): homologies, <mark class="term">systematics</mark>, <mark class="term">cladistics</mark>, molecular systematics, molecular clocks, HGT and ring models.
+
+<strong>Practice & Test questions (from the textbook)</strong>
+
+1. Describe stages that may have led to the origin of life (polymers → protocells → self-replicating RNA).
+
+2. Fill in the concept map for <mark class="term">systematics</mark>: systematics generates hypotheses for constructing phylogenies; <mark class="term">cladistics</mark> identifies <mark class="term">shared derived character</mark>s; molecular data determine nucleotide sequence phylogenies.
+
+3. Multiple choice examples (selected from chapter):
+  a. Ancient photosynthetic prokaryotes were very important because they produced atmospheric oxygen.  
+  b. Adaptive radiations are promoted by mass extinctions that open niches, colonization of isolated regions, and novel adaptations.  
+  c. The origin of the swim bladder from lungs is an example of exaptation.
+
+4. Distinguish microevolution vs macroevolution. Explain why genetic similarity often indicates closer relation than morphological similarity.
+
+5. Applied problems: radiometric age calculations, interpreting character matrices to build phylogenies.
+
+<strong>Full chapter review questions (selected & verbatim where short):</strong>
+
+(From textbook practice section — paraphrased where formatting required)
+
+3. You set your time machine for 3 billion years ago and push the start button. Which of the following describes what you would probably see? (a) plants and animals very different from those alive today; (b) a cloud of gas and dust in space; (c) green scum in the water; (d) land and water sterile and devoid of life; (e) an endless expanse of red-hot molten rock.
+
+4. Ancient photosynthetic prokaryotes were very important because they (a) were probably the first living things to exist; (b) produced atmospheric oxygen; (c) are the oldest known archaea; (d) were the first multicellular organisms; (e) showed life could evolve at deep-sea vents.
+
+5. The animals and plants of India are different from those in nearby SE Asia because India was a separate continent until about 45 mya (plate tectonics).
+
+6. Adaptive radiations may be promoted by all EXCEPT: (choose correct option in practice).
+
+7. A swim bladder evolving from lungs is an example of exaptation.
+
+8. Best outgroup for building cat phylogeny: (select the taxon that diverged earlier; e.g., iguana is better than another mammal).
+
+9. Best data to determine phylogeny of very closely related species: comparison of nucleotide sequences in homologous genes and mitochondrial DNA.
+
+10. Major divisions in geologic record are marked by distinct changes in the types of fossilized life.
+
+Describing, Comparing, Explaining:
+11. Distinguish microevolution vs macroevolution.
+12. Which are more likely to be closely related: species with similar appearance but divergent genes, or species with different appearance but nearly identical genes? Explain.
+13. How can descent with modification explain complex structures like the eye?
+14. Explain why changes in regulation of developmental genes may drive new forms.
+
+Applying:
+16. Radiometric problem (carbon-14 half-life 5,730 years) — if fossil has 1/16 of modern C-14, approximate age = 4 half-lives = ~22,920 years (1/2^4 = 1/16).
+
+17. Cladistics exercise: arrange dinosaur species and Archaeopteryx based on character table and indicate derived characters at branch points.
+
+18. Discuss human-caused extinctions vs natural mass extinctions; consequences for surviving species.
+
+<strong>Concept Map & Practice Tasks</strong>
+- Fill-in map connecting: <mark class="term">systematics</mark> → generates hypotheses → uses cladistics & molecular data → constructs <mark class="term">phylogenetic tree</mark>s → identifies <mark class="term">taxon</mark>s; distinguish <mark class="term">shared ancestral character</mark> vs <mark class="term">shared derived character</mark>; use <mark class="term">outgroup</mark> to polarize characters; consider HGT in early lineages (<mark class="term">horizontal gene transfer</mark>).
+
+      </div>
+    </details>
+  </section>
+
+  <!-- QUICK REFERENCE: Highlighted TERMS -->
+  <section class="node purple">
+    <div class="marker">🔎 Highlighted Terms (quick jump)</div>
+    <div class="details">
+1. <mark class="term">systematics</mark> — discipline that classifies organisms & determines evolutionary relationships. <br>
+2. <mark class="term">taxonomy</mark> — the naming and classification of organisms (Linnaean system). <br>
+3. <mark class="term">taxon</mark> — a named group at any rank (species, genus, family, etc.). <br>
+4. <mark class="term">phylogenetic tree</mark> — branching diagram showing hypotheses of evolutionary relationships. <br>
+5. <mark class="term">cladistics</mark> — method grouping organisms by shared derived characters into clades. <br>
+6. <mark class="term">monophyletic</mark> — a group including a common ancestor and all its descendants. <br>
+7. <mark class="term">shared ancestral character</mark> — trait inherited from an earlier ancestor. <br>
+8. <mark class="term">shared derived character</mark> — novel trait that defines a clade. <br>
+9. <mark class="term">outgroup</mark> — lineage used to infer ancestral vs derived character states. <br>
+10. <mark class="term">horizontal gene transfer</mark> — movement of genes between lineages (plasmids, viruses, endosymbiosis).
+    </div>
+  </section>
+
+  <footer>
+    <div>File: <strong>Phylogeny_Mindmap_AllFormats_Full.html</strong> — This version includes expanded textbook content and highlighted study terms.</div>
+    <div style="margin-top:8px;">Print instructions: <strong>Ctrl/Cmd+P</strong> → Layout: <strong>Landscape</strong> → Margins: <strong>Minimum</strong> or 12mm → Save as PDF.</div>
+  </footer>
+
+</div>
+</body>
+</html>
