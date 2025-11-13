@@ -1,0 +1,1035 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lecture Presentation</title>
+    <style>
+        * { box-sizing: border-box; }
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        
+        #slide-container {
+            width: 100%;
+            min-height: 100vh;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            padding: 3rem 2rem 200px 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        #slide-container h1 { font-size: 2.5em; margin: 0.5em 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        #slide-container h2 { font-size: 2em; margin: 0.5em 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        #slide-container h3 { font-size: 1.5em; margin: 0.5em 0; }
+        #slide-container p { font-size: 1.2em; line-height: 1.6; max-width: 800px; margin: 0.5em auto; }
+        #slide-container img { max-width: 100%; height: auto; border-radius: 8px; margin: 1.5rem 0; }
+        #slide-container ul, #slide-container ol { text-align: left; max-width: 600px; margin: 1em auto; font-size: 1.1em; }
+        #slide-container code { background: #333; padding: 0.2em 0.4em; border-radius: 3px; }
+        #slide-container pre { 
+            background: #2d2d2d; 
+            padding: 1em; 
+            border-radius: 8px; 
+            overflow-x: visible; 
+            text-align: left;
+            font-family: 'Courier New', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-size: 0.8em;
+            line-height: 1.4;
+            max-width: 100%;
+            white-space: pre;
+        }
+        
+        #slide-container pre code {
+            font-family: inherit;
+            font-size: inherit;
+            background: transparent;
+            padding: 0;
+        }
+        
+        /* Start Overlay */
+        #start-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            z-index: 1000;
+        }
+        
+        #status-message {
+            font-size: 1.1em;
+            color: #aaa;
+            margin: 0;
+            min-height: 1.5em;
+        }
+        
+        #status-message.success { color: #4CAF50; }
+        #status-message.warning { color: #FF9800; }
+        #status-message.error { color: #f44336; }
+        
+        /* Mode Selection */
+        #mode-selection {
+            margin: 1.5em 0;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        #mode-selection fieldset {
+            border: 2px solid #555;
+            border-radius: 8px;
+            padding: 1em;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        #mode-selection legend {
+            padding: 0 0.5em;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .mode-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .mode-option:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .mode-option input[type="radio"] {
+            margin-top: 4px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .mode-option-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .mode-option strong {
+            font-size: 1.1em;
+            color: #fff;
+        }
+        
+        .mode-option small {
+            font-size: 0.85em;
+            color: #aaa;
+            line-height: 1.3;
+        }
+        
+        #controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            padding: 1em;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        
+        #voice-controls-container.hidden {
+            display: none;
+        }
+        
+        #voice-select {
+            min-width: 200px;
+            padding: 0.5em;
+            font-size: 1em;
+            border-radius: 4px;
+            border: 1px solid #555;
+            background: #2d2d2d;
+            color: #fff;
+        }
+        
+        label {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+        
+        input[type="range"] {
+            width: 120px;
+        }
+        
+        #start-button {
+            font-size: 1.3em;
+            padding: 0.8em 2em;
+            border-radius: 8px;
+            border: none;
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        #start-button:hover:not(:disabled) {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+        
+        #start-button:disabled {
+            background: #555;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        /* Navigation Controls */
+        #nav-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+        
+        #nav-controls.visible { display: flex; }
+        
+        #progress-indicator {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            text-align: center;
+            border: 1px solid #555;
+        }
+        
+        .nav-button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(76, 175, 80, 0.9);
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .nav-button:hover { background: rgba(69, 160, 73, 1); transform: scale(1.05); }
+        .nav-button:disabled { background: rgba(85, 85, 85, 0.5); cursor: not-allowed; }
+        
+        #pause-button {
+            background: rgba(255, 152, 0, 0.9);
+        }
+        
+        #pause-button:hover:not(:disabled) {
+            background: rgba(245, 124, 0, 1);
+        }
+        
+        #pause-button.paused {
+            background: rgba(76, 175, 80, 0.9);
+        }
+        
+        #pause-button.paused:hover {
+            background: rgba(69, 160, 73, 1);
+        }
+        
+        #pause-button.hidden {
+            display: none;
+        }
+        
+        /* Speed Control */
+        .speed-control {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+        }
+        
+        .speed-control label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            cursor: default;
+        }
+        
+        #speed-slider {
+            width: 100px;
+            height: 6px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        #speed-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #4CAF50;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        #speed-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #4CAF50;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        
+        #speed-value {
+            font-weight: bold;
+            min-width: 45px;
+            text-align: right;
+            color: #4CAF50;
+        }
+        
+        .speed-control.hidden {
+            display: none;
+        }
+        
+        /* Keyboard Hint */
+        .keyboard-hint {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 6px;
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+        }
+        
+        .keyboard-hint kbd {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        
+        /* Speed Toast Notification */
+        #speed-toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 1.5rem 3rem;
+            border-radius: 12px;
+            font-size: 1.8em;
+            font-weight: bold;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border: 2px solid #4CAF50;
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #4CAF50;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            #slide-container { padding: 2rem 1rem; }
+            #slide-container h1 { font-size: 1.8em; }
+            #slide-container h2 { font-size: 1.5em; }
+            #slide-container p { font-size: 1em; }
+            #controls { flex-direction: column; }
+            #nav-controls { bottom: 10px; right: 10px; }
+            
+            #speed-slider {
+                width: 150px;
+            }
+            
+            .nav-button {
+                padding: 10px 16px;
+                font-size: 0.9em;
+            }
+            
+            #speed-toast {
+                font-size: 1.5em;
+                padding: 1rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main id="slide-container">
+        <div id="start-overlay">
+            <div class="spinner"></div>
+            <p id="status-message">Initializing presentation...</p>
+            
+            <div id="mode-selection">
+                <fieldset>
+                    <legend>Choose Playback Mode</legend>
+                    <label class="mode-option">
+                        <input type="radio" name="playback-mode" value="auto" checked>
+                        <span class="mode-option-content">
+                            <strong>Auto-play with voice</strong>
+                            <small>Slides advance automatically with narration</small>
+                        </span>
+                    </label>
+                    <label class="mode-option">
+                        <input type="radio" name="playback-mode" value="manual">
+                        <span class="mode-option-content">
+                            <strong>Manual navigation</strong>
+                            <small>Use Next/Previous buttons to control pace (recommended for Linux + Chrome)</small>
+                        </span>
+                    </label>
+                </fieldset>
+            </div>
+            
+            <div id="voice-controls-container">
+                <div id="controls">
+                    <label>
+                        Voice
+                        <select id="voice-select">
+                            <option>Loading voices...</option>
+                        </select>
+                    </label>
+                    <label>
+                        Rate
+                        <input id="rate" type="range" min="0.6" max="1.3" step="0.05" value="0.95">
+                        <span id="rate-value">0.95x</span>
+                    </label>
+                    <label>
+                        Pitch
+                        <input id="pitch" type="range" min="0.6" max="1.5" step="0.05" value="1.0">
+                        <span id="pitch-value">1.0</span>
+                    </label>
+                </div>
+            </div>
+            
+            <button id="start-button" disabled>Initializing...</button>
+            
+            <div class="keyboard-hint">
+                <strong>Tip:</strong> Press <kbd>,</kbd> or <kbd>.</kbd> during playback to adjust speed
+            </div>
+        </div>
+    </main>
+    
+    <div id="nav-controls">
+        <div id="progress-indicator">Slide 1 of 1</div>
+        <div id="speed-control" class="speed-control hidden">
+            <label>
+                Speed:
+                <input id="speed-slider" type="range" min="0.6" max="1.3" step="0.05" value="0.95">
+                <span id="speed-value">0.95x</span>
+            </label>
+        </div>
+        <button id="pause-button" class="nav-button hidden">⏸ Pause</button>
+        <button id="prev-button" class="nav-button">⬅ Previous</button>
+        <button id="next-button" class="nav-button">Next ➡</button>
+    </div>
+    
+    <script id="slides-data" type="application/json">[{"html":"<h1>Welcome to JavaScript - Part 1!</h1>\n<p>Welcome to your first JavaScript lesson! 🎉</p>\n<p>Today we'll learn how to make programs <strong>think</strong> and <strong>make decisions</strong> using JavaScript. By the end of this lesson, you'll be able to write code that checks grades, counts numbers, and calculates totals!</p>"},{"html":"<h2>What is JavaScript?</h2>\n<p>JavaScript is a <strong>programming language</strong> that makes websites interactive and dynamic.</p>\n<p>Think of it this way:</p>\n<ul>\n<li><strong>HTML</strong> = The skeleton (structure)</li>\n<li><strong>CSS</strong> = The skin and clothes (style)</li>\n<li><strong>JavaScript</strong> = The brain and muscles (behavior)</li>\n</ul>\n<p><strong>What can JavaScript do?</strong></p>\n<ul>\n<li>Make buttons respond to clicks</li>\n<li>Check if your password is correct</li>\n<li>Calculate your quiz score automatically</li>\n<li>Animate images and create games</li>\n<li>And much more!</li>\n</ul>\n<p><strong>Cool fact:</strong> JavaScript runs in every web browser - Chrome, Firefox, Safari, Edge. That's why it's so popular!</p>"},{"html":"<h2>Running Your JavaScript Code</h2>\n<p>Before we start coding, you need to know <strong>where</strong> to write JavaScript.</p>"},{"html":"<h3><strong>Option 1: Browser Console</strong> (Easiest for learning!)</h3>\n<ol>\n<li>Open any website</li>\n<li>Press <strong>F12</strong> (or right-click → \"Inspect\")</li>\n<li>Click the <strong>\"Console\"</strong> tab</li>\n<li>Type your code and press <strong>Enter</strong></li>\n</ol>\n<pre><code class=\"language-javascript\">console.log(\"Hello, Philippines!\");\n// Try this in your console right now!\n</code></pre>"},{"html":"<h3><strong>Option 2: HTML File with <code>&lt;script&gt;</code> tag</strong></h3>\n<p>Create an HTML file and add JavaScript inside:</p>\n<pre><code class=\"language-html\">&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n&lt;head&gt;\n    &lt;title&gt;My JavaScript&lt;/title&gt;\n&lt;/head&gt;\n&lt;body&gt;\n    &lt;h1&gt;Check the Console!&lt;/h1&gt;\n    \n    &lt;script&gt;\n        console.log(\"This runs when the page loads!\");\n    &lt;/script&gt;\n&lt;/body&gt;\n&lt;/html&gt;\n</code></pre>"},{"html":"<h3><strong>Option 3: External JS File</strong></h3>\n<pre><code class=\"language-html\">&lt;script src=\"mycode.js\"&gt;&lt;/script&gt;\n</code></pre>\n<p><strong>For this lesson:</strong> Use the <strong>browser console</strong> - it's perfect for learning and testing!</p>\n<p><strong>Pro tip:</strong> <code>console.log()</code> is your best friend for seeing what your code does!</p>"},{"html":"<h2>Variables - Storing Information</h2>\n<p>Variables are like <strong>labeled boxes</strong> where you store data.</p>"},{"html":"<h3><strong>Creating Variables</strong></h3>\n<pre><code class=\"language-javascript\">let studentName = \"Maria Santos\";\nlet age = 15;\nlet grade = 9;\nlet isPresent = true;\n\nconsole.log(studentName); // Output: Maria Santos\nconsole.log(age);         // Output: 15\n</code></pre>"},{"html":"<h3><strong>Variable Rules</strong></h3>\n<p>✅ <strong>Do this:</strong></p>\n<pre><code class=\"language-javascript\">let firstName = \"Jose\";      // Use camelCase\nlet totalScore = 95;\nconst PI = 3.14159;          // Use const for values that don't change\n</code></pre>\n<p>❌ <strong>Don't do this:</strong></p>\n<pre><code class=\"language-javascript\">let 2students = \"error\";     // Can't start with number\nlet student-name = \"error\";  // Can't use hyphens\nlet student name = \"error\";  // Can't have spaces\n</code></pre>"},{"html":"<h3><strong>Data Types You'll Use</strong></h3>\n<pre><code class=\"language-javascript\">// String (text)\nlet message = \"Hello, World!\";\n\n// Number (integers and decimals)\nlet score = 85;\nlet price = 49.99;\n\n// Boolean (true or false)\nlet hasPassed = true;\nlet isRaining = false;\n\n// Check the type\nconsole.log(typeof score);    // Output: number\nconsole.log(typeof message);  // Output: string\n</code></pre>\n<p><strong>Remember:</strong> JavaScript needs to know what type of data you're working with!</p>"},{"html":"<h2>Your Debug Tool: console.log()</h2>\n<p>Think of <code>console.log()</code> as your way to <strong>see inside your code</strong>.</p>\n<pre><code class=\"language-javascript\">let baon = 100;  // ₱100 daily baon\nconsole.log(\"My baon is: ₱\" + baon);\n// Output: My baon is: ₱100\n\n// You can log multiple things\nconsole.log(\"Name:\", \"Maria\", \"Age:\", 15);\n// Output: Name: Maria Age: 15\n\n// Log calculations\nconsole.log(\"Total:\", 50 + 30);\n// Output: Total: 80\n</code></pre>\n<p><strong>Pro tip:</strong> Use <code>console.log()</code> everywhere when learning! It helps you understand what your code is doing.</p>"},{"html":"<h2>If Statements - Making Decisions</h2>\n<p>This is where programming gets exciting! Your code can <strong>make decisions</strong> based on conditions.</p>"},{"html":"<h3><strong>Basic If Statement</strong></h3>\n<pre><code class=\"language-javascript\">let score = 78;\n\nif (score &gt;= 75) {\n    console.log(\"Congratulations! You passed! 🎉\");\n}\n// Output: Congratulations! You passed! 🎉\n</code></pre>\n<p><strong>How it works:</strong></p>\n<pre><code>     Start\n       |\n       v\n  [score &gt;= 75?]\n    /        \\\n  Yes        No\n   |          |\n   v          v\nExecute    Skip\n code      code\n   |          |\n   +----+-----+\n        |\n        v\n     Continue\n</code></pre>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/if-else.png\" alt=\"Flowchart showing if statement decision logic with condition check branching to execute or skip paths\"></p>"},{"html":"<h3><strong>Comparison Operators</strong></h3>\n<pre><code class=\"language-javascript\">// Equal to (value only)\n5 == \"5\"    // true (converts \"5\" to number)\n\n// Strict equal (value AND type)\n5 === \"5\"   // false (different types)\n5 === 5     // true\n\n// Not equal\nscore != 80  // true if score is not 80\n\n// Greater than / Less than\nage &gt; 18     // true if age is greater than 18\nage &lt; 13     // true if age is less than 13\nage &gt;= 18    // greater than or equal\nage &lt;= 12    // less than or equal\n</code></pre>\n<p><strong>Best Practice:</strong> Always use <code>===</code> and <code>!==</code> (strict comparison)!</p>"},{"html":"<h3><strong>Real Example: Baon Budget</strong></h3>\n<pre><code class=\"language-javascript\">let baon = 80;         // ₱80 baon\nlet lunchPrice = 65;   // ₱65 lunch\n\nif (baon &gt;= lunchPrice) {\n    console.log(\"You can afford lunch! 🍱\");\n}\n// Output: You can afford lunch! 🍱\n</code></pre>"},{"html":"<h2>If-Else &amp; Else-If - Multiple Paths</h2>\n<p>Sometimes you need to handle <strong>different outcomes</strong>.</p>"},{"html":"<h3><strong>If-Else (Two Options)</strong></h3>\n<pre><code class=\"language-javascript\">let score = 68;\n\nif (score &gt;= 75) {\n    console.log(\"Passed! Great job! ✅\");\n} else {\n    console.log(\"Not yet - keep studying! 📚\");\n}\n// Output: Not yet - keep studying! 📚\n</code></pre>\n<p><strong>Visual:</strong></p>\n<pre><code>  [Condition?]\n   /        \\\n true      false\n  |          |\n  v          v\n If        Else\nblock     block\n</code></pre>"},{"html":"<h3><strong>Else-If (Multiple Options)</strong></h3>\n<pre><code class=\"language-javascript\">let score = 85;\n\nif (score &gt;= 90) {\n    console.log(\"Excellent! Grade: A 🌟\");\n} else if (score &gt;= 80) {\n    console.log(\"Very Good! Grade: B 👍\");\n} else if (score &gt;= 75) {\n    console.log(\"Good! Grade: C ✓\");\n} else {\n    console.log(\"Keep trying! Grade: D 💪\");\n}\n// Output: Very Good! Grade: B 👍\n</code></pre>"},{"html":"<h3><strong>Real Example: Sari-Sari Store Discount</strong></h3>\n<pre><code class=\"language-javascript\">let purchase = 250;  // ₱250 purchase\n\nif (purchase &gt;= 200) {\n    let discount = purchase * 0.10;  // 10% discount\n    console.log(\"Discount: ₱\" + discount);\n    console.log(\"You saved money! 🎁\");\n} else {\n    console.log(\"Buy ₱\" + (200 - purchase) + \" more for discount!\");\n}\n// Output: \n// Discount: ₱25\n// You saved money! 🎁\n</code></pre>"},{"html":"<h2>Logical Operators - Combining Conditions</h2>\n<p>Sometimes you need to check <strong>multiple conditions</strong> at once.</p>"},{"html":"<h3><strong>AND Operator (&amp;&amp;)</strong> - Both must be true</h3>\n<pre><code class=\"language-javascript\">let age = 15;\nlet hasID = true;\n\nif (age &gt;= 13 &amp;&amp; hasID) {\n    console.log(\"You can create an account ✅\");\n} else {\n    console.log(\"Requirements not met ❌\");\n}\n// Output: You can create an account ✅\n</code></pre>\n<p><strong>Truth Table:</strong></p>\n<pre><code>true  &amp;&amp; true   → true\ntrue  &amp;&amp; false  → false\nfalse &amp;&amp; true   → false\nfalse &amp;&amp; false  → false\n</code></pre>"},{"html":"<h3><strong>OR Operator (||)</strong> - At least one must be true</h3>\n<pre><code class=\"language-javascript\">let day = \"Saturday\";\n\nif (day === \"Saturday\" || day === \"Sunday\") {\n    console.log(\"It's the weekend! 🎉\");\n} else {\n    console.log(\"School day 📚\");\n}\n// Output: It's the weekend! 🎉\n</code></pre>\n<p><strong>Truth Table:</strong></p>\n<pre><code>true  || true   → true\ntrue  || false  → true\nfalse || true   → true\nfalse || false  → false\n</code></pre>"},{"html":"<h3><strong>NOT Operator (!)</strong> - Flips true/false</h3>\n<pre><code class=\"language-javascript\">let isRaining = false;\n\nif (!isRaining) {\n    console.log(\"You can play outside! ☀️\");\n}\n// Output: You can play outside! ☀️\n</code></pre>"},{"html":"<h3><strong>Combined Example: Game Level</strong></h3>\n<pre><code class=\"language-javascript\">let level = 3;\nlet coins = 150;\nlet hasPowerUp = true;\n\nif ((level &gt;= 3 &amp;&amp; coins &gt;= 100) || hasPowerUp) {\n    console.log(\"Boss battle unlocked! 🐉\");\n} else {\n    console.log(\"Keep collecting coins! 💰\");\n}\n// Output: Boss battle unlocked! 🐉\n</code></pre>"},{"html":"<h2>Practice: Store Discount Calculator</h2>\n<p><strong>Challenge:</strong> Write code for Aling Maria's store that:</p>\n<ol>\n<li>Takes a purchase amount</li>\n<li>If ₱200 or more: Give 10% discount</li>\n<li>If ₱100-₱199: Give 5% discount</li>\n<li>If less than ₱100: No discount</li>\n<li>Show the final price</li>\n</ol>\n<p><strong>Try it yourself first! Then check the solution below:</strong></p>\n<pre><code class=\"language-javascript\">// Solution\nlet purchase = 180;  // ₱180\nlet finalPrice = purchase;\n\nif (purchase &gt;= 200) {\n    finalPrice = purchase * 0.90;  // 10% off\n    console.log(\"10% discount applied! 🎁\");\n} else if (purchase &gt;= 100) {\n    finalPrice = purchase * 0.95;  // 5% off\n    console.log(\"5% discount applied! 🎉\");\n} else {\n    console.log(\"No discount - buy more for savings!\");\n}\n\nconsole.log(\"Final price: ₱\" + finalPrice);\n// Output:\n// 5% discount applied! 🎉\n// Final price: ₱171\n</code></pre>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/discount-tiers.png\" alt=\"Decision flowchart showing three-tier discount system based on purchase amount thresholds\"></p>\n<p><strong>Try different amounts:</strong> 50, 150, 250 - See what happens!</p>"},{"html":"<h2>For Loops - Repeating Actions</h2>\n<p>Loops let you do something <strong>multiple times</strong> without writing the same code over and over.</p>"},{"html":"<h3><strong>For Loop Syntax</strong></h3>\n<pre><code class=\"language-javascript\">for (let i = 1; i &lt;= 5; i++) {\n    console.log(\"Count: \" + i);\n}\n// Output:\n// Count: 1\n// Count: 2\n// Count: 3\n// Count: 4\n// Count: 5\n</code></pre>\n<p><strong>How it works:</strong></p>\n<pre><code>for (start; condition; step)\n     ↓        ↓         ↓\n  let i=1  i&lt;=5      i++\n\nExecution:\n1. Set i = 1\n2. Check: i &lt;= 5? Yes → Run code\n3. Step: i++ (now i = 2)\n4. Check: i &lt;= 5? Yes → Run code\n5. Step: i++ (now i = 3)\n... repeat ...\n6. Check: i &lt;= 5? No → Stop\n</code></pre>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/loop-lifecycle.png\" alt=\"Flowchart showing for loop lifecycle with initialization, condition check, body execution, and increment steps in a cycle\"></p>"},{"html":"<h3><strong>Counting Examples</strong></h3>\n<pre><code class=\"language-javascript\">// Count up\nfor (let i = 1; i &lt;= 3; i++) {\n    console.log(i);\n}\n// Output: 1 2 3\n\n// Count down\nfor (let i = 3; i &gt;= 1; i--) {\n    console.log(i);\n}\n// Output: 3 2 1\n\n// Count by 2s\nfor (let i = 0; i &lt;= 10; i += 2) {\n    console.log(i);\n}\n// Output: 0 2 4 6 8 10\n</code></pre>"},{"html":"<h3><strong>Real Example: Times Tables</strong></h3>\n<pre><code class=\"language-javascript\">// 5 times table\nconsole.log(\"5 Times Table:\");\nfor (let i = 1; i &lt;= 10; i++) {\n    console.log(\"5 × \" + i + \" = \" + (5 * i));\n}\n// Output:\n// 5 Times Table:\n// 5 × 1 = 5\n// 5 × 2 = 10\n// 5 × 3 = 15\n// ... and so on\n</code></pre>"},{"html":"<h3><strong>Real Example: Jeepney Fare Calculator</strong></h3>\n<pre><code class=\"language-javascript\">console.log(\"Jeepney Fares:\");\nfor (let km = 1; km &lt;= 10; km++) {\n    let baseFare = 13;\n    let fare = baseFare;\n    \n    if (km &gt; 4) {\n        fare = baseFare + ((km - 4) * 2);\n    }\n    \n    console.log(km + \"km: ₱\" + fare);\n}\n// Output:\n// Jeepney Fares:\n// 1km: ₱13\n// 2km: ₱13\n// 3km: ₱13\n// 4km: ₱13\n// 5km: ₱15\n// 6km: ₱17\n// ... and so on\n</code></pre>"},{"html":"<h2>While Loops - Repeat Until Condition Fails</h2>\n<p>While loops are useful when you <strong>don't know how many times</strong> to repeat.</p>"},{"html":"<h3><strong>While Loop Syntax</strong></h3>\n<pre><code class=\"language-javascript\">let count = 1;\n\nwhile (count &lt;= 5) {\n    console.log(\"Count: \" + count);\n    count++;\n}\n// Output: Count: 1, Count: 2, Count: 3, Count: 4, Count: 5\n</code></pre>"},{"html":"<h3><strong>When to Use While vs For</strong></h3>\n<p><strong>Use FOR when:</strong> You know how many times to loop</p>\n<pre><code class=\"language-javascript\">for (let i = 1; i &lt;= 10; i++) {\n    // Loop exactly 10 times\n}\n</code></pre>\n<p><strong>Use WHILE when:</strong> You loop until a condition changes</p>\n<pre><code class=\"language-javascript\">let balance = 100;\n\nwhile (balance &gt; 0) {\n    balance -= 15;  // Spend ₱15\n    console.log(\"Balance: ₱\" + balance);\n}\n</code></pre>"},{"html":"<h3><strong>Real Example: Saving Money</strong></h3>\n<pre><code class=\"language-javascript\">let savings = 0;\nlet goal = 500;  // ₱500 goal\nlet week = 0;\n\nconsole.log(\"Saving ₱50 per week:\");\n\nwhile (savings &lt; goal) {\n    week++;\n    savings += 50;  // Save ₱50\n    console.log(\"Week \" + week + \": ₱\" + savings);\n}\n\nconsole.log(\"Goal reached in \" + week + \" weeks! 🎯\");\n// Output:\n// Saving ₱50 per week:\n// Week 1: ₱50\n// Week 2: ₱100\n// Week 3: ₱150\n// ...\n// Week 10: ₱500\n// Goal reached in 10 weeks! 🎯\n</code></pre>"},{"html":"<h3><strong>Real Example: Game Countdown</strong></h3>\n<pre><code class=\"language-javascript\">let lives = 3;\n\nconsole.log(\"Game Start! 🎮\");\n\nwhile (lives &gt; 0) {\n    console.log(\"Lives remaining: \" + lives + \" ❤️\");\n    lives--;  // Lose a life\n}\n\nconsole.log(\"Game Over! 💀\");\n// Output:\n// Game Start! 🎮\n// Lives remaining: 3 ❤️\n// Lives remaining: 2 ❤️\n// Lives remaining: 1 ❤️\n// Game Over! 💀\n</code></pre>"},{"html":"<h2>Loop Control - Break and Continue</h2>\n<p>Sometimes you need to <strong>control</strong> how loops run.</p>"},{"html":"<h3><strong>break - Stop the loop immediately</strong></h3>\n<pre><code class=\"language-javascript\">// Find first number divisible by 7\nfor (let i = 1; i &lt;= 100; i++) {\n    if (i % 7 === 0) {\n        console.log(\"First multiple of 7: \" + i);\n        break;  // Stop here!\n    }\n}\n// Output: First multiple of 7: 7\n</code></pre>"},{"html":"<h3><strong>continue - Skip to next iteration</strong></h3>\n<pre><code class=\"language-javascript\">// Print only odd numbers\nfor (let i = 1; i &lt;= 10; i++) {\n    if (i % 2 === 0) {\n        continue;  // Skip even numbers\n    }\n    console.log(i);\n}\n// Output: 1 3 5 7 9\n</code></pre>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/break-continue.png\" alt=\"Flowchart showing loop with break exiting immediately and continue skipping to next iteration\"></p>"},{"html":"<h3><strong>Nested Loops</strong></h3>\n<p>Loops inside loops! Useful for tables and grids.</p>\n<pre><code class=\"language-javascript\">// Multiplication table (3x3)\nfor (let row = 1; row &lt;= 3; row++) {\n    let line = \"\";\n    for (let col = 1; col &lt;= 3; col++) {\n        line += (row * col) + \" \";\n    }\n    console.log(line);\n}\n// Output:\n// 1 2 3\n// 2 4 6\n// 3 6 9\n</code></pre>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/nested-loops-grid.png\" alt=\"Flowchart showing nested loops structure with outer loop containing inner loop for multiplication table generation\"></p>"},{"html":"<h2>Practice: Multiplication Table</h2>\n<p><strong>Challenge:</strong> Create a 5×5 multiplication table</p>\n<p><strong>Try it yourself! Solution:</strong></p>\n<pre><code class=\"language-javascript\">console.log(\"5×5 Multiplication Table:\");\nconsole.log(\"-------------------------\");\n\nfor (let row = 1; row &lt;= 5; row++) {\n    let line = \"\";\n    for (let col = 1; col &lt;= 5; col++) {\n        let product = row * col;\n        // Add spacing for alignment\n        if (product &lt; 10) {\n            line += \" \" + product + \" \";\n        } else {\n            line += product + \" \";\n        }\n    }\n    console.log(line);\n}\n// Output:\n// 5×5 Multiplication Table:\n// -------------------------\n//  1  2  3  4  5\n//  2  4  6  8 10\n//  3  6  9 12 15\n//  4  8 12 16 20\n//  5 10 15 20 25\n</code></pre>"},{"html":"<h2>Functions - Reusable Code Blocks</h2>\n<p>Functions are like <strong>recipes</strong> - write once, use many times!</p>"},{"html":"<h3><strong>Why Functions?</strong></h3>\n<p>❌ <strong>Without functions (repetitive):</strong></p>\n<pre><code class=\"language-javascript\">let score1 = 85;\nif (score1 &gt;= 75) { console.log(\"Passed\"); }\n\nlet score2 = 68;\nif (score2 &gt;= 75) { console.log(\"Passed\"); }\n\nlet score3 = 92;\nif (score3 &gt;= 75) { console.log(\"Passed\"); }\n</code></pre>\n<p>✅ <strong>With functions (clean):</strong></p>\n<pre><code class=\"language-javascript\">function checkPass(score) {\n    if (score &gt;= 75) {\n        console.log(\"Passed ✅\");\n    } else {\n        console.log(\"Not yet ❌\");\n    }\n}\n\ncheckPass(85);  // Passed ✅\ncheckPass(68);  // Not yet ❌\ncheckPass(92);  // Passed ✅\n</code></pre>"},{"html":"<h3><strong>Function Anatomy</strong></h3>\n<pre><code>function greet(name) {\n   ↑       ↑      ↑\n   |       |      |\nkeyword  name  parameter\n          \n    console.log(\"Hello, \" + name + \"!\");\n           ↑\n     function body\n           \n}\n\ngreet(\"Maria\");  ← function call\n</code></pre>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/function-anatomy.png\" alt=\"Diagram showing function anatomy with call site, parameter passing, body execution, and return flow\"></p>"},{"html":"<h3><strong>Creating Functions</strong></h3>\n<pre><code class=\"language-javascript\">// Function with no parameters\nfunction sayHello() {\n    console.log(\"Hello, World!\");\n}\n\nsayHello();  // Output: Hello, World!\n\n// Function with parameters\nfunction greetStudent(name, grade) {\n    console.log(\"Hi \" + name + \"! Welcome to Grade \" + grade + \"!\");\n}\n\ngreetStudent(\"Jose\", 9);  // Output: Hi Jose! Welcome to Grade 9!\n</code></pre>"},{"html":"<h2>Parameters and Return Values</h2>\n<p>Functions can take <strong>input</strong> and give <strong>output</strong>.</p>"},{"html":"<h3><strong>Parameters (Input)</strong></h3>\n<pre><code class=\"language-javascript\">function calculateArea(length, width) {\n    let area = length * width;\n    console.log(\"Area: \" + area + \" sq meters\");\n}\n\ncalculateArea(5, 3);   // Output: Area: 15 sq meters\ncalculateArea(10, 7);  // Output: Area: 70 sq meters\n</code></pre>"},{"html":"<h3><strong>Return Values (Output)</strong></h3>\n<pre><code class=\"language-javascript\">function add(a, b) {\n    return a + b;  // Give back the result\n}\n\nlet sum = add(10, 5);\nconsole.log(\"Sum: \" + sum);  // Output: Sum: 15\n\n// Use directly in expressions\nlet total = add(20, 30) + add(5, 10);\nconsole.log(\"Total: \" + total);  // Output: Total: 65\n</code></pre>"},{"html":"<h3><strong>Return vs Console.log</strong></h3>\n<pre><code class=\"language-javascript\">// This just prints (can't use the result)\nfunction add1(a, b) {\n    console.log(a + b);\n}\n\n// This returns (can use the result)\nfunction add2(a, b) {\n    return a + b;\n}\n\nadd1(5, 3);        // Prints: 8\nlet x = add1(5, 3); // x is undefined!\n\nlet y = add2(5, 3); // y is 8 ✅\nconsole.log(y * 2); // Can use it! Output: 16\n</code></pre>"},{"html":"<h3><strong>Real Example: Grade Calculator</strong></h3>\n<pre><code class=\"language-javascript\">function calculateGrade(score) {\n    if (score &gt;= 90) {\n        return \"A - Excellent! 🌟\";\n    } else if (score &gt;= 80) {\n        return \"B - Very Good! 👍\";\n    } else if (score &gt;= 75) {\n        return \"C - Good! ✓\";\n    } else {\n        return \"D - Keep trying! 💪\";\n    }\n}\n\nlet maria = calculateGrade(88);\nlet jose = calculateGrade(72);\n\nconsole.log(\"Maria: \" + maria);  // Maria: B - Very Good! 👍\nconsole.log(\"Jose: \" + jose);    // Jose: D - Keep trying! 💪\n</code></pre>"},{"html":"<h3><strong>Real Example: Peso to Dollar Converter</strong></h3>\n<pre><code class=\"language-javascript\">function pesoToDollar(pesos) {\n    let exchangeRate = 56.50;  // ₱56.50 = $1\n    let dollars = pesos / exchangeRate;\n    return dollars.toFixed(2);  // Round to 2 decimals\n}\n\nconsole.log(\"₱1000 = $\" + pesoToDollar(1000));  // ₱1000 = $17.70\nconsole.log(\"₱500 = $\" + pesoToDollar(500));    // ₱500 = $8.85\n</code></pre>"},{"html":"<h2>Function Practice Examples</h2>"},{"html":"<h3><strong>Example 1: Check Voting Age</strong></h3>\n<pre><code class=\"language-javascript\">function canVote(age) {\n    if (age &gt;= 18) {\n        return \"You can vote! 🗳️\";\n    } else {\n        let yearsLeft = 18 - age;\n        return \"Wait \" + yearsLeft + \" more years.\";\n    }\n}\n\nconsole.log(canVote(20));  // You can vote! 🗳️\nconsole.log(canVote(15));  // Wait 3 more years.\n</code></pre>"},{"html":"<h3><strong>Example 2: Calculate Sale Price</strong></h3>\n<pre><code class=\"language-javascript\">function applySaleDiscount(price, discountPercent) {\n    let discount = price * (discountPercent / 100);\n    let salePrice = price - discount;\n    return salePrice;\n}\n\nlet regularPrice = 1000;\nlet salePrice = applySaleDiscount(regularPrice, 20);\n\nconsole.log(\"Regular: ₱\" + regularPrice);\nconsole.log(\"20% off: ₱\" + salePrice);\n// Output:\n// Regular: ₱1000\n// 20% off: ₱800\n</code></pre>"},{"html":"<h3><strong>Example 3: Calculate Class Average</strong></h3>\n<pre><code class=\"language-javascript\">function calculateAverage(score1, score2, score3) {\n    let total = score1 + score2 + score3;\n    let average = total / 3;\n    return average.toFixed(1);  // 1 decimal place\n}\n\nlet average = calculateAverage(85, 90, 88);\nconsole.log(\"Class Average: \" + average);\n// Output: Class Average: 87.7\n</code></pre>"},{"html":"<h3><strong>Example 4: Game Score System</strong></h3>\n<pre><code class=\"language-javascript\">function checkHighScore(score) {\n    if (score &gt;= 1000) {\n        return \"🏆 LEGENDARY!\";\n    } else if (score &gt;= 500) {\n        return \"⭐ AWESOME!\";\n    } else if (score &gt;= 100) {\n        return \"👍 GOOD!\";\n    } else {\n        return \"💪 KEEP TRYING!\";\n    }\n}\n\nconsole.log(\"Score 1200: \" + checkHighScore(1200));  // 🏆 LEGENDARY!\nconsole.log(\"Score 450: \" + checkHighScore(450));    // 👍 GOOD!\n</code></pre>"},{"html":"<h2>Common Mistakes &amp; How to Fix Them</h2>"},{"html":"<h3><strong>Mistake 1: Forgetting Semicolons</strong></h3>\n<pre><code class=\"language-javascript\">// ❌ Can cause weird errors\nlet x = 5\nconsole.log(x)\n\n// ✅ Always use semicolons\nlet x = 5;\nconsole.log(x);\n</code></pre>"},{"html":"<h3><strong>Mistake 2: Using = Instead of ===</strong></h3>\n<pre><code class=\"language-javascript\">// ❌ Assignment, not comparison!\nif (score = 75) {  // This assigns 75 to score!\n    console.log(\"Passed\");\n}\n\n// ✅ Use === for comparison\nif (score === 75) {\n    console.log(\"Passed\");\n}\n</code></pre>"},{"html":"<h3><strong>Mistake 3: Infinite Loops</strong></h3>\n<pre><code class=\"language-javascript\">// ❌ Never ends!\nlet i = 0;\nwhile (i &lt; 10) {\n    console.log(i);\n    // Forgot to increment i!\n}\n\n// ✅ Remember to update the counter\nlet i = 0;\nwhile (i &lt; 10) {\n    console.log(i);\n    i++;  // Don't forget this!\n}\n</code></pre>"},{"html":"<h3><strong>Mistake 4: Forgetting to Call Function</strong></h3>\n<pre><code class=\"language-javascript\">// ❌ Function never runs\nfunction greet() {\n    console.log(\"Hello!\");\n}\n// Nothing happens...\n\n// ✅ Call the function!\nfunction greet() {\n    console.log(\"Hello!\");\n}\ngreet();  // Now it runs!\n</code></pre>"},{"html":"<h3><strong>Mistake 5: Wrong Variable Scope</strong></h3>\n<pre><code class=\"language-javascript\">// ❌ Variable not accessible\nfunction test() {\n    let message = \"Hello\";\n}\nconsole.log(message);  // Error! message doesn't exist here\n\n// ✅ Declare variables where you need them\nlet message = \"Hello\";\nfunction test() {\n    console.log(message);  // This works!\n}\n</code></pre>"},{"html":"<h2>Final Challenge: Grade Calculator System</h2>\n<p><strong>Build a complete grade calculator that:</strong></p>\n<ol>\n<li>Takes 3 quiz scores</li>\n<li>Calculates the average</li>\n<li>Determines if student passed (≥75)</li>\n<li>Assigns a letter grade</li>\n<li>Shows everything nicely</li>\n</ol>\n<p><strong>Try building it yourself! Solution below:</strong></p>\n<pre><code class=\"language-javascript\">// Complete Grade Calculator System\n\nfunction calculateAverage(score1, score2, score3) {\n    return (score1 + score2 + score3) / 3;\n}\n\nfunction getLetterGrade(average) {\n    if (average &gt;= 90) {\n        return \"A\";\n    } else if (average &gt;= 80) {\n        return \"B\";\n    } else if (average &gt;= 75) {\n        return \"C\";\n    } else {\n        return \"D\";\n    }\n}\n\nfunction checkIfPassed(average) {\n    return average &gt;= 75;\n}\n\nfunction displayGradeReport(name, score1, score2, score3) {\n    console.log(\"========================================\");\n    console.log(\"GRADE REPORT FOR \" + name.toUpperCase());\n    console.log(\"========================================\");\n    \n    console.log(\"Quiz 1: \" + score1);\n    console.log(\"Quiz 2: \" + score2);\n    console.log(\"Quiz 3: \" + score3);\n    console.log(\"----------------------------------------\");\n    \n    let average = calculateAverage(score1, score2, score3);\n    let letter = getLetterGrade(average);\n    let passed = checkIfPassed(average);\n    \n    console.log(\"Average: \" + average.toFixed(1));\n    console.log(\"Letter Grade: \" + letter);\n    \n    if (passed) {\n        console.log(\"Status: PASSED ✅\");\n        console.log(\"Great job, \" + name + \"! 🎉\");\n    } else {\n        console.log(\"Status: NOT YET ❌\");\n        console.log(\"Keep studying, \" + name + \"! 💪\");\n    }\n    \n    console.log(\"========================================\");\n}\n\n// Test the system\ndisplayGradeReport(\"Maria Santos\", 85, 90, 88);\ndisplayGradeReport(\"Jose Cruz\", 72, 68, 70);\n\n// Output for Maria:\n// ========================================\n// GRADE REPORT FOR MARIA SANTOS\n// ========================================\n// Quiz 1: 85\n// Quiz 2: 90\n// Quiz 3: 88\n// ----------------------------------------\n// Average: 87.7\n// Letter Grade: B\n// Status: PASSED ✅\n// Great job, Maria Santos! 🎉\n// ========================================\n</code></pre>\n<p><strong>Congratulations!</strong> You just built a complete grading system! 🎓</p>"},{"html":"<h2>Summary - What You Learned Today</h2>\n<p><strong>You now know how to:</strong></p>\n<ol>\n<li>✅ <strong>Variables</strong> - Store data (let, const)</li>\n<li>✅ <strong>Console.log()</strong> - See your code's output</li>\n<li>✅ <strong>If Statements</strong> - Make decisions in code</li>\n<li>✅ <strong>Comparison Operators</strong> - Compare values (===, &gt;, &lt;, etc.)</li>\n<li>✅ <strong>Logical Operators</strong> - Combine conditions (&amp;&amp;, ||, !)</li>\n<li>✅ <strong>For Loops</strong> - Repeat actions a specific number of times</li>\n<li>✅ <strong>While Loops</strong> - Repeat until a condition is met</li>\n<li>✅ <strong>Break &amp; Continue</strong> - Control loop flow</li>\n<li>✅ <strong>Functions</strong> - Create reusable code blocks</li>\n<li>✅ <strong>Parameters &amp; Return</strong> - Pass data in and out of functions</li>\n</ol>\n<p><strong>Key Concepts:</strong></p>\n<ul>\n<li>Programs make decisions using <strong>if-else</strong></li>\n<li>Loops let you repeat actions <strong>efficiently</strong></li>\n<li>Functions make code <strong>reusable and organized</strong></li>\n<li>Always test your code with <code>console.log()</code>!</li>\n</ul>\n<p><strong>Next Steps:</strong></p>\n<ul>\n<li>✨ <strong>Part 2</strong> will teach you about <strong>Arrays</strong> and <strong>Objects</strong></li>\n<li>Learn how to store and organize lots of data</li>\n<li>Master powerful array methods like <code>map()</code> and <code>filter()</code></li>\n<li>Build a complete sari-sari store inventory system!</li>\n</ul>"},{"html":"<h2>Homework Assignment 📝</h2>"},{"html":"<h3><strong>Easy Level:</strong></h3>\n<ol>\n<li><p><strong>Age Checker</strong></p>\n<ul>\n<li>Create a function that takes an age</li>\n<li>Returns if person is: Child (&lt;13), Teen (13-17), Adult (18+)</li>\n</ul>\n</li>\n<li><p><strong>Countdown Timer</strong></p>\n<ul>\n<li>Use a loop to count down from 10 to 0</li>\n<li>Print \"Blast off! 🚀\" at the end</li>\n</ul>\n</li>\n<li><p><strong>Sum Calculator</strong></p>\n<ul>\n<li>Create a function that adds all numbers from 1 to N</li>\n<li>Example: sumUpTo(5) → 1+2+3+4+5 = 15</li>\n</ul>\n</li>\n</ol>"},{"html":"<h3><strong>Medium Level:</strong></h3>\n<ol start=\"4\">\n<li><p><strong>Baon Tracker</strong></p>\n<ul>\n<li>Start with ₱500 baon for the week</li>\n<li>Each day, spend a random amount (₱50-₱100)</li>\n<li>Use a loop to track daily expenses</li>\n<li>Show remaining balance each day</li>\n</ul>\n</li>\n<li><p><strong>Password Checker</strong></p>\n<ul>\n<li>Function checks if password is \"strong\"</li>\n<li>Strong = at least 8 characters</li>\n<li>Show appropriate message</li>\n</ul>\n</li>\n</ol>"},{"html":"<h3><strong>Challenge Level:</strong></h3>\n<ol start=\"6\">\n<li><strong>Quiz Game</strong><ul>\n<li>Create a simple 3-question quiz</li>\n<li>Use if-else to check answers</li>\n<li>Keep track of score</li>\n<li>Show final grade (A, B, C, D)</li>\n</ul>\n</li>\n</ol>\n<p><strong>Bonus:</strong> Share your code with a classmate and test each other's programs!</p>"},{"html":"<h2>Resources for Learning More</h2>"},{"html":"<h3><strong>Practice Websites:</strong></h3>\n<ul>\n<li>🌐 <strong>CodeCademy</strong> - Interactive JavaScript lessons</li>\n<li>🌐 <strong>freeCodeCamp</strong> - Free full course</li>\n<li>🌐 <strong>JavaScript.info</strong> - Detailed tutorials</li>\n</ul>"},{"html":"<h3><strong>Practice Playgrounds:</strong></h3>\n<ul>\n<li>🎮 <strong>CodePen.io</strong> - Write and test code online</li>\n<li>🎮 <strong>JSFiddle</strong> - Quick JavaScript testing</li>\n<li>🎮 <strong>Replit</strong> - Full coding environment</li>\n</ul>"},{"html":"<h3><strong>What to Learn Next:</strong></h3>\n<ol>\n<li>✅ Complete Part 2 (Arrays &amp; Objects)</li>\n<li>Learn about the DOM (making websites interactive)</li>\n<li>Build real projects (calculator, todo list, games)</li>\n<li>Learn ES6+ features (modern JavaScript)</li>\n</ol>"},{"html":"<h2>Questions to Think About 🤔</h2>\n<ol>\n<li>When should you use a <strong>for loop</strong> vs a <strong>while loop</strong>?</li>\n<li>What's the difference between <code>==</code> and <code>===</code>?</li>\n<li>Why is it better to use functions instead of repeating code?</li>\n<li>How would you make a rock-paper-scissors game with if-else?</li>\n<li>Can you explain what <code>return</code> does in a function?</li>\n</ol>\n<p><strong>Discuss these with your classmates!</strong></p>"},{"html":"<h2>Thank You! 🎉</h2>\n<p>Amazing work making it through Part 1! You now have the <strong>foundation</strong> for programming.</p>\n<p><strong>Remember:</strong></p>\n<ul>\n<li>Practice every day (even just 15 minutes!)</li>\n<li>Break problems into small steps</li>\n<li>Use <code>console.log()</code> to understand your code</li>\n<li>Don't be afraid to make mistakes - that's how you learn!</li>\n</ul>\n<p><strong>You're ready for Part 2!</strong> 🚀</p>\n<p>See you in the next lesson where we'll learn about <strong>Arrays</strong> and <strong>Objects</strong> - the tools for organizing data like a pro!</p>\n<p>Keep coding! 💻✨</p>"}]</script>
+    <script>
+(function() {
+    'use strict';
+    
+    // Console logging helper
+    function log(msg, level) {
+        var prefix = '[Lecture Player] ';
+        if (level === 'error') console.error(prefix + msg);
+        else if (level === 'warn') console.warn(prefix + msg);
+        else console.log(prefix + msg);
+    }
+    
+    // State
+    var slides = [];
+    var currentSlide = 0;
+    var isPlaying = false;
+    var autoAdvance = true;
+    var manualMode = false;
+    var isPaused = false;
+    var availableVoices = [];
+    var selectedVoice = null;
+    
+    // DOM Elements
+    var container = document.getElementById('slide-container');
+    var startOverlay = document.getElementById('start-overlay');
+    var startButton = document.getElementById('start-button');
+    var statusMessage = document.getElementById('status-message');
+    var voiceSelect = document.getElementById('voice-select');
+    var rateInput = document.getElementById('rate');
+    var pitchInput = document.getElementById('pitch');
+    var rateValue = document.getElementById('rate-value');
+    var pitchValue = document.getElementById('pitch-value');
+    var navControls = document.getElementById('nav-controls');
+    var progressIndicator = document.getElementById('progress-indicator');
+    var prevButton = document.getElementById('prev-button');
+    var nextButton = document.getElementById('next-button');
+    var pauseButton = document.getElementById('pause-button');
+    var spinner = document.querySelector('.spinner');
+    var voiceControlsContainer = document.getElementById('voice-controls-container');
+    var speedControl = document.getElementById('speed-control');
+    var speedSlider = document.getElementById('speed-slider');
+    var speedValue = document.getElementById('speed-value');
+    
+    // Update rate/pitch displays
+    rateInput.addEventListener('input', function() {
+        rateValue.textContent = parseFloat(rateInput.value).toFixed(2) + 'x';
+    });
+    pitchInput.addEventListener('input', function() {
+        pitchValue.textContent = parseFloat(pitchInput.value).toFixed(1);
+    });
+    
+    // Update speed display (nav controls)
+    speedSlider.addEventListener('input', function() {
+        speedValue.textContent = parseFloat(speedSlider.value).toFixed(2) + 'x';
+    });
+    
+    // Setup mode selection
+    function setupModeSelection() {
+        var modeRadios = document.querySelectorAll('input[name="playback-mode"]');
+        
+        for (var i = 0; i < modeRadios.length; i++) {
+            modeRadios[i].addEventListener('change', function(e) {
+                manualMode = (e.target.value === 'manual');
+                
+                if (manualMode) {
+                    // Hide voice controls
+                    voiceControlsContainer.classList.add('hidden');
+                    
+                    // Update status and button
+                    updateStatus('Manual mode selected - ready to start', 'success');
+                    startButton.textContent = 'Start (Manual Navigation)';
+                    startButton.disabled = false;
+                    
+                    // Hide spinner
+                    spinner.style.display = 'none';
+                    
+                    log('Manual mode selected by user');
+                } else {
+                    // Show voice controls
+                    voiceControlsContainer.classList.remove('hidden');
+                    
+                    // Check voice status
+                    if (availableVoices.length > 0) {
+                        updateStatus('Auto-play mode - ' + availableVoices.length + ' voices available', 'success');
+                        startButton.textContent = 'Start Presentation';
+                        startButton.disabled = false;
+                        spinner.style.display = 'none';
+                    } else {
+                        updateStatus('Loading voices...', '');
+                        startButton.textContent = 'Initializing...';
+                        startButton.disabled = true;
+                        spinner.style.display = 'block';
+                        // Re-trigger voice loading
+                        initializeVoiceLoading();
+                    }
+                    
+                    log('Auto-play mode selected by user');
+                }
+            });
+        }
+    }
+    
+    // Load slides
+    try {
+        var slidesData = document.getElementById('slides-data');
+        if (!slidesData) {
+            throw new Error('Slides data not found');
+        }
+        slides = JSON.parse(slidesData.textContent || '[]');
+        if (!slides || slides.length === 0) {
+            throw new Error('No slides found');
+        }
+        log('Loaded ' + slides.length + ' slides');
+    } catch (e) {
+        log('Failed to load slides: ' + e.message, 'error');
+        updateStatus('Failed to load presentation', 'error');
+        startButton.textContent = 'Error: No Slides';
+        return;
+    }
+    
+    // Update status message
+    function updateStatus(msg, type) {
+        statusMessage.textContent = msg;
+        statusMessage.className = type || '';
+    }
+    
+    // Split text into sentences
+    function splitIntoSentences(text) {
+        var sentences = [];
+        var buffer = '';
+        for (var i = 0; i < text.length; i++) {
+            var ch = text[i];
+            buffer += ch;
+            if (ch === '.' || ch === '!' || ch === '?' || ch === '\n') {
+                var trimmed = buffer.trim();
+                if (trimmed) sentences.push(trimmed);
+                buffer = '';
+            }
+        }
+        var remaining = buffer.trim();
+        if (remaining) sentences.push(remaining);
+        return sentences.length > 0 ? sentences : [text];
+    }
+    
+    // Select best voice
+    function selectBestVoice(voices) {
+        if (!voices || voices.length === 0) return null;
+        
+        // Try US English first
+        for (var i = 0; i < voices.length; i++) {
+            if (/en-us/i.test(voices[i].lang)) {
+                log('Selected US English voice: ' + voices[i].name);
+                return voices[i];
+            }
+        }
+        
+        // Try any English
+        for (var j = 0; j < voices.length; j++) {
+            if (/^en/i.test(voices[j].lang)) {
+                log('Selected English voice: ' + voices[j].name);
+                return voices[j];
+            }
+        }
+        
+        // Use first available
+        log('Using first available voice: ' + voices[0].name);
+        return voices[0];
+    }
+    
+    // Populate voice select
+    function populateVoices() {
+        try {
+            availableVoices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+            voiceSelect.innerHTML = '';
+            
+            if (!availableVoices || availableVoices.length === 0) {
+                var opt = document.createElement('option');
+                opt.textContent = 'System default voice';
+                voiceSelect.appendChild(opt);
+                log('No voices available, using system default', 'warn');
+                return false;
+            }
+            
+            // Populate dropdown
+            for (var i = 0; i < availableVoices.length; i++) {
+                var voice = availableVoices[i];
+                var option = document.createElement('option');
+                option.value = i;
+                option.textContent = voice.name + ' (' + voice.lang + ')';
+                voiceSelect.appendChild(option);
+            }
+            
+            // Select best voice
+            selectedVoice = selectBestVoice(availableVoices);
+            if (selectedVoice) {
+                for (var k = 0; k < availableVoices.length; k++) {
+                    if (availableVoices[k] === selectedVoice) {
+                        voiceSelect.selectedIndex = k;
+                        break;
+                    }
+                }
+            }
+            
+            log('Populated ' + availableVoices.length + ' voices');
+            return true;
+        } catch (e) {
+            log('Error populating voices: ' + e.message, 'error');
+            return false;
+        }
+    }
+    
+    // Wait for voices with timeout
+    function waitForVoices(callback) {
+        var startTime = Date.now();
+        var maxWait = 3000; // 3 seconds
+        
+        function check() {
+            var hasVoices = populateVoices();
+            if (hasVoices) {
+                log('Voices loaded successfully');
+                callback(true);
+                return;
+            }
+            
+            if (Date.now() - startTime > maxWait) {
+                log('Voice loading timeout, continuing with defaults', 'warn');
+                callback(false);
+                return;
+            }
+            
+            setTimeout(check, 200);
+        }
+        
+        check();
+    }
+    
+    // Speak text with error handling
+    function speakText(text, onComplete) {
+        if (!text || !text.trim()) {
+            log('Empty text, skipping speech');
+            setTimeout(onComplete, 500);
+            return;
+        }
+        
+        if (!window.speechSynthesis) {
+            log('Speech synthesis not available', 'warn');
+            setTimeout(onComplete, 1000);
+            return;
+        }
+        
+        try {
+            var sentences = splitIntoSentences(text);
+            var index = 0;
+            
+            function speakNext() {
+                if (index >= sentences.length) {
+                    onComplete();
+                    return;
+                }
+                
+                var sentence = sentences[index++];
+                if (!sentence.trim()) {
+                    setTimeout(speakNext, 200);
+                    return;
+                }
+                
+                var utterance = new SpeechSynthesisUtterance(sentence);
+                
+                // Apply voice if available
+                var voiceIndex = parseInt(voiceSelect.value, 10);
+                if (!isNaN(voiceIndex) && availableVoices[voiceIndex]) {
+                    utterance.voice = availableVoices[voiceIndex];
+                } else if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+                
+                // Use speed slider if available (nav controls), otherwise use rate from overlay
+                utterance.rate = parseFloat(speedSlider ? speedSlider.value : (rateInput ? rateInput.value : 0.95));
+                utterance.pitch = parseFloat(pitchInput.value) || 1.0;
+                
+                utterance.onend = function() {
+                    setTimeout(speakNext, 220);
+                };
+                
+                utterance.onerror = function(e) {
+                    log('Speech error: ' + e.error, 'warn');
+                    setTimeout(speakNext, 250);
+                };
+                
+                window.speechSynthesis.speak(utterance);
+            }
+            
+            speakNext();
+        } catch (e) {
+            log('Error in speakText: ' + e.message, 'error');
+            setTimeout(onComplete, 500);
+        }
+    }
+    
+    // Display slide
+    function displaySlide(index) {
+        if (index < 0 || index >= slides.length) {
+            log('Invalid slide index: ' + index, 'error');
+            return;
+        }
+        
+        currentSlide = index;
+        var slide = slides[index];
+        
+        try {
+            container.innerHTML = slide.html;
+            progressIndicator.textContent = 'Slide ' + (index + 1) + ' of ' + slides.length;
+            
+            // Update navigation buttons
+            prevButton.disabled = (index === 0);
+            nextButton.disabled = (index === slides.length - 1);
+            
+            log('Displaying slide ' + (index + 1));
+        } catch (e) {
+            log('Error displaying slide: ' + e.message, 'error');
+            container.innerHTML = '<h1>Error displaying slide</h1>';
+        }
+    }
+    
+    // Play slide with speech
+    function playSlide(index) {
+        if (index >= slides.length) {
+            container.innerHTML = '<h1>End of Presentation</h1><p>Press Previous to review slides</p>';
+            isPlaying = false;
+            log('Presentation complete');
+            return;
+        }
+        
+        displaySlide(index);
+        
+        // In manual mode, just display slide and wait for user navigation
+        if (manualMode) {
+            log('Manual mode - waiting for user navigation (slide ' + (index + 1) + ')');
+            return;
+        }
+        
+        // Check if paused - wait for resume
+        if (isPaused) {
+            log('Paused - waiting for resume (slide ' + (index + 1) + ')');
+            return;
+        }
+        
+        // Extract text for speech (auto mode only)
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = slides[index].html;
+        var text = tempDiv.textContent || tempDiv.innerText || '';
+        
+        if (autoAdvance) {
+            speakText(text, function() {
+                if (isPlaying && !isPaused) {
+                    playSlide(index + 1);
+                }
+            });
+        }
+    }
+    
+    // Navigation handlers
+    function nextSlide() {
+        if (currentSlide < slides.length - 1) {
+            if (!manualMode) {
+                // In auto mode, disable auto-advance when manually overriding
+                autoAdvance = false;
+                window.speechSynthesis.cancel();
+            }
+            playSlide(currentSlide + 1);
+        }
+    }
+    
+    function prevSlide() {
+        if (currentSlide > 0) {
+            if (!manualMode) {
+                // In auto mode, disable auto-advance when manually overriding
+                autoAdvance = false;
+                window.speechSynthesis.cancel();
+            }
+            playSlide(currentSlide - 1);
+        }
+    }
+    
+    // Adjust speed with keyboard shortcuts
+    function adjustSpeed(delta) {
+        if (manualMode) return; // No speed control in manual mode
+        
+        var currentSpeed = parseFloat(speedSlider.value);
+        var newSpeed = Math.max(0.6, Math.min(1.3, currentSpeed + delta));
+        
+        speedSlider.value = newSpeed.toFixed(2);
+        speedValue.textContent = newSpeed.toFixed(2) + 'x';
+        
+        log('Speed adjusted to ' + newSpeed.toFixed(2) + 'x');
+        showSpeedToast(newSpeed);
+    }
+    
+    // Show speed toast notification
+    function showSpeedToast(speed) {
+        var toast = document.getElementById('speed-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'speed-toast';
+            document.body.appendChild(toast);
+        }
+        
+        toast.textContent = 'Speed: ' + speed.toFixed(2) + 'x';
+        toast.style.opacity = '1';
+        
+        // Fade out after 800ms
+        setTimeout(function() {
+            toast.style.opacity = '0';
+        }, 800);
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (!isPlaying) return;
+        
+        // Don't handle shortcuts while typing in input fields
+        var activeTag = document.activeElement.tagName;
+        if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT') {
+            return;
+        }
+        
+        if (e.key === ' ') {
+            e.preventDefault();
+            if (manualMode) {
+                // In manual mode, spacebar advances slide
+                nextSlide();
+            } else {
+                // In auto mode, spacebar toggles pause/resume
+                togglePause();
+            }
+        } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevSlide();
+        }
+        // Speed shortcuts (only in auto mode)
+        else if (!manualMode) {
+            if (e.key === '.' || e.key === '>') {
+                e.preventDefault();
+                adjustSpeed(0.1);
+            } else if (e.key === ',' || e.key === '<') {
+                e.preventDefault();
+                adjustSpeed(-0.1);
+            }
+        }
+    });
+    
+    // Start presentation
+    function startPresentation() {
+        log('Starting presentation in ' + (manualMode ? 'manual' : 'auto') + ' mode');
+        startOverlay.style.display = 'none';
+        navControls.classList.add('visible');
+        isPlaying = true;
+        isPaused = false;
+        
+        if (!manualMode) {
+            // Auto mode: enable auto-advance and try voice one more time
+            autoAdvance = true;
+            populateVoices();
+            
+            // Sync speed slider to start overlay value
+            if (rateInput && speedSlider) {
+                speedSlider.value = rateInput.value;
+                speedValue.textContent = parseFloat(rateInput.value).toFixed(2) + 'x';
+                log('Synced speed: ' + rateInput.value + 'x');
+            }
+            
+            // Show pause button and speed control in auto mode
+            pauseButton.classList.remove('hidden');
+            speedControl.classList.remove('hidden');
+        } else {
+            // Manual mode: no auto-advance, no voice needed
+            autoAdvance = false;
+            // Hide pause button and speed control in manual mode
+            pauseButton.classList.add('hidden');
+            speedControl.classList.add('hidden');
+        }
+        
+        playSlide(0);
+    }
+    
+    // Toggle pause/resume
+    function togglePause() {
+        if (manualMode) return; // No pause in manual mode
+        
+        isPaused = !isPaused;
+        
+        if (isPaused) {
+            // Paused state
+            window.speechSynthesis.cancel();
+            pauseButton.textContent = '▶ Resume';
+            pauseButton.classList.add('paused');
+            log('Presentation paused');
+        } else {
+            // Resumed state
+            pauseButton.textContent = '⏸ Pause';
+            pauseButton.classList.remove('paused');
+            log('Presentation resumed');
+            // Resume playing current slide
+            if (autoAdvance && currentSlide < slides.length) {
+                playSlide(currentSlide);
+            }
+        }
+    }
+    
+    // Button handlers
+    startButton.addEventListener('click', startPresentation);
+    nextButton.addEventListener('click', nextSlide);
+    prevButton.addEventListener('click', prevSlide);
+    pauseButton.addEventListener('click', togglePause);
+    
+    // Voice loading wrapper
+    function initializeVoiceLoading() {
+        if (manualMode) {
+            log('Manual mode - skipping voice initialization');
+            return;
+        }
+        
+        if (!window.speechSynthesis) {
+            log('Speech synthesis not supported', 'error');
+            updateStatus('Text-to-speech not supported in this browser', 'warning');
+            startButton.disabled = false;
+            startButton.textContent = 'Start (Manual Mode)';
+            spinner.style.display = 'none';
+            return;
+        }
+        
+        // Setup voice change listener
+        if (window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = populateVoices;
+        }
+        
+        // Wait for voices
+        waitForVoices(function(success) {
+            if (manualMode) return; // User switched to manual while loading
+            
+            spinner.style.display = 'none';
+            if (success) {
+                updateStatus('Ready! ' + availableVoices.length + ' voices available', 'success');
+                startButton.textContent = 'Start Presentation';
+            } else {
+                updateStatus('Continuing with system default voice', 'warning');
+                startButton.textContent = 'Start Anyway';
+            }
+            startButton.disabled = false;
+        });
+    }
+    
+    // Initialize
+    log('Initializing lecture player');
+    setupModeSelection();
+    updateStatus('Choose playback mode above', '');
+    
+    // Start voice loading for auto mode (default)
+    initializeVoiceLoading();
+    
+    log('Initialization complete');
+})();
+    </script>
+</body>
+</html>

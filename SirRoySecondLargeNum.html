@@ -1,0 +1,2271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Find Second Largest Number</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- External Libraries -->
+  <!-- Note: Pyodide is loaded dynamically only when Python is selected -->
+  <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.49.0/min/vs/loader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  
+  <!-- Inline Styles for Self-Contained File -->
+  <style>
+    /* ==========================================
+   Programming Practice Platform - Student CSS
+   Design: Grade 9 Friendly, Light & Clear
+   ========================================== */
+
+/* === CSS Variables === */
+:root {
+  /* Colors */
+  --color-primary: #4A90E2;
+  --color-primary-dark: #357ABD;
+  --color-success: #28a745;
+  --color-success-light: #d4edda;
+  --color-error: #dc3545;
+  --color-error-light: #f8d7da;
+  --color-warning: #ffc107;
+  --color-info: #17a2b8;
+  
+  --color-bg: #f7f9fc;
+  --color-card-bg: #ffffff;
+  --color-border: #dee2e6;
+  --color-border-light: #e9ecef;
+  
+  --color-text-primary: #2c3e50;
+  --color-text-body: #495057;
+  --color-text-muted: #6c757d;
+  --color-code-inline: #e83e8c;
+  
+  /* Input/Output box backgrounds */
+  --color-input-bg: #e7f3ff;
+  --color-output-bg: #e7ffe7;
+  
+  /* Typography */
+  --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-family-mono: 'Fira Code', 'Monaco', 'Consolas', 'Courier New', monospace;
+  
+  --font-size-base: 16px;
+  --font-size-large: 18px;
+  --font-size-small: 14px;
+  --font-size-h1: 28px;
+  --font-size-h2: 22px;
+  --font-size-h3: 20px;
+  
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  --line-height-base: 1.6;
+  --line-height-heading: 1.3;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-hover: 0 4px 12px rgba(74, 144, 226, 0.15);
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* === Reset & Base Styles === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--font-size-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text-body);
+  background-color: var(--color-bg);
+  min-height: 100vh;
+}
+
+/* === Typography === */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-heading);
+  margin-bottom: var(--spacing-md);
+}
+
+h1 { font-size: var(--font-size-h1); }
+h2 { font-size: var(--font-size-h2); }
+h3 { font-size: var(--font-size-h3); }
+
+p {
+  margin-bottom: var(--spacing-md);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+code {
+  font-family: var(--font-family-mono);
+  font-size: 0.9em;
+  color: var(--color-code-inline);
+  background-color: var(--color-border-light);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+pre {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-small);
+  background-color: #f8f9fa;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  overflow-x: auto;
+  margin-bottom: var(--spacing-md);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* === Container & Layout === */
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+.problem-container {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+.problem-panel {
+  background-color: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+}
+
+.solution-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  position: sticky;
+  top: var(--spacing-lg);
+}
+
+/* === Cards === */
+.card {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--color-border-light);
+}
+
+.card-content {
+  color: var(--color-text-body);
+}
+
+/* Special card backgrounds */
+.card-input {
+  background-color: var(--color-input-bg);
+  border-left: 4px solid var(--color-primary);
+}
+
+.card-output {
+  background-color: var(--color-output-bg);
+  border-left: 4px solid var(--color-success);
+}
+
+/* === Problem Header === */
+.problem-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.problem-title {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.problem-meta {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+/* === Badges === */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+.badge-easy {
+  background-color: var(--color-success-light);
+  color: #155724;
+}
+
+.badge-medium {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.badge-hard {
+  background-color: var(--color-error-light);
+  color: #721c24;
+}
+
+.badge-time {
+  background-color: var(--color-border-light);
+  color: var(--color-text-body);
+}
+
+/* === Examples Section === */
+.example-card {
+  background-color: #f8f9fa;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.example-header {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-large);
+}
+
+.example-io {
+  display: grid;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.example-io-label {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-small);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.example-io-box {
+  background-color: white;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-small);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.example-explanation {
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-body);
+  font-style: italic;
+}
+
+/* === Expandable Sections === */
+.expandable {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+  overflow: hidden;
+}
+
+.expandable-header {
+  background-color: var(--color-border-light);
+  padding: var(--spacing-md);
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: var(--font-weight-medium);
+  transition: background-color var(--transition-fast);
+}
+
+.expandable-header:hover {
+  background-color: #dde1e6;
+}
+
+.expandable-content {
+  padding: var(--spacing-lg);
+  background-color: white;
+}
+
+details summary {
+  cursor: pointer;
+  user-select: none;
+  padding: var(--spacing-md);
+  background-color: var(--color-border-light);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  list-style: none;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details summary::before {
+  content: '▶ ';
+  display: inline-block;
+  transition: transform var(--transition-fast);
+}
+
+details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+details[open] summary {
+  margin-bottom: var(--spacing-md);
+}
+
+/* === Language Selector === */
+.language-selector {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.language-selector label {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  display: block;
+  margin-bottom: var(--spacing-sm);
+}
+
+.language-options {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.language-option {
+  flex: 1;
+}
+
+.language-option input[type="radio"] {
+  display: none;
+}
+
+.language-option label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background-color: white;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-weight: var(--font-weight-medium);
+}
+
+.language-option label:hover {
+  border-color: var(--color-primary);
+  background-color: rgba(74, 144, 226, 0.05);
+}
+
+.language-option input[type="radio"]:checked + label {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+/* === Code Editor === */
+.editor-container {
+  background-color: var(--color-card-bg);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  height: 450px;
+  transition: border-color var(--transition-fast);
+}
+
+.editor-container:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+/* === Buttons === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: 12px 24px;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-sans);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #5a6268;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-hover);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-large {
+  width: 100%;
+  padding: 16px 24px;
+  font-size: var(--font-size-large);
+}
+
+.btn-success {
+  background-color: var(--color-success);
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+/* Loading state */
+.btn-loading {
+  position: relative;
+  color: transparent;
+}
+
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* === Progress Bar === */
+.progress-container {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 24px;
+  background-color: var(--color-border-light);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-success), #20c997);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: var(--spacing-sm);
+  color: white;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* === Timer === */
+.timer-box {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin: var(--spacing-md) 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
+.timer-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.timer-display {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-large);
+  background: #f8f9fa;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+}
+
+.timer-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+/* === Test Results === */
+.results-container {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.results-header {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.test-result {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+  overflow: hidden;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.test-result-header {
+  padding: var(--spacing-md);
+  font-weight: var(--font-weight-medium);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.test-result.passed {
+  border-left: 4px solid var(--color-success);
+}
+
+.test-result.passed .test-result-header {
+  background-color: var(--color-success-light);
+  color: #155724;
+}
+
+.test-result.failed {
+  border-left: 4px solid var(--color-error);
+}
+
+.test-result.failed .test-result-header {
+  background-color: var(--color-error-light);
+  color: #721c24;
+}
+
+.test-result-details {
+  padding: var(--spacing-lg);
+  background-color: white;
+  border-top: 1px solid var(--color-border);
+}
+
+.test-input {
+  margin-bottom: var(--spacing-md);
+}
+
+.test-input-label {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-small);
+}
+
+.test-input-value {
+  background-color: #f8f9fa;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-small);
+  white-space: pre-wrap;
+  margin-left: var(--spacing-md);
+}
+
+.test-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.test-output-column {
+  background-color: #f8f9fa;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
+}
+
+.test-output-label {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-small);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.test-output-value {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-small);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.test-output-column.your-output {
+  border-left: 3px solid var(--color-error);
+}
+
+.test-output-column.expected-output {
+  border-left: 3px solid var(--color-success);
+}
+
+.friendly-message {
+  background-color: #fff3cd;
+  border-left: 4px solid var(--color-warning);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  color: #856404;
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+/* === Success Celebration === */
+.success-celebration {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-md);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.success-celebration h2 {
+  color: white;
+  font-size: 32px;
+  margin-bottom: var(--spacing-md);
+}
+
+.success-celebration p {
+  font-size: var(--font-size-large);
+  margin-bottom: var(--spacing-lg);
+}
+
+.success-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* === Responsive Design === */
+@media (max-width: 1200px) {
+  .problem-container {
+    grid-template-columns: 38% 62%;
+    gap: var(--spacing-md);
+  }
+  
+  .container {
+    padding: var(--spacing-md);
+  }
+}
+
+@media (max-width: 968px) {
+  .problem-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .solution-panel {
+    position: static;
+  }
+  
+  .problem-panel {
+    max-height: none;
+  }
+  
+  .test-comparison {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --font-size-base: 15px;
+    --font-size-h1: 24px;
+    --font-size-h2: 20px;
+    --font-size-h3: 18px;
+  }
+  
+  .container {
+    padding: var(--spacing-sm);
+  }
+  
+  .problem-panel {
+    padding: var(--spacing-lg);
+  }
+  
+  .card {
+    padding: var(--spacing-md);
+  }
+  
+  .editor-container {
+    height: 350px;
+  }
+  
+  .language-options {
+    flex-direction: column;
+  }
+}
+
+/* === Utility Classes === */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.mb-0 { margin-bottom: 0; }
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+
+/* === Protocol Warning Banner === */
+.protocol-warning {
+  position: relative;
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+  border: 2px solid #e17055;
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  padding-right: 48px; /* Make room for close button */
+  margin-bottom: var(--spacing-lg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.4s ease-out;
+}
+
+.protocol-warning-content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.protocol-warning-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+.protocol-warning-text {
+  flex: 1;
+}
+
+.protocol-warning-text h3 {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: #d63031;
+  font-size: 1.1rem;
+}
+
+.protocol-warning-text p {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: #2d3436;
+  line-height: 1.6;
+}
+
+.protocol-warning-text p:last-child {
+  margin-bottom: 0;
+}
+
+.protocol-warning-text strong {
+  color: #d63031;
+  font-weight: 600;
+}
+
+.protocol-warning-text code {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.protocol-warning-instructions {
+  margin-top: var(--spacing-sm);
+  padding-left: var(--spacing-md);
+  border-left: 3px solid #e17055;
+}
+
+.protocol-warning-instructions li {
+  margin-bottom: var(--spacing-xs);
+  color: #2d3436;
+}
+
+.warning-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: #d63031;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  min-width: 32px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.warning-close-btn:hover {
+  opacity: 1;
+  background-color: rgba(214, 48, 49, 0.1);
+  transform: scale(1.1);
+}
+
+.warning-close-btn:active {
+  transform: scale(0.95);
+}
+
+.warning-close-btn:focus {
+  outline: 2px solid #d63031;
+  outline-offset: 2px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Pyodide Loading Overlay === */
+.pyodide-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.pyodide-loading-overlay.hidden {
+  display: none;
+}
+
+.pyodide-loading-content {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: var(--spacing-xl);
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  animation: scaleIn 0.3s ease-out;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto var(--spacing-md) auto;
+  border: 4px solid var(--color-border);
+  border-top: 4px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.pyodide-loading-content h3 {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--color-primary);
+  font-size: 1.2rem;
+}
+
+.loading-submessage {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* === Responsive adjustments for warnings/overlays === */
+@media (max-width: 768px) {
+  .protocol-warning {
+    padding: var(--spacing-sm);
+  }
+  
+  .protocol-warning-content {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .protocol-warning-icon {
+    font-size: 1.2rem;
+  }
+  
+  .pyodide-loading-content {
+    margin: var(--spacing-md);
+    padding: var(--spacing-lg);
+    max-width: calc(100% - 2 * var(--spacing-md));
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Protocol Warning Banner (for file:// protocol) -->
+  <div id="protocol-warning" class="protocol-warning" style="display: none;">
+    <button class="warning-close-btn" onclick="dismissProtocolWarning()" title="Close warning" aria-label="Close warning">✕</button>
+    <div class="protocol-warning-content">
+      <strong>⚠️ Python Disabled (File Protocol)</strong>
+      <p>Python requires a web server due to browser security restrictions.</p>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: 500;">How to enable Python?</summary>
+        <ol style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9em;">
+          <li>Open terminal in the folder containing this HTML file</li>
+          <li>Run: <code>python3 -m http.server 8003</code></li>
+          <li>Open: <code>http://localhost:8003/[filename].html</code></li>
+        </ol>
+        <p style="margin: 8px 0 0 0; font-size: 0.9em;">✅ JavaScript works without a server.</p>
+      </details>
+    </div>
+  </div>
+
+  <!-- Pyodide Loading Overlay -->
+  <div id="pyodide-loading" class="pyodide-loading-overlay" style="display: none;">
+    <div class="pyodide-loading-content">
+      <div class="loading-spinner"></div>
+      <p id="pyodide-loading-message">Loading Python environment...</p>
+      <p class="loading-submessage">This may take a moment on first load</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="problem-container">
+      
+      <!-- LEFT PANEL: Problem Description -->
+      <div class="problem-panel">
+        <!-- Problem Header -->
+        <div class="problem-header">
+          <h1 class="problem-title">🎯 Find Second Largest Number</h1>
+          <div class="problem-meta">
+            <span class="badge badge-medium" id="difficulty-badge">⭐⭐ Medium</span>
+            <span class="badge badge-time">⏱️ 15-20 minutes</span>
+          </div>
+        </div>
+
+        <!-- Problem Description -->
+        <div class="card">
+          <div class="card-header">
+            📝 Problem Description
+          </div>
+          <div class="card-content" id="problem-description">
+            <h1>Find Second Largest Number</h1>
+<h2>Problem Description</h2>
+<p>Write a program that finds the second largest number in an array. If there is no second largest number (for example, all numbers are the same), print &quot;NONE&quot;.</p>
+<h2>Input Format</h2>
+<ul>
+<li>First line: An integer <code>N</code> (the number of elements in the array, 1 ≤ N ≤ 100)</li>
+<li>Next N lines: Each contains one integer from the array (-1000 ≤ value ≤ 1000)</li>
+</ul>
+<h2>Output Format</h2>
+<p>Print either:</p>
+<ul>
+<li>The second largest number, OR</li>
+<li>&quot;NONE&quot; if there is no second largest number</li>
+</ul>
+<h2>Constraints</h2>
+<ul>
+<li>1 ≤ N ≤ 100</li>
+<li>-1000 ≤ array elements ≤ 1000</li>
+<li>If all numbers are the same, print &quot;NONE&quot;</li>
+<li>If there&#39;s only one unique number, print &quot;NONE&quot;</li>
+</ul>
+<h2>Examples</h2>
+<h3>Example 1</h3>
+<p><strong>Input:</strong></p>
+<pre><code>5
+10
+20
+30
+40
+50
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>40
+</code></pre>
+<p><strong>Explanation:</strong> The largest is 50, the second largest is 40.</p>
+<h3>Example 2</h3>
+<p><strong>Input:</strong></p>
+<pre><code>4
+5
+5
+5
+5
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>NONE
+</code></pre>
+<p><strong>Explanation:</strong> All numbers are the same, so there&#39;s no second largest.</p>
+<h3>Example 3</h3>
+<p><strong>Input:</strong></p>
+<pre><code>6
+10
+20
+20
+30
+30
+30
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>20
+</code></pre>
+<p><strong>Explanation:</strong> The largest unique value is 30, the second largest unique value is 20.</p>
+<h2>Hints</h2>
+<details>
+<summary>💡 Hint 1: Track the top two</summary>
+Keep track of the largest and second largest numbers as you go through the array.
+</details>
+
+<details>
+<summary>💡 Hint 2: Handle duplicates</summary>
+If you find a number equal to the largest, don't update the second largest. You're looking for the second largest *unique* value.
+</details>
+
+<details>
+<summary>💡 Hint 3: Edge cases</summary>
+What if the array has only 1 number? What if all numbers are identical? Make sure to handle these cases!
+</details>
+
+
+
+          </div>
+        </div>
+
+        <!-- Input Format -->
+        <div class="card card-input" id="input-format-section">
+          <div class="card-header">
+            📥 Input Format
+          </div>
+          <div class="card-content">
+            <p>Details about the input format will appear here.</p>
+          </div>
+        </div>
+
+        <!-- Output Format -->
+        <div class="card card-output" id="output-format-section">
+          <div class="card-header">
+            📤 Output Format
+          </div>
+          <div class="card-content">
+            <p>Details about the output format will appear here.</p>
+          </div>
+        </div>
+
+        <!-- Examples -->
+        <div id="examples-section">
+          <!-- Examples will be dynamically inserted here -->
+        </div>
+
+        <!-- Constraints (Expandable) -->
+        <details class="expandable" id="constraints-section" style="display: none;">
+          <summary>📊 Constraints</summary>
+          <div class="card-content">
+            <p>Constraints will appear here if provided.</p>
+          </div>
+        </details>
+
+        <!-- Hints (Expandable) -->
+        <details class="expandable" id="hints-section" style="display: none;">
+          <summary>💡 Need a hint? Click to reveal</summary>
+          <div class="card-content">
+            <p>Hints will appear here if provided.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- RIGHT PANEL: Solution & Testing -->
+      <div class="solution-panel">
+        
+        <!-- Language Selector -->
+        <div class="language-selector">
+          <label>Choose Your Language:</label>
+          <div class="language-options">
+            <div class="language-option">
+              <input type="radio" name="language" value="javascript" id="lang-javascript" checked>
+              <label for="lang-javascript">⚡ JavaScript</label>
+            </div>
+            <div class="language-option">
+              <input type="radio" name="language" value="python" id="lang-python">
+              <label for="lang-python">🐍 Python</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Code Editor -->
+        <div>
+          <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--color-text-primary);">
+            Your Solution
+          </label>
+          <div class="editor-container" id="editor-container"></div>
+        </div>
+
+        <!-- Timer -->
+        <div class="timer-box" aria-label="Problem timer">
+          <div class="timer-left">
+            <span>⏱️ Time:</span>
+            <span id="timer-display" class="timer-display" aria-live="polite">00:00</span>
+          </div>
+          <div class="timer-controls">
+            <button class="btn btn-secondary" id="timer-toggle" aria-pressed="false" title="Start/Pause (Alt+T)">Start</button>
+            <button class="btn" id="timer-reset" title="Reset timer">Reset</button>
+          </div>
+        </div>
+
+        <!-- Run Button -->
+        <button class="btn btn-primary btn-large" id="run-btn">
+          🚀 Run Tests
+          <span style="font-size: 12px; opacity: 0.8;">(Ctrl+Enter)</span>
+        </button>
+
+        <!-- Progress Bar (hidden initially) -->
+        <div class="progress-container" id="progress-container" style="display: none;">
+          <div class="progress-header">
+            <span>📊 Test Progress</span>
+            <span id="progress-text">0/0 passed</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Test Results -->
+        <div class="results-container" id="results-container">
+          <div class="results-header">
+            📋 Test Results
+          </div>
+          <p class="text-muted">Click "Run Tests" to check your solution.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================
+    // Test Cases (Filled by Generator)
+    // ============================================
+    const testCases = [
+  {
+    "input": "5\n10\n20\n30\n40\n50",
+    "expectedOutput": "40"
+  },
+  {
+    "input": "4\n5\n5\n5\n5",
+    "expectedOutput": "NONE"
+  },
+  {
+    "input": "6\n10\n20\n20\n30\n30\n30",
+    "expectedOutput": "20"
+  },
+  {
+    "input": "3\n1\n2\n3",
+    "expectedOutput": "2"
+  },
+  {
+    "input": "2\n100\n50",
+    "expectedOutput": "50"
+  },
+  {
+    "input": "1\n42",
+    "expectedOutput": "NONE"
+  },
+  {
+    "input": "2\n10\n10",
+    "expectedOutput": "NONE"
+  },
+  {
+    "input": "10\n5\n5\n5\n5\n5\n5\n5\n5\n5\n5",
+    "expectedOutput": "NONE"
+  },
+  {
+    "input": "5\n1\n1\n1\n1\n2",
+    "expectedOutput": "1"
+  },
+  {
+    "input": "5\n2\n1\n1\n1\n1",
+    "expectedOutput": "1"
+  },
+  {
+    "input": "3\n-10\n-5\n-1",
+    "expectedOutput": "-5"
+  },
+  {
+    "input": "4\n-100\n-100\n-50\n-50",
+    "expectedOutput": "-100"
+  },
+  {
+    "input": "6\n0\n0\n0\n1\n1\n2",
+    "expectedOutput": "1"
+  },
+  {
+    "input": "5\n1000\n-1000\n999\n-999\n0",
+    "expectedOutput": "999"
+  },
+  {
+    "input": "10\n100\n99\n98\n97\n96\n95\n94\n93\n92\n91",
+    "expectedOutput": "99"
+  },
+  {
+    "input": "10\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9",
+    "expectedOutput": "8"
+  },
+  {
+    "input": "20\n949\n939\n910\n282\n137\n38\n-67\n-69\n-113\n-196\n-243\n-367\n-461\n-582\n-583\n-614\n-635\n-712\n-752\n-836",
+    "expectedOutput": "939"
+  },
+  {
+    "input": "8\n1\n2\n2\n2\n3\n3\n3\n3",
+    "expectedOutput": "2"
+  },
+  {
+    "input": "21\n367\n-301\n430\n488\n52\n446\n-133\n-22\n-451\n179\n15\n-281\n116\n-273\n439\n-205\n-3\n209\n301\n-283\n-164",
+    "expectedOutput": "446"
+  },
+  {
+    "input": "7\n192\n130\n-134\n-327\n67\n229\n176",
+    "expectedOutput": "192"
+  },
+  {
+    "input": "25\n-33\n456\n236\n213\n252\n337\n-280\n205\n-421\n434\n117\n256\n-376\n170\n-109\n-28\n411\n-154\n393\n191\n-379\n0\n-416\n-365\n-273",
+    "expectedOutput": "434"
+  },
+  {
+    "input": "3\n392\n-298\n249",
+    "expectedOutput": "249"
+  },
+  {
+    "input": "21\n-143\n94\n309\n-389\n474\n-498\n-181\n36\n286\n84\n-158\n-201\n-333\n370\n-144\n-331\n269\n410\n-349\n-398\n175",
+    "expectedOutput": "410"
+  },
+  {
+    "input": "25\n422\n-10\n-483\n68\n464\n39\n340\n-13\n-442\n476\n325\n-235\n323\n-435\n-308\n329\n494\n5\n-128\n-53\n-39\n258\n169\n-211\n206",
+    "expectedOutput": "476"
+  },
+  {
+    "input": "10\n134\n95\n284\n495\n244\n173\n-65\n-6\n281\n-184",
+    "expectedOutput": "284"
+  },
+  {
+    "input": "7\n232\n335\n-414\n401\n177\n-106\n245",
+    "expectedOutput": "335"
+  },
+  {
+    "input": "11\n-266\n-30\n-40\n60\n-441\n-397\n-267\n14\n9\n479\n-195",
+    "expectedOutput": "60"
+  },
+  {
+    "input": "15\n313\n341\n114\n-247\n-79\n-7\n230\n-220\n153\n55\n205\n-424\n57\n-74\n13",
+    "expectedOutput": "313"
+  },
+  {
+    "input": "29\n471\n-283\n443\n465\n-177\n5\n-302\n-93\n-74\n131\n331\n-327\n144\n-302\n214\n-69\n72\n-265\n-313\n186\n-26\n-74\n341\n-108\n231\n-216\n-113\n-274\n325",
+    "expectedOutput": "465"
+  },
+  {
+    "input": "18\n352\n182\n93\n134\n-194\n216\n-24\n423\n-69\n269\n179\n-334\n-129\n-274\n38\n-35\n-473\n-101",
+    "expectedOutput": "352"
+  }
+];
+    
+    // ============================================
+    // Starter Code Templates
+    // ============================================
+    const defaultCode = {
+      python: `# Starter code: Read input and echo it back
+# This verifies the code runner is working!
+
+def solve():
+    line = input()  # Read one line
+    print(line)     # Print it back
+
+solve()`,
+      javascript: `// Starter code: Read input and echo it back
+// This verifies the code runner is working!
+
+function solve() {
+    const line = readln();  // Read one line
+    console.log(line);      // Print it back
+}
+
+solve();`
+    };
+
+    // ============================================
+    // I/O Instructions for Blue/Green Boxes
+    // ============================================
+    const ioInstructions = {
+      javascript: {
+        input: `<p><strong>Reading Input:</strong></p>
+<p>Use <code>readln()</code> to read one line from stdin.</p>
+<pre><code>const line = readln();
+const number = Number(readln());</code></pre>`,
+        output: `<p><strong>Writing Output:</strong></p>
+<p>Use <code>console.log()</code> to write to stdout.</p>
+<pre><code>console.log("Hello");
+console.log(42);</code></pre>`
+      },
+      python: {
+        input: `<p><strong>Reading Input:</strong></p>
+<p>Use <code>input()</code> to read one line from stdin.</p>
+<pre><code>line = input()
+number = int(input())</code></pre>`,
+        output: `<p><strong>Writing Output:</strong></p>
+<p>Use <code>print()</code> to write to stdout.</p>
+<pre><code>print("Hello")
+print(42)</code></pre>`
+      }
+    };
+
+    // ============================================
+    // DOM Elements
+    // ============================================
+    const langRadios = document.getElementsByName('language');
+    const runBtn = document.getElementById('run-btn');
+    const resultsContainer = document.getElementById('results-container');
+    const progressContainer = document.getElementById('progress-container');
+    const progressFill = document.getElementById('progress-fill');
+    const progressText = document.getElementById('progress-text');
+  const timerDisplay = document.getElementById('timer-display');
+  const timerToggleBtn = document.getElementById('timer-toggle');
+  const timerResetBtn = document.getElementById('timer-reset');
+    
+    let monacoEditor;
+    let pyodide;
+    let pyodideLoading = false;
+    let pyodideLoaded = false;
+    let currentLanguage = 'javascript'; // Default to JavaScript for instant page load
+
+    // ============================================
+    // Update I/O Instruction Boxes
+    // ============================================
+    function updateIOInstructions(language) {
+      const inputSection = document.querySelector('#input-format-section .card-content');
+      const outputSection = document.querySelector('#output-format-section .card-content');
+      
+      if (inputSection && ioInstructions[language]) {
+        inputSection.innerHTML = ioInstructions[language].input;
+      }
+      
+      if (outputSection && ioInstructions[language]) {
+        outputSection.innerHTML = ioInstructions[language].output;
+      }
+    }
+
+    // ============================================
+    // Protocol Detection & Pyodide Management
+    // ============================================
+    function isFileProtocol() {
+      return window.location.protocol === 'file:';
+    }
+
+    function showProtocolWarning() {
+      const warningDiv = document.getElementById('protocol-warning');
+      if (warningDiv) {
+        warningDiv.style.display = 'block';
+      }
+    }
+
+    function hideProtocolWarning() {
+      const warningDiv = document.getElementById('protocol-warning');
+      if (warningDiv) {
+        warningDiv.style.display = 'none';
+      }
+    }
+
+    function dismissProtocolWarning() {
+      // User manually dismissed the warning
+      hideProtocolWarning();
+      // Note: Warning will reappear if user tries to click Python button
+      // (showProtocolWarning is called in the Python language handler)
+    }
+
+    function showPyodideLoading(message = 'Loading Python environment...') {
+      const loadingDiv = document.getElementById('pyodide-loading');
+      const messageP = document.getElementById('pyodide-loading-message');
+      if (loadingDiv) loadingDiv.style.display = 'flex';
+      if (messageP) messageP.textContent = message;
+    }
+
+    function hidePyodideLoading() {
+      const loadingDiv = document.getElementById('pyodide-loading');
+      if (loadingDiv) loadingDiv.style.display = 'none';
+    }
+
+    // Dynamically load Pyodide script
+    function loadPyodideScript() {
+      return new Promise((resolve, reject) => {
+        if (window.loadPyodide) {
+          resolve(); // Already loaded
+          return;
+        }
+        
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js';
+        script.onload = resolve;
+        script.onerror = () => reject(new Error('Failed to load Pyodide script from CDN'));
+        document.head.appendChild(script);
+      });
+    }
+
+    // Lazy load and initialize Pyodide
+    async function ensurePyodideLoaded(showLoading = true) {
+      if (pyodideLoaded) {
+        return pyodide; // Already loaded
+      }
+      
+      if (pyodideLoading) {
+        // Wait for existing load to complete
+        while (pyodideLoading && !pyodideLoaded) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        return pyodide;
+      }
+      
+      // Start loading
+      pyodideLoading = true;
+      if (showLoading) {
+        showPyodideLoading('Loading Python environment...');
+      }
+      
+      try {
+        // Load the Pyodide script first
+        await loadPyodideScript();
+        
+        // Initialize Pyodide
+        pyodide = await loadPyodide();
+        
+        pyodideLoaded = true;
+        pyodideLoading = false;
+        
+        if (showLoading) {
+          hidePyodideLoading();
+        }
+        
+        return pyodide;
+      } catch (error) {
+        pyodideLoading = false;
+        if (showLoading) {
+          hidePyodideLoading();
+        }
+        throw error;
+      }
+    }
+
+    // Background preload (on web servers only)
+    function preloadPyodideInBackground() {
+      if (isFileProtocol() || pyodideLoaded || pyodideLoading) {
+        return; // Don't preload on file:// or if already loaded/loading
+      }
+      
+      // Silent load in background (no loading indicator)
+      ensurePyodideLoaded(false).catch(err => {
+        console.log('Background Pyodide preload failed:', err);
+        // Don't show error - will load on-demand if user clicks Python
+      });
+    }
+
+    // ============================================
+    // Timer State & Helpers
+    // ============================================
+    const timer = {
+      startTs: null,
+      elapsedMs: 0,
+      intervalId: null,
+      state: 'idle' // 'idle' | 'running' | 'paused'
+    };
+
+    function formatTime(ms) {
+      const totalSec = Math.floor(ms / 1000);
+      const mm = String(Math.floor(totalSec / 60)).padStart(2, '0');
+      const ss = String(totalSec % 60).padStart(2, '0');
+      return `${mm}:${ss}`;
+    }
+
+    function updateTimerDisplay() {
+      const now = Date.now();
+      let ms = timer.elapsedMs;
+      if (timer.state === 'running' && timer.startTs) {
+        ms += (now - timer.startTs);
+      }
+      timerDisplay.textContent = formatTime(ms);
+    }
+
+    function startTimer() {
+      if (timer.state === 'running') return;
+      timer.startTs = Date.now();
+      timer.state = 'running';
+      timerToggleBtn.textContent = 'Pause';
+      timerToggleBtn.setAttribute('aria-pressed', 'true');
+      if (timer.intervalId) clearInterval(timer.intervalId);
+      timer.intervalId = setInterval(updateTimerDisplay, 1000);
+      updateTimerDisplay();
+    }
+
+    function pauseTimer() {
+      if (timer.state !== 'running') return;
+      if (timer.intervalId) clearInterval(timer.intervalId);
+      timer.intervalId = null;
+      const now = Date.now();
+      timer.elapsedMs += (now - (timer.startTs || now));
+      timer.startTs = null;
+      timer.state = 'paused';
+      timerToggleBtn.textContent = 'Start';
+      timerToggleBtn.setAttribute('aria-pressed', 'false');
+      updateTimerDisplay();
+    }
+
+    function resetTimer() {
+      if (timer.intervalId) clearInterval(timer.intervalId);
+      timer.intervalId = null;
+      timer.startTs = null;
+      timer.elapsedMs = 0;
+      timer.state = 'idle';
+      timerToggleBtn.textContent = 'Start';
+      timerToggleBtn.setAttribute('aria-pressed', 'false');
+      updateTimerDisplay();
+    }
+
+    function getElapsedMs() {
+      if (timer.state === 'running' && timer.startTs) {
+        return timer.elapsedMs + (Date.now() - timer.startTs);
+      }
+      return timer.elapsedMs;
+    }
+
+    function parseTimeEstimate() {
+      const el = document.querySelector('.badge-time');
+      if (!el) return null;
+      const raw = el.textContent || '';
+      const matchPlus = raw.match(/(\d+)\s*\+\s*minutes/i);
+      const matchRange = raw.match(/(\d+)\s*-\s*(\d+)\s*minutes/i);
+      if (matchPlus) {
+        return { min: parseInt(matchPlus[1], 10), max: null };
+      }
+      if (matchRange) {
+        return { min: parseInt(matchRange[1], 10), max: parseInt(matchRange[2], 10) };
+      }
+      return null;
+    }
+
+    function compareElapsedToEstimate(ms, range) {
+      if (!range || range.min == null) return 'unknown';
+      const minutes = ms / 60000;
+      if (range.max == null) {
+        return minutes < range.min ? 'within' : 'over';
+      }
+      if (minutes < range.min) return 'under';
+      if (minutes <= range.max) return 'within';
+      return 'over';
+    }
+
+    // Timer UI wiring
+    timerToggleBtn.addEventListener('click', () => {
+      if (timer.state === 'running') {
+        pauseTimer();
+      } else {
+        startTimer();
+      }
+    });
+
+    timerResetBtn.addEventListener('click', () => {
+      resetTimer();
+    });
+
+    // ============================================
+    // Initialize UI Components Immediately
+    // ============================================
+    // Initialize I/O instruction boxes with default language (instant!)
+    updateIOInstructions(currentLanguage);
+
+    // Check protocol and disable Python if on file:// (instant!)
+    if (isFileProtocol()) {
+      showProtocolWarning();
+      document.getElementById('lang-python').disabled = true;
+      document.getElementById('lang-python').style.opacity = '0.5';
+    } else {
+      // On web server - preload Pyodide in background after 5 seconds
+      setTimeout(preloadPyodideInBackground, 5000);
+    }
+
+    // ============================================
+    // Monaco Editor Initialization
+    // ============================================
+    require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.49.0/min/vs' }});
+    require(['vs/editor/editor.main'], function() {
+      monacoEditor = monaco.editor.create(document.getElementById('editor-container'), {
+        value: defaultCode.javascript,
+        language: 'javascript',
+        theme: 'vs-light',  // Light theme for student-friendly appearance
+        fontSize: 15,
+        lineHeight: 22,
+        automaticLayout: true,
+        minimap: { enabled: false },  // Remove minimap for cleaner look
+        scrollBeyondLastLine: false,
+        renderLineHighlight: 'all',
+        padding: { top: 10, bottom: 10 }
+      });
+
+      // Language change handler with lazy Pyodide loading
+      langRadios.forEach(radio => {
+        radio.addEventListener('change', async (e) => {
+          if (e.target.checked) {
+            const newLang = e.target.value;
+            
+            // Check if switching to Python
+            if (newLang === 'python') {
+              // Check protocol first
+              if (isFileProtocol()) {
+                // Show warning and stay on JavaScript
+                showProtocolWarning();
+                // Revert to JavaScript
+                document.getElementById('lang-javascript').checked = true;
+                return;
+              }
+              
+              // On web server - load Pyodide if needed
+              try {
+                await ensurePyodideLoaded(true); // Show loading indicator
+                // Success - switch language
+                currentLanguage = newLang;
+                monaco.editor.setModelLanguage(monacoEditor.getModel(), currentLanguage);
+                monacoEditor.setValue(defaultCode[currentLanguage]);
+                updateIOInstructions(currentLanguage); // Update I/O instruction boxes
+              } catch (error) {
+                // Failed to load Pyodide
+                showResults(`<p style="color: var(--color-error);">❌ Failed to load Python: ${error.message}</p>`);
+                // Revert to JavaScript
+                document.getElementById('lang-javascript').checked = true;
+                currentLanguage = 'javascript';
+              }
+            } else {
+              // Switching to JavaScript - no Pyodide needed
+              hideProtocolWarning();
+              currentLanguage = newLang;
+              monaco.editor.setModelLanguage(monacoEditor.getModel(), currentLanguage);
+              monacoEditor.setValue(defaultCode[currentLanguage]);
+              updateIOInstructions(currentLanguage); // Update I/O instruction boxes
+            }
+          }
+        });
+      });
+    });
+
+    // ============================================
+    // Keyboard Shortcuts
+    // ============================================
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        if (!runBtn.disabled) {
+          onRunTests();
+        }
+      }
+    });
+
+    // Timer keyboard shortcut: Alt+T to toggle Start/Pause
+    document.addEventListener('keydown', (e) => {
+      const isAltT = e.altKey && (e.key.toLowerCase() === 't');
+      if (isAltT) {
+        e.preventDefault();
+        if (timer.state === 'running') pauseTimer(); else startTimer();
+      }
+    });
+
+    // ============================================
+    // Main Test Runner
+    // ============================================
+    runBtn.addEventListener('click', onRunTests);
+
+    async function onRunTests() {
+      const code = monacoEditor.getValue();
+      
+      // Show loading state
+      runBtn.disabled = true;
+      runBtn.classList.add('btn-loading');
+      progressContainer.style.display = 'block';
+      
+      showResults('<p class="text-muted">⏳ Running tests...</p>');
+
+      let allTestsPassed = true;
+      let testResults = [];
+
+      for (let i = 0; i < testCases.length; i++) {
+        const testCase = testCases[i];
+        let result = {
+          id: i + 1,
+          input: testCase.input,
+          passed: false,
+          output: '',
+          expected: testCase.expectedOutput,
+          error: null
+        };
+
+        try {
+          if (currentLanguage === 'python') {
+            result.output = await runPythonTest(code, testCase.input);
+          } else if (currentLanguage === 'javascript') {
+            result.output = await runJavaScriptTest(code, testCase.input);
+          }
+
+          // Normalize whitespace for comparison
+          const normalizedOutput = result.output.trim().replace(/\r\n/g, '\n');
+          const normalizedExpected = testCase.expectedOutput.trim().replace(/\r\n/g, '\n');
+
+          if (normalizedOutput === normalizedExpected) {
+            result.passed = true;
+          } else {
+            allTestsPassed = false;
+          }
+
+        } catch (error) {
+          result.error = error.message || String(error);
+          allTestsPassed = false;
+        }
+        
+        testResults.push(result);
+        updateProgress(testResults);
+        displayResults(testResults, false);
+      }
+      
+      // Show final results
+      displayResults(testResults, true);
+      
+      // Celebrate if all tests passed
+      if (allTestsPassed) {
+        showSuccessCelebration();
+      }
+      
+      runBtn.disabled = false;
+      runBtn.classList.remove('btn-loading');
+    }
+
+    // ============================================
+    // Python Test Execution
+    // ============================================
+    async function runPythonTest(code, input) {
+      // Ensure Pyodide is loaded (should already be loaded if Python is selected)
+      if (!pyodideLoaded) {
+        await ensurePyodideLoaded(true);
+      }
+      
+      if (!pyodide) {
+        throw new Error('Pyodide failed to load.');
+      }
+      
+      const inputs = (input || "").split('\n');
+      let inputIndex = 0;
+      pyodide.setStdin({ 
+        stdin: () => {
+          if (inputIndex < inputs.length) {
+            return inputs[inputIndex++];
+          }
+          return null;
+        }
+      });
+
+      let capturedOutput = "";
+      pyodide.setStdout({ batched: (str) => capturedOutput += str + "\n" });
+      pyodide.setStderr({ batched: (str) => capturedOutput += `[ERROR] ${str}\n` });
+      
+      try {
+        await pyodide.runPythonAsync(code);
+        return capturedOutput;
+      } catch (error) {
+        throw new Error(capturedOutput + `\n[RUNTIME ERROR] ${error.message}`);
+      }
+    }
+
+    // ============================================
+    // JavaScript Test Execution
+    // ============================================
+    function runJavaScriptTest(code, input) {
+      return new Promise((resolve, reject) => {
+        const workerCode = `
+          self.onmessage = function(e) {
+            const { code, input } = e.data;
+            const inputs = (input || "").split('\\n');
+            let inputIndex = 0;
+            
+            const readln = () => {
+              if (inputIndex < inputs.length) {
+                return inputs[inputIndex++];
+              }
+              return null;
+            };
+
+            let capturedOutput = "";
+            const console = {
+              log: (...args) => {
+                capturedOutput += args.map(String).join(' ') + '\\n';
+              }
+            };
+            
+            try {
+              new Function('console', 'readln', code)(console, readln);
+              self.postMessage({ output: capturedOutput.trim() });
+            } catch (error) {
+              self.postMessage({ error: error.message });
+            }
+          }
+        `;
+        
+        const blob = new Blob([workerCode], { type: 'application/javascript' });
+        const worker = new Worker(URL.createObjectURL(blob));
+
+        const timeout = setTimeout(() => {
+          worker.terminate();
+          reject(new Error('⏱️ Test timed out (5 seconds). Possible infinite loop.'));
+        }, 5000);
+
+        worker.onmessage = (e) => {
+          clearTimeout(timeout);
+          worker.terminate();
+          if (e.data.error) {
+            reject(new Error(e.data.error));
+          } else {
+            resolve(e.data.output);
+          }
+        };
+
+        worker.onerror = (e) => {
+          clearTimeout(timeout);
+          worker.terminate();
+          reject(new Error(`[Worker Error] ${e.message}`));
+        };
+
+        worker.postMessage({ code: code, input: input });
+      });
+    }
+
+    // ============================================
+    // Progress Bar Update
+    // ============================================
+    function updateProgress(results) {
+      const totalTests = testCases.length;
+      const passedTests = results.filter(r => r.passed).length;
+      const percentage = (passedTests / totalTests) * 100;
+      
+      progressFill.style.width = `${percentage}%`;
+      progressText.textContent = `${passedTests}/${totalTests} passed`;
+    }
+
+    // ============================================
+    // Display Test Results
+    // ============================================
+    function displayResults(results, isFinal) {
+      let html = '<div class="results-header">📋 Test Results</div>';
+      
+      results.forEach(result => {
+        const statusClass = result.passed ? 'passed' : 'failed';
+        const statusIcon = result.passed ? '✅' : '❌';
+        const statusText = result.passed ? 'Passed' : 'Failed';
+        
+        html += `<div class="test-result ${statusClass}">`;
+        html += `  <div class="test-result-header">`;
+        html += `    ${statusIcon} Test Case ${result.id}: ${statusText}`;
+        html += `  </div>`;
+        
+        if (!result.passed) {
+          html += `<div class="test-result-details">`;
+          
+          // Show input
+          html += `<div class="test-input">`;
+          html += `  <div class="test-input-label">Input:</div>`;
+          html += `  <div class="test-input-value">${escapeHtml(result.input)}</div>`;
+          html += `</div>`;
+          
+          // Show side-by-side comparison
+          html += `<div class="test-comparison">`;
+          html += `  <div class="test-output-column your-output">`;
+          html += `    <div class="test-output-label">Your Output</div>`;
+          html += `    <div class="test-output-value">${escapeHtml(result.output || '(no output)')}</div>`;
+          html += `  </div>`;
+          html += `  <div class="test-output-column expected-output">`;
+          html += `    <div class="test-output-label">Expected Output</div>`;
+          html += `    <div class="test-output-value">${escapeHtml(result.expected)}</div>`;
+          html += `  </div>`;
+          html += `</div>`;
+          
+          // Friendly error message
+          const friendlyMsg = getFriendlyMessage(result);
+          html += `<div class="friendly-message">💬 ${friendlyMsg}</div>`;
+          
+          html += `</div>`;
+        }
+        
+        html += `</div>`;
+      });
+      
+      resultsContainer.innerHTML = html;
+    }
+
+    // ============================================
+    // Helper Functions
+    // ============================================
+    function showResults(html) {
+      resultsContainer.innerHTML = '<div class="results-header">📋 Test Results</div>' + html;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function getFriendlyMessage(result) {
+      if (result.error) {
+        if (result.error.includes('timeout')) {
+          return 'Your code took too long to run. Check for infinite loops!';
+        } else if (result.error.includes('RUNTIME ERROR') || result.error.includes('ERROR')) {
+          return 'Your code had an error. Check the error message above.';
+        }
+        return result.error;
+      }
+      
+      const yourOut = (result.output || '').trim();
+      const expected = result.expected.trim();
+      
+      if (yourOut === '') {
+        return 'Your code didn\'t print anything. Did you forget to print the result?';
+      }
+      
+      return `Your answer was "${yourOut}", but we expected "${expected}". Double-check your logic!`;
+    }
+
+    function resetProblem() {
+      // Reset editor to default starter code for current language
+      if (monacoEditor && currentLanguage && defaultCode[currentLanguage]) {
+        monacoEditor.setValue(defaultCode[currentLanguage]);
+      }
+      // Reset results area
+      resultsContainer.innerHTML = `
+          <div class="results-header">
+            📋 Test Results
+          </div>
+          <p class="text-muted">Click \"Run Tests\" to check your solution.</p>
+      `;
+      // Reset progress bar
+      progressContainer.style.display = 'none';
+      progressFill.style.width = '0%';
+      progressText.textContent = '0/0 passed';
+      // Reset timer
+      resetTimer();
+      // Focus editor
+      setTimeout(() => {
+        const editorContainer = document.getElementById('editor-container');
+        if (editorContainer) editorContainer.focus();
+      }, 0);
+    }
+
+    function showSuccessCelebration() {
+      // Auto-stop timer if running
+      if (timer.state === 'running') {
+        pauseTimer();
+      }
+
+      const elapsedMs = getElapsedMs();
+      const hasTime = elapsedMs > 0;
+      const estimate = parseTimeEstimate();
+      const cmp = hasTime ? compareElapsedToEstimate(elapsedMs, estimate) : 'unknown';
+      const elapsedText = hasTime ? `You finished in ${formatTime(elapsedMs)}.` : 'Time not recorded.';
+      let compareText = '';
+      if (hasTime && estimate) {
+        if (cmp === 'under') compareText = 'Faster than the estimate — nice!';
+        else if (cmp === 'within') compareText = 'Within the expected time.';
+        else if (cmp === 'over') compareText = 'A bit over the estimate — keep practicing!';
+      }
+      // Confetti animation
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+        
+        setTimeout(() => {
+          confetti({
+            particleCount: 50,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 }
+          });
+        }, 200);
+        
+        setTimeout(() => {
+          confetti({
+            particleCount: 50,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 }
+          });
+        }, 400);
+      }
+      
+      // Success message
+      const successHtml = `
+        <div class=\"success-celebration\">
+          <h2>🎉 Congratulations! 🎉</h2>
+          <p>All test cases passed! You've solved the problem correctly!</p>
+          <p>${elapsedText} ${compareText}</p>
+          <div class=\"success-actions\">
+            <button class=\"btn btn-success\" id=\"reset-try-again\">↻ Reset and Try Again</button>
+          </div>
+        </div>
+      `;
+      
+      resultsContainer.innerHTML = successHtml;
+      const resetBtn = document.getElementById('reset-try-again');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          resetProblem();
+        });
+      }
+    }
+
+  </script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>

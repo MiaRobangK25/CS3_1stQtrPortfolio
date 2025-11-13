@@ -1,0 +1,1035 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lecture Presentation</title>
+    <style>
+        * { box-sizing: border-box; }
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        
+        #slide-container {
+            width: 100%;
+            min-height: 100vh;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            padding: 3rem 2rem 200px 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        #slide-container h1 { font-size: 2.5em; margin: 0.5em 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        #slide-container h2 { font-size: 2em; margin: 0.5em 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        #slide-container h3 { font-size: 1.5em; margin: 0.5em 0; }
+        #slide-container p { font-size: 1.2em; line-height: 1.6; max-width: 800px; margin: 0.5em auto; }
+        #slide-container img { max-width: 100%; height: auto; border-radius: 8px; margin: 1.5rem 0; }
+        #slide-container ul, #slide-container ol { text-align: left; max-width: 600px; margin: 1em auto; font-size: 1.1em; }
+        #slide-container code { background: #333; padding: 0.2em 0.4em; border-radius: 3px; }
+        #slide-container pre { 
+            background: #2d2d2d; 
+            padding: 1em; 
+            border-radius: 8px; 
+            overflow-x: visible; 
+            text-align: left;
+            font-family: 'Courier New', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-size: 0.8em;
+            line-height: 1.4;
+            max-width: 100%;
+            white-space: pre;
+        }
+        
+        #slide-container pre code {
+            font-family: inherit;
+            font-size: inherit;
+            background: transparent;
+            padding: 0;
+        }
+        
+        /* Start Overlay */
+        #start-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            z-index: 1000;
+        }
+        
+        #status-message {
+            font-size: 1.1em;
+            color: #aaa;
+            margin: 0;
+            min-height: 1.5em;
+        }
+        
+        #status-message.success { color: #4CAF50; }
+        #status-message.warning { color: #FF9800; }
+        #status-message.error { color: #f44336; }
+        
+        /* Mode Selection */
+        #mode-selection {
+            margin: 1.5em 0;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        #mode-selection fieldset {
+            border: 2px solid #555;
+            border-radius: 8px;
+            padding: 1em;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        #mode-selection legend {
+            padding: 0 0.5em;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .mode-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .mode-option:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .mode-option input[type="radio"] {
+            margin-top: 4px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .mode-option-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .mode-option strong {
+            font-size: 1.1em;
+            color: #fff;
+        }
+        
+        .mode-option small {
+            font-size: 0.85em;
+            color: #aaa;
+            line-height: 1.3;
+        }
+        
+        #controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            padding: 1em;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        
+        #voice-controls-container.hidden {
+            display: none;
+        }
+        
+        #voice-select {
+            min-width: 200px;
+            padding: 0.5em;
+            font-size: 1em;
+            border-radius: 4px;
+            border: 1px solid #555;
+            background: #2d2d2d;
+            color: #fff;
+        }
+        
+        label {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+        
+        input[type="range"] {
+            width: 120px;
+        }
+        
+        #start-button {
+            font-size: 1.3em;
+            padding: 0.8em 2em;
+            border-radius: 8px;
+            border: none;
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        #start-button:hover:not(:disabled) {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+        
+        #start-button:disabled {
+            background: #555;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        /* Navigation Controls */
+        #nav-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+        
+        #nav-controls.visible { display: flex; }
+        
+        #progress-indicator {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            text-align: center;
+            border: 1px solid #555;
+        }
+        
+        .nav-button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(76, 175, 80, 0.9);
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .nav-button:hover { background: rgba(69, 160, 73, 1); transform: scale(1.05); }
+        .nav-button:disabled { background: rgba(85, 85, 85, 0.5); cursor: not-allowed; }
+        
+        #pause-button {
+            background: rgba(255, 152, 0, 0.9);
+        }
+        
+        #pause-button:hover:not(:disabled) {
+            background: rgba(245, 124, 0, 1);
+        }
+        
+        #pause-button.paused {
+            background: rgba(76, 175, 80, 0.9);
+        }
+        
+        #pause-button.paused:hover {
+            background: rgba(69, 160, 73, 1);
+        }
+        
+        #pause-button.hidden {
+            display: none;
+        }
+        
+        /* Speed Control */
+        .speed-control {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+        }
+        
+        .speed-control label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            cursor: default;
+        }
+        
+        #speed-slider {
+            width: 100px;
+            height: 6px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        #speed-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #4CAF50;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        #speed-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #4CAF50;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        
+        #speed-value {
+            font-weight: bold;
+            min-width: 45px;
+            text-align: right;
+            color: #4CAF50;
+        }
+        
+        .speed-control.hidden {
+            display: none;
+        }
+        
+        /* Keyboard Hint */
+        .keyboard-hint {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 6px;
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+        }
+        
+        .keyboard-hint kbd {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        
+        /* Speed Toast Notification */
+        #speed-toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 1.5rem 3rem;
+            border-radius: 12px;
+            font-size: 1.8em;
+            font-weight: bold;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border: 2px solid #4CAF50;
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #4CAF50;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            #slide-container { padding: 2rem 1rem; }
+            #slide-container h1 { font-size: 1.8em; }
+            #slide-container h2 { font-size: 1.5em; }
+            #slide-container p { font-size: 1em; }
+            #controls { flex-direction: column; }
+            #nav-controls { bottom: 10px; right: 10px; }
+            
+            #speed-slider {
+                width: 150px;
+            }
+            
+            .nav-button {
+                padding: 10px 16px;
+                font-size: 0.9em;
+            }
+            
+            #speed-toast {
+                font-size: 1.5em;
+                padding: 1rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main id="slide-container">
+        <div id="start-overlay">
+            <div class="spinner"></div>
+            <p id="status-message">Initializing presentation...</p>
+            
+            <div id="mode-selection">
+                <fieldset>
+                    <legend>Choose Playback Mode</legend>
+                    <label class="mode-option">
+                        <input type="radio" name="playback-mode" value="auto" checked>
+                        <span class="mode-option-content">
+                            <strong>Auto-play with voice</strong>
+                            <small>Slides advance automatically with narration</small>
+                        </span>
+                    </label>
+                    <label class="mode-option">
+                        <input type="radio" name="playback-mode" value="manual">
+                        <span class="mode-option-content">
+                            <strong>Manual navigation</strong>
+                            <small>Use Next/Previous buttons to control pace (recommended for Linux + Chrome)</small>
+                        </span>
+                    </label>
+                </fieldset>
+            </div>
+            
+            <div id="voice-controls-container">
+                <div id="controls">
+                    <label>
+                        Voice
+                        <select id="voice-select">
+                            <option>Loading voices...</option>
+                        </select>
+                    </label>
+                    <label>
+                        Rate
+                        <input id="rate" type="range" min="0.6" max="1.3" step="0.05" value="0.95">
+                        <span id="rate-value">0.95x</span>
+                    </label>
+                    <label>
+                        Pitch
+                        <input id="pitch" type="range" min="0.6" max="1.5" step="0.05" value="1.0">
+                        <span id="pitch-value">1.0</span>
+                    </label>
+                </div>
+            </div>
+            
+            <button id="start-button" disabled>Initializing...</button>
+            
+            <div class="keyboard-hint">
+                <strong>Tip:</strong> Press <kbd>,</kbd> or <kbd>.</kbd> during playback to adjust speed
+            </div>
+        </div>
+    </main>
+    
+    <div id="nav-controls">
+        <div id="progress-indicator">Slide 1 of 1</div>
+        <div id="speed-control" class="speed-control hidden">
+            <label>
+                Speed:
+                <input id="speed-slider" type="range" min="0.6" max="1.3" step="0.05" value="0.95">
+                <span id="speed-value">0.95x</span>
+            </label>
+        </div>
+        <button id="pause-button" class="nav-button hidden">⏸ Pause</button>
+        <button id="prev-button" class="nav-button">⬅ Previous</button>
+        <button id="next-button" class="nav-button">Next ➡</button>
+    </div>
+    
+    <script id="slides-data" type="application/json">[{"html":"<h1>Welcome to JavaScript - Part 2!</h1>\n<p>Welcome back! 🎉</p>\n<p>In <strong>Part 1</strong>, you learned the foundations: variables, conditionals, loops, and functions. Now you're ready for the exciting stuff!</p>"},{"html":"<h2>Quick Recap: What You Already Know</h2>\n<p>Let's refresh your memory from Part 1:</p>"},{"html":"<h3><strong>Variables &amp; Data Types</strong></h3>\n<pre><code class=\"language-javascript\">let name = \"Maria\";      // String\nlet age = 15;            // Number\nlet isPassed = true;     // Boolean\n</code></pre>"},{"html":"<h3><strong>Conditionals (Making Decisions)</strong></h3>\n<pre><code class=\"language-javascript\">if (score &gt;= 75) {\n    console.log(\"Passed!\");\n} else {\n    console.log(\"Not yet!\");\n}\n</code></pre>"},{"html":"<h3><strong>Loops (Repeating Actions)</strong></h3>\n<pre><code class=\"language-javascript\">// For loop\nfor (let i = 1; i &lt;= 5; i++) {\n    console.log(i);\n}\n\n// While loop\nwhile (count &lt; 10) {\n    count++;\n}\n</code></pre>"},{"html":"<h3><strong>Functions (Reusable Code)</strong></h3>\n<pre><code class=\"language-javascript\">function greet(name) {\n    return \"Hello, \" + name + \"!\";\n}\n\nlet message = greet(\"Jose\");  // \"Hello, Jose!\"\n</code></pre>\n<p><strong>Great!</strong> Now let's build on this foundation! 🚀</p>"},{"html":"<h2>Why Data Structures?</h2>\n<p>Imagine you need to store <strong>100 students' names</strong>. Would you do this?</p>\n<pre><code class=\"language-javascript\">// ❌ Terrible way\nlet student1 = \"Maria\";\nlet student2 = \"Jose\";\nlet student3 = \"Ana\";\n// ... 97 more lines ...\n</code></pre>\n<p><strong>No way!</strong> That's where <strong>Arrays</strong> and <strong>Objects</strong> come in! 🎯</p>\n<p><strong>Today you'll learn:</strong></p>\n<ul>\n<li>📦 <strong>Arrays</strong> - Store lists of data (names, scores, prices)</li>\n<li>🗂️ <strong>Objects</strong> - Store related information together (student profiles)</li>\n<li>⚡ <strong>Powerful Methods</strong> - Process data like a pro!</li>\n</ul>"},{"html":"<h2>Arrays - Your First Data Structure</h2>\n<p>An <strong>array</strong> is like a <strong>list</strong> that stores multiple values in one variable.</p>"},{"html":"<h3><strong>Creating Arrays</strong></h3>\n<pre><code class=\"language-javascript\">// Empty array\nlet students = [];\n\n// Array with students\nlet students = [\"Maria\", \"Jose\", \"Ana\", \"Pedro\"];\n\n// Array with numbers\nlet scores = [85, 90, 78, 92, 88];\n\n// Arrays can hold different types (but usually don't)\nlet mixed = [1, \"hello\", true, 3.14];\n</code></pre>\n<p><strong>Think of it like:</strong> A numbered list where JavaScript counts starting from <strong>0</strong> (not 1!)</p>\n<pre><code>Array: [\"Maria\", \"Jose\", \"Ana\", \"Pedro\"]\nIndex:    0       1       2       3\n</code></pre>"},{"html":"<h3><strong>Why Start at 0?</strong></h3>\n<p>Computer scientists count from 0. It's weird at first, but you'll get used to it! 😊</p>\n<pre><code class=\"language-javascript\">let fruits = [\"apple\", \"banana\", \"orange\"];\n\n// Index:      0        1         2\n</code></pre>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/array-indexing.png\" alt=\"Diagram showing array with four elements labeled by index 0 through 3, demonstrating zero-based indexing\"></p>"},{"html":"<h2>Accessing Array Elements</h2>\n<p>Use <strong>square brackets</strong> with the index number:</p>\n<pre><code class=\"language-javascript\">let students = [\"Maria\", \"Jose\", \"Ana\", \"Pedro\"];\n\nconsole.log(students[0]);  // Output: Maria\nconsole.log(students[1]);  // Output: Jose\nconsole.log(students[2]);  // Output: Ana\nconsole.log(students[3]);  // Output: Pedro\n\n// ❌ This doesn't exist!\nconsole.log(students[4]);  // Output: undefined\n</code></pre>"},{"html":"<h3><strong>Get Array Length</strong></h3>\n<pre><code class=\"language-javascript\">let students = [\"Maria\", \"Jose\", \"Ana\"];\n\nconsole.log(students.length);  // Output: 3\n\n// Get last item (useful trick!)\nlet lastStudent = students[students.length - 1];\nconsole.log(lastStudent);  // Output: Ana\n</code></pre>"},{"html":"<h3><strong>Real Example: Quiz Scores</strong></h3>\n<pre><code class=\"language-javascript\">let quizScores = [85, 90, 78, 92, 88];\n\nconsole.log(\"First quiz: \" + quizScores[0]);    // First quiz: 85\nconsole.log(\"Last quiz: \" + quizScores[4]);     // Last quiz: 88\nconsole.log(\"Total quizzes: \" + quizScores.length);  // Total quizzes: 5\n</code></pre>"},{"html":"<h3><strong>Changing Array Values</strong></h3>\n<pre><code class=\"language-javascript\">let scores = [85, 90, 78];\n\nconsole.log(scores);  // [85, 90, 78]\n\n// Change the second score\nscores[1] = 95;\n\nconsole.log(scores);  // [85, 95, 78]\n</code></pre>"},{"html":"<h2>Adding and Removing Items</h2>\n<p>Arrays are <strong>dynamic</strong> - they can grow and shrink!</p>"},{"html":"<h3><strong>Adding to the End: push()</strong></h3>\n<pre><code class=\"language-javascript\">let students = [\"Maria\", \"Jose\"];\n\nstudents.push(\"Ana\");\nconsole.log(students);  // [\"Maria\", \"Jose\", \"Ana\"]\n\nstudents.push(\"Pedro\");\nconsole.log(students);  // [\"Maria\", \"Jose\", \"Ana\", \"Pedro\"]\n</code></pre>"},{"html":"<h3><strong>Removing from the End: pop()</strong></h3>\n<pre><code class=\"language-javascript\">let students = [\"Maria\", \"Jose\", \"Ana\"];\n\nlet removed = students.pop();  // Removes and returns \"Ana\"\nconsole.log(removed);          // \"Ana\"\nconsole.log(students);         // [\"Maria\", \"Jose\"]\n</code></pre>"},{"html":"<h3><strong>Adding to the Beginning: unshift()</strong></h3>\n<pre><code class=\"language-javascript\">let students = [\"Jose\", \"Ana\"];\n\nstudents.unshift(\"Maria\");\nconsole.log(students);  // [\"Maria\", \"Jose\", \"Ana\"]\n</code></pre>"},{"html":"<h3><strong>Removing from the Beginning: shift()</strong></h3>\n<pre><code class=\"language-javascript\">let students = [\"Maria\", \"Jose\", \"Ana\"];\n\nlet removed = students.shift();  // Removes and returns \"Maria\"\nconsole.log(removed);            // \"Maria\"\nconsole.log(students);           // [\"Jose\", \"Ana\"]\n</code></pre>"},{"html":"<h3><strong>Visual Summary</strong></h3>\n<pre><code>Array: [\"Maria\", \"Jose\", \"Ana\"]\n\nunshift(\"Pedro\")  →  [\"Pedro\", \"Maria\", \"Jose\", \"Ana\"]  (add to start)\npush(\"Rosa\")      →  [\"Maria\", \"Jose\", \"Ana\", \"Rosa\"]   (add to end)\nshift()           →  [\"Jose\", \"Ana\"]  (remove from start)\npop()             →  [\"Maria\", \"Jose\"]  (remove from end)\n</code></pre>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/array-mutation.png\" alt=\"Diagram showing array with directional arrows for push, pop, shift, and unshift operations at both ends\"></p>"},{"html":"<h3><strong>Real Example: Shopping Cart</strong></h3>\n<pre><code class=\"language-javascript\">let cart = [];\n\n// Add items\ncart.push(\"Coke Sakto\");\ncart.push(\"Pan de sal\");\ncart.push(\"Skyflakes\");\n\nconsole.log(\"Cart: \" + cart);\nconsole.log(\"Items: \" + cart.length);\n\n// Remove last item\nlet removed = cart.pop();\nconsole.log(\"Removed: \" + removed);\nconsole.log(\"Cart now: \" + cart);\n\n// Output:\n// Cart: Coke Sakto,Pan de sal,Skyflakes\n// Items: 3\n// Removed: Skyflakes\n// Cart now: Coke Sakto,Pan de sal\n</code></pre>"},{"html":"<h2>Practice: Student Roster</h2>\n<p><strong>Challenge:</strong> Create a class roster system that can add and remove students.</p>\n<p><strong>Try it yourself! Solution:</strong></p>\n<pre><code class=\"language-javascript\">let classRoster = [];\n\n// Add students\nclassRoster.push(\"Maria Santos\");\nclassRoster.push(\"Jose Cruz\");\nclassRoster.push(\"Ana Reyes\");\nclassRoster.push(\"Pedro Garcia\");\n\nconsole.log(\"Class Roster:\");\nconsole.log(\"Total students: \" + classRoster.length);\n\n// Show each student\nfor (let i = 0; i &lt; classRoster.length; i++) {\n    console.log((i + 1) + \". \" + classRoster[i]);\n}\n\n// Output:\n// Class Roster:\n// Total students: 4\n// 1. Maria Santos\n// 2. Jose Cruz\n// 3. Ana Reyes\n// 4. Pedro Garcia\n</code></pre>"},{"html":"<h2>Essential Array Methods</h2>\n<p>Now for the <strong>powerful stuff</strong>! These methods make working with arrays much easier.</p>\n<blockquote>\n<p>🟢 <strong>You Need These!</strong> Master these three methods - they're used everywhere in real JavaScript code.</p>\n</blockquote>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/method-taxonomy.png\" alt=\"Taxonomy diagram grouping array methods into Essential (forEach, map, filter) and Advanced (find, reduce, includes, slice, sort) categories\"></p>"},{"html":"<h3><strong>forEach() - Do Something with Each Item</strong></h3>\n<p>Instead of writing a for loop, use <code>forEach()</code>:</p>\n<pre><code class=\"language-javascript\">let scores = [85, 90, 78, 92];\n\n// ❌ Old way (for loop)\nfor (let i = 0; i &lt; scores.length; i++) {\n    console.log(scores[i]);\n}\n\n// ✅ Modern way (forEach)\nscores.forEach(function(score) {\n    console.log(score);\n});\n</code></pre>\n<p><strong>How it works:</strong> <code>forEach()</code> calls your function once for each item.</p>\n<pre><code class=\"language-javascript\">let students = [\"Maria\", \"Jose\", \"Ana\"];\n\nstudents.forEach(function(student) {\n    console.log(\"Hello, \" + student + \"!\");\n});\n\n// Output:\n// Hello, Maria!\n// Hello, Jose!\n// Hello, Ana!\n</code></pre>\n<p><strong>You can also get the index:</strong></p>\n<pre><code class=\"language-javascript\">let students = [\"Maria\", \"Jose\", \"Ana\"];\n\nstudents.forEach(function(student, index) {\n    console.log((index + 1) + \". \" + student);\n});\n\n// Output:\n// 1. Maria\n// 2. Jose\n// 3. Ana\n</code></pre>"},{"html":"<h3><strong>Real Example: Sari-Sari Store Prices</strong></h3>\n<pre><code class=\"language-javascript\">let products = [\"Coke Sakto\", \"Pan de sal\", \"Skyflakes\"];\nlet prices = [20, 5, 15];\n\nconsole.log(\"Aling Maria's Store - Price List:\");\nconsole.log(\"================================\");\n\nproducts.forEach(function(product, index) {\n    console.log(product + \" - ₱\" + prices[index]);\n});\n\n// Output:\n// Aling Maria's Store - Price List:\n// ================================\n// Coke Sakto - ₱20\n// Pan de sal - ₱5\n// Skyflakes - ₱15\n</code></pre>"},{"html":"<h3><strong>map() - Transform Each Item</strong></h3>\n<p><code>map()</code> creates a <strong>new array</strong> by transforming each item:</p>\n<pre><code class=\"language-javascript\">let prices = [100, 200, 150];\n\n// Add 10% tax to each price\nlet withTax = prices.map(function(price) {\n    return price * 1.10;\n});\n\nconsole.log(\"Original: \" + prices);    // [100, 200, 150]\nconsole.log(\"With tax: \" + withTax);   // [110, 220, 165]\n</code></pre>\n<p><strong>Key point:</strong> <code>map()</code> doesn't change the original array - it makes a new one!</p>"},{"html":"<h3><strong>Real Example: Grade Bonus</strong></h3>\n<pre><code class=\"language-javascript\">let scores = [75, 80, 85, 90];\n\n// Teacher adds 5 bonus points to everyone\nlet bonusScores = scores.map(function(score) {\n    return score + 5;\n});\n\nconsole.log(\"Original scores: \" + scores);\nconsole.log(\"With bonus: \" + bonusScores);\n\n// Output:\n// Original scores: 75,80,85,90\n// With bonus: 80,85,90,95\n</code></pre>"},{"html":"<h3><strong>Real Example: Peso Prices to Dollar</strong></h3>\n<pre><code class=\"language-javascript\">let pesoPrices = [100, 250, 500, 1000];\nlet exchangeRate = 56.50;\n\nlet dollarPrices = pesoPrices.map(function(pesos) {\n    return (pesos / exchangeRate).toFixed(2);\n});\n\nconsole.log(\"Peso: \" + pesoPrices);\nconsole.log(\"Dollar: $\" + dollarPrices);\n\n// Output:\n// Peso: 100,250,500,1000\n// Dollar: $1.77,$4.42,$8.85,$17.70\n</code></pre>"},{"html":"<h3><strong>filter() - Keep Only Some Items</strong></h3>\n<p><code>filter()</code> creates a <strong>new array</strong> with only items that pass a test:</p>\n<pre><code class=\"language-javascript\">let scores = [85, 65, 90, 72, 78, 95];\n\n// Keep only passing scores (≥75)\nlet passed = scores.filter(function(score) {\n    return score &gt;= 75;\n});\n\nconsole.log(\"All scores: \" + scores);\nconsole.log(\"Passed: \" + passed);\n\n// Output:\n// All scores: 85,65,90,72,78,95\n// Passed: 85,90,78,95\n</code></pre>\n<p><strong>How it works:</strong> If the function returns <code>true</code>, keep the item. If <code>false</code>, skip it.</p>"},{"html":"<h3><strong>Real Example: Filter Available Products</strong></h3>\n<pre><code class=\"language-javascript\">let products = [\"Coke\", \"Pepsi\", \"Sprite\", \"Water\"];\nlet stock = [10, 0, 5, 0];  // 0 = out of stock\n\nlet available = products.filter(function(product, index) {\n    return stock[index] &gt; 0;\n});\n\nconsole.log(\"All products: \" + products);\nconsole.log(\"Available: \" + available);\n\n// Output:\n// All products: Coke,Pepsi,Sprite,Water\n// Available: Coke,Sprite\n</code></pre>"},{"html":"<h3><strong>Real Example: Find Top Students</strong></h3>\n<pre><code class=\"language-javascript\">let students = [\"Maria\", \"Jose\", \"Ana\", \"Pedro\", \"Rosa\"];\nlet scores = [95, 72, 88, 91, 85];\n\n// Find students with 85 or higher\nlet topStudents = students.filter(function(student, index) {\n    return scores[index] &gt;= 85;\n});\n\nconsole.log(\"Top students (85+): \" + topStudents);\n\n// Output:\n// Top students (85+): Maria,Ana,Pedro,Rosa\n</code></pre>"},{"html":"<h3><strong>Combining Methods</strong></h3>\n<p>You can <strong>chain</strong> methods together! 🔗</p>\n<pre><code class=\"language-javascript\">let scores = [70, 85, 65, 90, 78, 92];\n\n// Filter passing scores, then add 5 bonus points\nlet result = scores\n    .filter(function(score) {\n        return score &gt;= 75;  // Keep passing scores\n    })\n    .map(function(score) {\n        return score + 5;    // Add bonus\n    });\n\nconsole.log(\"Original: \" + scores);\nconsole.log(\"Passed with bonus: \" + result);\n\n// Output:\n// Original: 70,85,65,90,78,92\n// Passed with bonus: 90,95,83,97\n</code></pre>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/array-pipeline.png\" alt=\"Linear pipeline diagram showing array transformation through filter, map, and reduce stages with intermediate values\"></p>"},{"html":"<h2>Advanced Array Methods</h2>\n<p>These methods are <strong>super useful</strong> but a bit more complex. Learn them when you're ready!</p>\n<blockquote>\n<p>🟡 <strong>Advanced but Useful!</strong> These are commonly used in real projects. Take your time learning them.</p>\n</blockquote>"},{"html":"<h3><strong>find() - Get First Match</strong></h3>\n<p>Find the <strong>first item</strong> that passes a test:</p>\n<pre><code class=\"language-javascript\">let scores = [65, 75, 85, 90, 78];\n\n// Find first score above 80\nlet highScore = scores.find(function(score) {\n    return score &gt; 80;\n});\n\nconsole.log(highScore);  // Output: 85 (first one &gt; 80)\n</code></pre>\n<p><strong>Difference from filter():</strong></p>\n<ul>\n<li><code>filter()</code> returns <strong>all matches</strong> (array)</li>\n<li><code>find()</code> returns <strong>first match</strong> (single item)</li>\n</ul>\n<pre><code class=\"language-javascript\">let students = [\"Maria\", \"Jose\", \"Ana\", \"Jose\"];\n\nlet found = students.find(function(student) {\n    return student === \"Jose\";\n});\n\nconsole.log(found);  // Output: Jose (only the first one)\n</code></pre>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/search-methods.png\" alt=\"Comparison diagram showing find, filter, and includes methods with their different return types and behaviors\"></p>"},{"html":"<h3><strong>findIndex() - Get Position of First Match</strong></h3>\n<pre><code class=\"language-javascript\">let students = [\"Maria\", \"Jose\", \"Ana\", \"Pedro\"];\n\nlet index = students.findIndex(function(student) {\n    return student === \"Ana\";\n});\n\nconsole.log(\"Ana is at index: \" + index);  // Output: Ana is at index: 2\n</code></pre>"},{"html":"<h3><strong>Real Example: Find Student by ID</strong></h3>\n<pre><code class=\"language-javascript\">let studentIDs = [101, 102, 103, 104];\nlet studentNames = [\"Maria\", \"Jose\", \"Ana\", \"Pedro\"];\n\nfunction findStudentByID(id) {\n    let index = studentIDs.findIndex(function(studentID) {\n        return studentID === id;\n    });\n    \n    if (index !== -1) {\n        return studentNames[index];\n    } else {\n        return \"Student not found\";\n    }\n}\n\nconsole.log(findStudentByID(103));  // Output: Ana\nconsole.log(findStudentByID(999));  // Output: Student not found\n</code></pre>"},{"html":"<h3><strong>reduce() - Combine All Items into One Value</strong></h3>\n<p><code>reduce()</code> is <strong>powerful</strong> but takes practice to understand. It \"reduces\" an array to a single value.</p>\n<p><strong>Common use: Calculate total</strong></p>\n<pre><code class=\"language-javascript\">let prices = [50, 100, 75, 125];\n\nlet total = prices.reduce(function(sum, price) {\n    return sum + price;\n}, 0);  // Start with 0\n\nconsole.log(\"Total: ₱\" + total);  // Output: Total: ₱350\n</code></pre>\n<p><strong>How it works:</strong></p>\n<pre><code>Step 1: sum=0,   price=50  → return 0+50=50\nStep 2: sum=50,  price=100 → return 50+100=150\nStep 3: sum=150, price=75  → return 150+75=225\nStep 4: sum=225, price=125 → return 225+125=350\nFinal: 350\n</code></pre>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/reduce-steps.png\" alt=\"Step-by-step flowchart showing reduce accumulator evolution through each iteration with state values\"></p>"},{"html":"<h3><strong>Real Example: Calculate Total Baon Spent</strong></h3>\n<pre><code class=\"language-javascript\">let dailyExpenses = [65, 80, 70, 55, 90];  // Mon-Fri\n\nlet totalSpent = dailyExpenses.reduce(function(sum, expense) {\n    return sum + expense;\n}, 0);\n\nconsole.log(\"Weekly expenses:\");\ndailyExpenses.forEach(function(expense, index) {\n    let days = [\"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\"];\n    console.log(days[index] + \": ₱\" + expense);\n});\nconsole.log(\"Total: ₱\" + totalSpent);\n\n// Output:\n// Weekly expenses:\n// Mon: ₱65\n// Tue: ₱80\n// Wed: ₱70\n// Thu: ₱55\n// Fri: ₱90\n// Total: ₱360\n</code></pre>"},{"html":"<h3><strong>includes() - Check if Item Exists</strong></h3>\n<p>Simple way to check if an array contains something:</p>\n<pre><code class=\"language-javascript\">let fruits = [\"apple\", \"banana\", \"orange\"];\n\nconsole.log(fruits.includes(\"banana\"));  // true\nconsole.log(fruits.includes(\"mango\"));   // false\n</code></pre>"},{"html":"<h3><strong>Real Example: Check Membership</strong></h3>\n<pre><code class=\"language-javascript\">let members = [\"Maria\", \"Jose\", \"Ana\"];\n\nfunction checkMembership(name) {\n    if (members.includes(name)) {\n        console.log(name + \" is a member! ✅\");\n    } else {\n        console.log(name + \" is not a member. ❌\");\n    }\n}\n\ncheckMembership(\"Jose\");   // Jose is a member! ✅\ncheckMembership(\"Pedro\");  // Pedro is not a member. ❌\n</code></pre>"},{"html":"<h3><strong>slice() - Copy Part of Array</strong></h3>\n<p>Get a portion of an array <strong>without changing the original</strong>:</p>\n<pre><code class=\"language-javascript\">let students = [\"Maria\", \"Jose\", \"Ana\", \"Pedro\", \"Rosa\"];\n\nlet firstThree = students.slice(0, 3);  // Start at 0, stop before 3\nconsole.log(firstThree);  // [\"Maria\", \"Jose\", \"Ana\"]\n\nlet lastTwo = students.slice(-2);  // Last 2 items\nconsole.log(lastTwo);  // [\"Pedro\", \"Rosa\"]\n\nconsole.log(students);  // Original unchanged!\n</code></pre>"},{"html":"<h3><strong>sort() - Sort Array Items</strong></h3>\n<p>Sort items in alphabetical or numerical order:</p>\n<pre><code class=\"language-javascript\">// Sort strings (alphabetical)\nlet names = [\"Pedro\", \"Ana\", \"Maria\", \"Jose\"];\nnames.sort();\nconsole.log(names);  // [\"Ana\", \"Jose\", \"Maria\", \"Pedro\"]\n\n// Sort numbers (needs special function!)\nlet scores = [85, 90, 78, 92, 88];\n\n// ❌ Wrong way\nscores.sort();\nconsole.log(scores);  // [78, 85, 88, 90, 92] - works by luck!\n\n// ✅ Right way for numbers\nscores.sort(function(a, b) {\n    return a - b;  // Ascending order\n});\nconsole.log(scores);  // [78, 85, 88, 90, 92]\n\n// Descending order\nscores.sort(function(a, b) {\n    return b - a;  // Reverse\n});\nconsole.log(scores);  // [92, 90, 88, 85, 78]\n</code></pre>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/sort-comparator.png\" alt=\"Decision flowchart showing how sort comparator function determines element ordering based on return value\"></p>"},{"html":"<h3><strong>Real Example: Leaderboard</strong></h3>\n<pre><code class=\"language-javascript\">let players = [\"Maria\", \"Jose\", \"Ana\", \"Pedro\"];\nlet scores = [1500, 2000, 1800, 1200];\n\n// Create leaderboard (sorted by score, highest first)\nlet leaderboard = [];\n\nfor (let i = 0; i &lt; players.length; i++) {\n    leaderboard.push({\n        name: players[i],\n        score: scores[i]\n    });\n}\n\n// Sort by score (highest first)\nleaderboard.sort(function(a, b) {\n    return b.score - a.score;\n});\n\nconsole.log(\"🏆 LEADERBOARD 🏆\");\nleaderboard.forEach(function(player, index) {\n    console.log((index + 1) + \". \" + player.name + \" - \" + player.score + \" pts\");\n});\n\n// Output:\n// 🏆 LEADERBOARD 🏆\n// 1. Jose - 2000 pts\n// 2. Ana - 1800 pts\n// 3. Maria - 1500 pts\n// 4. Pedro - 1200 pts\n</code></pre>"},{"html":"<h2>Practice: Array Methods Challenge</h2>\n<p><strong>Challenge:</strong> Given an array of quiz scores, find the average of all passing scores (≥75).</p>\n<p><strong>Try it yourself! Solution:</strong></p>\n<pre><code class=\"language-javascript\">let scores = [85, 65, 90, 72, 78, 95, 68, 88];\n\n// Step 1: Filter passing scores\nlet passingScores = scores.filter(function(score) {\n    return score &gt;= 75;\n});\n\n// Step 2: Calculate sum using reduce\nlet sum = passingScores.reduce(function(total, score) {\n    return total + score;\n}, 0);\n\n// Step 3: Calculate average\nlet average = sum / passingScores.length;\n\nconsole.log(\"All scores: \" + scores);\nconsole.log(\"Passing scores: \" + passingScores);\nconsole.log(\"Average of passing: \" + average.toFixed(1));\n\n// Output:\n// All scores: 85,65,90,72,78,95,68,88\n// Passing scores: 85,90,78,95,88\n// Average of passing: 87.2\n</code></pre>"},{"html":"<h2>Objects - Organizing Related Data</h2>\n<p><strong>Arrays</strong> store lists. <strong>Objects</strong> store related information together.</p>"},{"html":"<h3><strong>Creating Objects</strong></h3>\n<pre><code class=\"language-javascript\">// Empty object\nlet student = {};\n\n// Object with properties\nlet student = {\n    name: \"Maria Santos\",\n    age: 15,\n    grade: 9,\n    isPassed: true\n};\n</code></pre>\n<p><strong>Think of it like:</strong> A real-world object with <strong>labels</strong> (properties) describing it.</p>\n<pre><code>Student Object:\n{\n    name: \"Maria Santos\"    ← property: value\n    age: 15                 ← property: value\n    grade: 9\n    isPassed: true\n}\n</code></pre>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/object-anatomy.png\" alt=\"Class diagram showing object structure with properties and methods, demonstrating the 'this' keyword binding\"></p>"},{"html":"<h3><strong>Accessing Object Properties</strong></h3>\n<p>Two ways: <strong>dot notation</strong> or <strong>bracket notation</strong></p>\n<pre><code class=\"language-javascript\">let student = {\n    name: \"Maria Santos\",\n    age: 15,\n    grade: 9\n};\n\n// Dot notation (most common)\nconsole.log(student.name);   // Maria Santos\nconsole.log(student.age);    // 15\n\n// Bracket notation (useful for variables)\nconsole.log(student[\"name\"]);  // Maria Santos\nconsole.log(student[\"age\"]);   // 15\n\nlet property = \"grade\";\nconsole.log(student[property]);  // 9\n</code></pre>"},{"html":"<h3><strong>Changing Properties</strong></h3>\n<pre><code class=\"language-javascript\">let student = {\n    name: \"Maria\",\n    grade: 8\n};\n\n// Change existing property\nstudent.grade = 9;\nconsole.log(student.grade);  // 9\n\n// Add new property\nstudent.age = 15;\nconsole.log(student.age);  // 15\n</code></pre>"},{"html":"<h3><strong>Real Example: Student Profile</strong></h3>\n<pre><code class=\"language-javascript\">let student = {\n    firstName: \"Maria\",\n    lastName: \"Santos\",\n    age: 15,\n    grade: 9,\n    scores: [85, 90, 88],\n    isEnrolled: true\n};\n\nconsole.log(\"Student Profile:\");\nconsole.log(\"Name: \" + student.firstName + \" \" + student.lastName);\nconsole.log(\"Age: \" + student.age);\nconsole.log(\"Grade: \" + student.grade);\nconsole.log(\"Scores: \" + student.scores);\nconsole.log(\"Enrolled: \" + student.isEnrolled);\n\n// Output:\n// Student Profile:\n// Name: Maria Santos\n// Age: 15\n// Grade: 9\n// Scores: 85,90,88\n// Enrolled: true\n</code></pre>"},{"html":"<h2>Object Methods - Functions Inside Objects</h2>\n<p>Objects can have <strong>functions</strong> as properties! These are called <strong>methods</strong>.</p>\n<pre><code class=\"language-javascript\">let student = {\n    name: \"Maria Santos\",\n    scores: [85, 90, 88],\n    \n    // Method: function inside object\n    getAverage: function() {\n        let sum = 0;\n        for (let i = 0; i &lt; this.scores.length; i++) {\n            sum += this.scores[i];\n        }\n        return sum / this.scores.length;\n    },\n    \n    greet: function() {\n        return \"Hello, I'm \" + this.name;\n    }\n};\n\n// Call the methods\nconsole.log(student.greet());        // Hello, I'm Maria Santos\nconsole.log(student.getAverage());   // 87.666...\n</code></pre>\n<p><strong>The <code>this</code> keyword</strong> refers to the current object.</p>"},{"html":"<h3><strong>Real Example: Product with Tax Calculator</strong></h3>\n<pre><code class=\"language-javascript\">let product = {\n    name: \"Laptop\",\n    price: 25000,\n    taxRate: 0.12,  // 12% VAT\n    \n    getPriceWithTax: function() {\n        return this.price * (1 + this.taxRate);\n    },\n    \n    getInfo: function() {\n        return this.name + \" - ₱\" + this.price;\n    }\n};\n\nconsole.log(product.getInfo());\nconsole.log(\"With tax: ₱\" + product.getPriceWithTax());\n\n// Output:\n// Laptop - ₱25000\n// With tax: ₱28000\n</code></pre>"},{"html":"<h3><strong>Real Example: Bank Account</strong></h3>\n<pre><code class=\"language-javascript\">let account = {\n    owner: \"Maria Santos\",\n    balance: 5000,\n    \n    deposit: function(amount) {\n        this.balance += amount;\n        console.log(\"Deposited ₱\" + amount);\n        console.log(\"New balance: ₱\" + this.balance);\n    },\n    \n    withdraw: function(amount) {\n        if (amount &gt; this.balance) {\n            console.log(\"Insufficient funds! ❌\");\n        } else {\n            this.balance -= amount;\n            console.log(\"Withdrew ₱\" + amount);\n            console.log(\"New balance: ₱\" + this.balance);\n        }\n    },\n    \n    getBalance: function() {\n        return this.balance;\n    }\n};\n\naccount.deposit(1000);   // Deposited ₱1000, New balance: ₱6000\naccount.withdraw(2000);  // Withdrew ₱2000, New balance: ₱4000\naccount.withdraw(5000);  // Insufficient funds! ❌\n</code></pre>"},{"html":"<h2>Practice: Create a Student Object</h2>\n<p><strong>Challenge:</strong> Create a student object with properties and a method to check if they passed.</p>\n<p><strong>Try it yourself! Solution:</strong></p>\n<pre><code class=\"language-javascript\">let student = {\n    name: \"Jose Cruz\",\n    studentID: 12345,\n    scores: [85, 78, 90],\n    passingGrade: 75,\n    \n    getAverage: function() {\n        let sum = this.scores.reduce(function(total, score) {\n            return total + score;\n        }, 0);\n        return sum / this.scores.length;\n    },\n    \n    hasPassed: function() {\n        return this.getAverage() &gt;= this.passingGrade;\n    },\n    \n    getReport: function() {\n        let avg = this.getAverage();\n        let status = this.hasPassed() ? \"PASSED ✅\" : \"NOT YET ❌\";\n        \n        console.log(\"=================================\");\n        console.log(\"STUDENT REPORT\");\n        console.log(\"=================================\");\n        console.log(\"Name: \" + this.name);\n        console.log(\"ID: \" + this.studentID);\n        console.log(\"Scores: \" + this.scores.join(\", \"));\n        console.log(\"Average: \" + avg.toFixed(1));\n        console.log(\"Status: \" + status);\n        console.log(\"=================================\");\n    }\n};\n\nstudent.getReport();\n\n// Output:\n// =================================\n// STUDENT REPORT\n// =================================\n// Name: Jose Cruz\n// ID: 12345\n// Scores: 85, 78, 90\n// Average: 84.3\n// Status: PASSED ✅\n// =================================\n</code></pre>"},{"html":"<h2>Advanced Objects</h2>"},{"html":"<h3><strong>Object.keys() - Get All Property Names</strong></h3>\n<pre><code class=\"language-javascript\">let student = {\n    name: \"Maria\",\n    age: 15,\n    grade: 9\n};\n\nlet keys = Object.keys(student);\nconsole.log(keys);  // [\"name\", \"age\", \"grade\"]\n\n// Loop through properties\nkeys.forEach(function(key) {\n    console.log(key + \": \" + student[key]);\n});\n\n// Output:\n// name: Maria\n// age: 15\n// grade: 9\n</code></pre>"},{"html":"<h3><strong>Object.values() - Get All Values</strong></h3>\n<pre><code class=\"language-javascript\">let scores = {\n    math: 85,\n    english: 90,\n    science: 88\n};\n\nlet values = Object.values(scores);\nconsole.log(values);  // [85, 90, 88]\n\n// Calculate average\nlet sum = values.reduce(function(total, score) {\n    return total + score;\n}, 0);\nlet average = sum / values.length;\n\nconsole.log(\"Average: \" + average);  // Average: 87.666...\n</code></pre>"},{"html":"<h3><strong>Object.entries() - Get Key-Value Pairs</strong></h3>\n<pre><code class=\"language-javascript\">let prices = {\n    coke: 20,\n    bread: 5,\n    crackers: 15\n};\n\nlet entries = Object.entries(prices);\nconsole.log(entries);\n// [[\"coke\", 20], [\"bread\", 5], [\"crackers\", 15]]\n\n// Display nicely\nentries.forEach(function(entry) {\n    let item = entry[0];\n    let price = entry[1];\n    console.log(item + \": ₱\" + price);\n});\n\n// Output:\n// coke: ₱20\n// bread: ₱5\n// crackers: ₱15\n</code></pre>"},{"html":"<h2>Arrays of Objects - Powerful Combination!</h2>\n<p>The <strong>most common</strong> data structure in real applications!</p>\n<pre><code class=\"language-javascript\">let students = [\n    {\n        name: \"Maria Santos\",\n        age: 15,\n        grade: 9,\n        average: 87\n    },\n    {\n        name: \"Jose Cruz\",\n        age: 15,\n        grade: 9,\n        average: 84\n    },\n    {\n        name: \"Ana Reyes\",\n        age: 14,\n        grade: 9,\n        average: 91\n    }\n];\n\n// Access individual students\nconsole.log(students[0].name);  // Maria Santos\nconsole.log(students[1].average);  // 84\n\n// Loop through all students\nstudents.forEach(function(student) {\n    console.log(student.name + \" - Average: \" + student.average);\n});\n\n// Output:\n// Maria Santos - Average: 87\n// Jose Cruz - Average: 84\n// Ana Reyes - Average: 91\n</code></pre>"},{"html":"<h3><strong>Filter Students</strong></h3>\n<pre><code class=\"language-javascript\">let students = [\n    { name: \"Maria\", average: 87 },\n    { name: \"Jose\", average: 72 },\n    { name: \"Ana\", average: 91 },\n    { name: \"Pedro\", average: 68 }\n];\n\n// Find honor students (average ≥ 85)\nlet honorStudents = students.filter(function(student) {\n    return student.average &gt;= 85;\n});\n\nconsole.log(\"Honor Students:\");\nhonorStudents.forEach(function(student) {\n    console.log(\"- \" + student.name + \" (\" + student.average + \")\");\n});\n\n// Output:\n// Honor Students:\n// - Maria (87)\n// - Ana (91)\n</code></pre>"},{"html":"<h3><strong>Sort Students</strong></h3>\n<pre><code class=\"language-javascript\">let students = [\n    { name: \"Maria\", average: 87 },\n    { name: \"Jose\", average: 72 },\n    { name: \"Ana\", average: 91 },\n    { name: \"Pedro\", average: 68 }\n];\n\n// Sort by average (highest first)\nstudents.sort(function(a, b) {\n    return b.average - a.average;\n});\n\nconsole.log(\"Class Ranking:\");\nstudents.forEach(function(student, index) {\n    console.log((index + 1) + \". \" + student.name + \" - \" + student.average);\n});\n\n// Output:\n// Class Ranking:\n// 1. Ana - 91\n// 2. Maria - 87\n// 3. Jose - 72\n// 4. Pedro - 68\n</code></pre>"},{"html":"<h3><strong>Real Example: Product Inventory</strong></h3>\n<pre><code class=\"language-javascript\">let inventory = [\n    { name: \"Coke Sakto\", price: 20, stock: 50 },\n    { name: \"Pan de sal\", price: 5, stock: 100 },\n    { name: \"Skyflakes\", price: 15, stock: 30 },\n    { name: \"Lucky Me\", price: 15, stock: 0 }\n];\n\n// Show available products\nconsole.log(\"AVAILABLE PRODUCTS:\");\nconsole.log(\"==================\");\n\nlet available = inventory.filter(function(product) {\n    return product.stock &gt; 0;\n});\n\navailable.forEach(function(product) {\n    console.log(product.name + \" - ₱\" + product.price + \" (\" + product.stock + \" in stock)\");\n});\n\n// Calculate total inventory value\nlet totalValue = inventory.reduce(function(sum, product) {\n    return sum + (product.price * product.stock);\n}, 0);\n\nconsole.log(\"==================\");\nconsole.log(\"Total inventory value: ₱\" + totalValue);\n\n// Output:\n// AVAILABLE PRODUCTS:\n// ==================\n// Coke Sakto - ₱20 (50 in stock)\n// Pan de sal - ₱5 (100 in stock)\n// Skyflakes - ₱15 (30 in stock)\n// ==================\n// Total inventory value: ₱1950\n</code></pre>"},{"html":"<h2>Real-World Project: Sari-Sari Store System</h2>\n<p>Let's build a complete inventory management system! 🏪</p>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/inventory-architecture.png\" alt=\"Architecture diagram showing Store object containing inventory array of Product objects with key methods\"></p>\n<pre><code class=\"language-javascript\">// Aling Maria's Sari-Sari Store Inventory System\n\nlet store = {\n    name: \"Aling Maria's Store\",\n    location: \"Barangay Masaya\",\n    inventory: [\n        { id: 1, name: \"Coke Sakto\", price: 20, stock: 50, category: \"drinks\" },\n        { id: 2, name: \"Pan de sal\", price: 5, stock: 100, category: \"food\" },\n        { id: 3, name: \"Skyflakes\", price: 15, stock: 30, category: \"snacks\" },\n        { id: 4, name: \"Lucky Me\", price: 15, stock: 45, category: \"food\" },\n        { id: 5, name: \"Chippy\", price: 10, stock: 0, category: \"snacks\" }\n    ],\n    \n    // Show all products\n    showInventory: function() {\n        console.log(\"========================================\");\n        console.log(this.name.toUpperCase());\n        console.log(this.location);\n        console.log(\"========================================\");\n        console.log();\n        \n        this.inventory.forEach(function(product) {\n            let status = product.stock &gt; 0 ? \"✅\" : \"❌ OUT OF STOCK\";\n            console.log(product.id + \". \" + product.name);\n            console.log(\"   ₱\" + product.price + \" | Stock: \" + product.stock + \" \" + status);\n        });\n    },\n    \n    // Find product by ID\n    findProduct: function(id) {\n        return this.inventory.find(function(product) {\n            return product.id === id;\n        });\n    },\n    \n    // Sell a product\n    sellProduct: function(id, quantity) {\n        let product = this.findProduct(id);\n        \n        if (!product) {\n            console.log(\"❌ Product not found!\");\n            return;\n        }\n        \n        if (product.stock &lt; quantity) {\n            console.log(\"❌ Not enough stock! Only \" + product.stock + \" available.\");\n            return;\n        }\n        \n        product.stock -= quantity;\n        let total = product.price * quantity;\n        \n        console.log(\"✅ SALE SUCCESSFUL\");\n        console.log(\"Product: \" + product.name);\n        console.log(\"Quantity: \" + quantity);\n        console.log(\"Total: ₱\" + total);\n        console.log(\"Remaining stock: \" + product.stock);\n    },\n    \n    // Restock a product\n    restock: function(id, quantity) {\n        let product = this.findProduct(id);\n        \n        if (!product) {\n            console.log(\"❌ Product not found!\");\n            return;\n        }\n        \n        product.stock += quantity;\n        console.log(\"✅ RESTOCKED: \" + product.name);\n        console.log(\"New stock: \" + product.stock);\n    },\n    \n    // Get products by category\n    getByCategory: function(category) {\n        return this.inventory.filter(function(product) {\n            return product.category === category &amp;&amp; product.stock &gt; 0;\n        });\n    },\n    \n    // Calculate total inventory value\n    getTotalValue: function() {\n        return this.inventory.reduce(function(sum, product) {\n            return sum + (product.price * product.stock);\n        }, 0);\n    },\n    \n    // Get low stock alerts\n    getLowStockAlerts: function(threshold) {\n        if (threshold === undefined) {\n            threshold = 20;  // Default threshold\n        }\n        \n        return this.inventory.filter(function(product) {\n            return product.stock &gt; 0 &amp;&amp; product.stock &lt;= threshold;\n        });\n    },\n    \n    // Get bestsellers (by stock sold - you'd track this in real app)\n    getMostExpensiveProducts: function(count) {\n        let sorted = this.inventory.slice().sort(function(a, b) {\n            return b.price - a.price;\n        });\n        return sorted.slice(0, count);\n    }\n};\n\n// ========================================\n// TESTING THE SYSTEM\n// ========================================\n\nconsole.log(\"\\n📦 INVENTORY STATUS\");\nstore.showInventory();\n\nconsole.log(\"\\n\\n💰 TRANSACTIONS\");\nconsole.log(\"================\");\nstore.sellProduct(1, 3);  // Sell 3 Coke Sakto\n\nconsole.log(\"\\n\");\nstore.sellProduct(2, 5);  // Sell 5 Pan de sal\n\nconsole.log(\"\\n\");\nstore.sellProduct(5, 1);  // Try to sell out-of-stock item\n\nconsole.log(\"\\n\\n📦 RESTOCKING\");\nconsole.log(\"===============\");\nstore.restock(5, 25);  // Restock Chippy\n\nconsole.log(\"\\n\\n🔍 CATEGORY: SNACKS\");\nconsole.log(\"===================\");\nlet snacks = store.getByCategory(\"snacks\");\nsnacks.forEach(function(product) {\n    console.log(product.name + \" - ₱\" + product.price);\n});\n\n![Funnel diagram showing filtering products by category and stock availability to get final available list](diagrams/category-filter.png)\n\nconsole.log(\"\\n\\n⚠️ LOW STOCK ALERTS\");\nconsole.log(\"===================\");\nlet lowStock = store.getLowStockAlerts(30);\nlowStock.forEach(function(product) {\n    console.log(\"⚠️ \" + product.name + \" - Only \" + product.stock + \" left!\");\n});\n\nconsole.log(\"\\n\\n💎 MOST EXPENSIVE PRODUCTS\");\nconsole.log(\"==========================\");\nlet expensive = store.getMostExpensiveProducts(3);\nexpensive.forEach(function(product) {\n    console.log(product.name + \" - ₱\" + product.price);\n});\n\nconsole.log(\"\\n\\n💵 TOTAL INVENTORY VALUE\");\nconsole.log(\"========================\");\nconsole.log(\"₱\" + store.getTotalValue());\n</code></pre>\n<p><strong>Output:</strong></p>\n<pre><code>📦 INVENTORY STATUS\n========================================\nALING MARIA'S STORE\nBarangay Masaya\n========================================\n\n1. Coke Sakto\n   ₱20 | Stock: 50 ✅\n2. Pan de sal\n   ₱5 | Stock: 100 ✅\n3. Skyflakes\n   ₱15 | Stock: 30 ✅\n4. Lucky Me\n   ₱15 | Stock: 45 ✅\n5. Chippy\n   ₱10 | Stock: 0 ❌ OUT OF STOCK\n\n\n💰 TRANSACTIONS\n================\n✅ SALE SUCCESSFUL\nProduct: Coke Sakto\nQuantity: 3\nTotal: ₱60\nRemaining stock: 47\n\n✅ SALE SUCCESSFUL\nProduct: Pan de sal\nQuantity: 5\nTotal: ₱25\nRemaining stock: 95\n\n❌ Not enough stock! Only 0 available.\n\n\n📦 RESTOCKING\n===============\n✅ RESTOCKED: Chippy\nNew stock: 25\n\n\n🔍 CATEGORY: SNACKS\n===================\nSkyflakes - ₱15\nChippy - ₱10\n\n\n⚠️ LOW STOCK ALERTS\n===================\n⚠️ Chippy - Only 25 left!\n\n\n💎 MOST EXPENSIVE PRODUCTS\n==========================\nCoke Sakto - ₱20\nSkyflakes - ₱15\nLucky Me - ₱15\n\n\n💵 TOTAL INVENTORY VALUE\n========================\n₱2165\n</code></pre>\n<p><strong>Congratulations!</strong> You just built a complete business application! 🎉</p>"},{"html":"<h2>Arrow Functions (Modern JavaScript)</h2>\n<p>You've been writing functions like this:</p>\n<pre><code class=\"language-javascript\">let numbers = [1, 2, 3, 4];\n\nlet doubled = numbers.map(function(num) {\n    return num * 2;\n});\n</code></pre>\n<p><strong>Modern JavaScript</strong> has a shorter way called <strong>arrow functions</strong>:</p>\n<pre><code class=\"language-javascript\">let numbers = [1, 2, 3, 4];\n\nlet doubled = numbers.map((num) =&gt; {\n    return num * 2;\n});\n\n// Even shorter for one line:\nlet doubled = numbers.map(num =&gt; num * 2);\n</code></pre>"},{"html":"<h3><strong>Comparison</strong></h3>\n<pre><code class=\"language-javascript\">// Traditional function\nscores.forEach(function(score) {\n    console.log(score);\n});\n\n// Arrow function (same thing!)\nscores.forEach((score) =&gt; {\n    console.log(score);\n});\n\n// Arrow function (single parameter, no parentheses)\nscores.forEach(score =&gt; {\n    console.log(score);\n});\n</code></pre>"},{"html":"<h3><strong>When to Use Each</strong></h3>\n<p><strong>Traditional functions:</strong></p>\n<ul>\n<li>✅ When you need <code>this</code> to refer to the object</li>\n<li>✅ When learning (easier to read)</li>\n<li>✅ Object methods</li>\n</ul>\n<p><strong>Arrow functions:</strong></p>\n<ul>\n<li>✅ Array methods (map, filter, forEach, etc.)</li>\n<li>✅ Shorter callbacks</li>\n<li>✅ Modern code style</li>\n</ul>\n<p><strong>Both are correct!</strong> Use what you're comfortable with. 😊</p>"},{"html":"<h2>Summary - What You Learned Today</h2>\n<p><strong>You now know:</strong></p>"},{"html":"<h3><strong>Arrays</strong> 📦</h3>\n<ul>\n<li>✅ Create and access arrays</li>\n<li>✅ Add/remove items (push, pop, shift, unshift)</li>\n<li>✅ Loop through arrays (forEach)</li>\n<li>✅ Transform arrays (map)</li>\n<li>✅ Filter arrays (filter)</li>\n<li>✅ Find items (find, includes)</li>\n<li>✅ Combine items (reduce)</li>\n<li>✅ Sort arrays (sort)</li>\n<li>✅ Copy arrays (slice)</li>\n</ul>"},{"html":"<h3><strong>Objects</strong> 🗂️</h3>\n<ul>\n<li>✅ Create objects with properties</li>\n<li>✅ Access properties (dot and bracket notation)</li>\n<li>✅ Create methods (functions in objects)</li>\n<li>✅ Use <code>this</code> keyword</li>\n<li>✅ Get keys, values, entries</li>\n<li>✅ Combine arrays and objects</li>\n</ul>\n<p><strong>You can now:</strong></p>\n<ul>\n<li>🚀 Build a complete inventory system</li>\n<li>🚀 Manage lists of data efficiently</li>\n<li>🚀 Process data with powerful methods</li>\n<li>🚀 Create real-world applications</li>\n</ul>\n<p><strong>This is huge!</strong> You've learned the most important tools in JavaScript! 🎯</p>"},{"html":"<h2>Common Mistakes &amp; Tips</h2>"},{"html":"<h3><strong>Mistake 1: Modifying Arrays While Looping</strong></h3>\n<pre><code class=\"language-javascript\">// ❌ Don't do this\nlet numbers = [1, 2, 3, 4];\nfor (let i = 0; i &lt; numbers.length; i++) {\n    numbers.pop();  // Changes the array during loop!\n}\n\n// ✅ Use filter instead\nlet numbers = [1, 2, 3, 4];\nnumbers = numbers.filter(num =&gt; num &gt; 2);\n</code></pre>"},{"html":"<h3><strong>Mistake 2: Forgetting Return in map()</strong></h3>\n<pre><code class=\"language-javascript\">// ❌ Returns undefined\nlet doubled = numbers.map(num =&gt; {\n    num * 2;  // Forgot return!\n});\n\n// ✅ Return the value\nlet doubled = numbers.map(num =&gt; {\n    return num * 2;\n});\n\n// ✅ Or use short syntax\nlet doubled = numbers.map(num =&gt; num * 2);\n</code></pre>"},{"html":"<h3><strong>Mistake 3: Mutating Original Array</strong></h3>\n<pre><code class=\"language-javascript\">// ❌ Changes original\nlet scores = [85, 90, 78];\nscores.sort();\nconsole.log(scores);  // Original is changed!\n\n// ✅ Make a copy first\nlet scores = [85, 90, 78];\nlet sorted = scores.slice().sort();\nconsole.log(scores);  // Original unchanged\nconsole.log(sorted);  // Sorted copy\n</code></pre>"},{"html":"<h3><strong>Mistake 4: Confusing Array and Object Syntax</strong></h3>\n<pre><code class=\"language-javascript\">// Array uses [ ]\nlet students = [\"Maria\", \"Jose\"];\nconsole.log(students[0]);\n\n// Object uses { }\nlet student = { name: \"Maria\", age: 15 };\nconsole.log(student.name);\n</code></pre>"},{"html":"<h3><strong>Pro Tips</strong> 💡</h3>\n<ol>\n<li><p><strong>Use const for arrays/objects that won't be reassigned</strong></p>\n<pre><code class=\"language-javascript\">const students = [];  // Can still push/pop\nstudents.push(\"Maria\");  // ✅ OK\nstudents = [\"Ana\"];  // ❌ Error\n</code></pre>\n</li>\n<li><p><strong>Chain array methods for powerful operations</strong></p>\n<pre><code class=\"language-javascript\">let result = scores\n    .filter(score =&gt; score &gt;= 75)\n    .map(score =&gt; score + 5)\n    .sort((a, b) =&gt; b - a);\n</code></pre>\n</li>\n<li><p><strong>Use meaningful names</strong></p>\n<pre><code class=\"language-javascript\">// ❌ Unclear\narr.forEach(x =&gt; console.log(x));\n\n// ✅ Clear\nstudents.forEach(student =&gt; console.log(student.name));\n</code></pre>\n</li>\n<li><p><strong>Console.log() is your friend!</strong></p>\n<pre><code class=\"language-javascript\">let result = scores\n    .filter(score =&gt; {\n        console.log(\"Checking:\", score);  // Debug!\n        return score &gt;= 75;\n    });\n</code></pre>\n</li>\n</ol>"},{"html":"<h2>Final Challenge: Complete System</h2>\n<p>Build a <strong>Student Management System</strong> with everything you learned!</p>\n<p><strong>Requirements:</strong></p>\n<ol>\n<li>Array of student objects (name, scores, attendance)</li>\n<li>Calculate averages</li>\n<li>Find honor students (average ≥ 90)</li>\n<li>Sort by average</li>\n<li>Check attendance status</li>\n<li>Generate reports</li>\n</ol>\n<p><strong>Try it yourself! Solution:</strong></p>\n<p><img src=\"https://roycan.github.io/lecture_creator/diagrams/ranking-pipeline.png\" alt=\"Data pipeline diagram showing student objects being mapped to add averages, sorted by score, and displayed with rankings\"></p>\n<pre><code class=\"language-javascript\">let classroom = {\n    section: \"Grade 9 - Einstein\",\n    students: [\n        { name: \"Maria Santos\", scores: [95, 92, 94], attendance: 98 },\n        { name: \"Jose Cruz\", scores: [88, 85, 90], attendance: 95 },\n        { name: \"Ana Reyes\", scores: [78, 80, 75], attendance: 88 },\n        { name: \"Pedro Garcia\", scores: [92, 95, 93], attendance: 100 },\n        { name: \"Rosa Lopez\", scores: [85, 88, 86], attendance: 92 }\n    ],\n    \n    calculateAverage: function(scores) {\n        let sum = scores.reduce((total, score) =&gt; total + score, 0);\n        return sum / scores.length;\n    },\n    \n    generateReport: function() {\n        console.log(\"========================================\");\n        console.log(this.section.toUpperCase());\n        console.log(\"CLASS PERFORMANCE REPORT\");\n        console.log(\"========================================\\n\");\n        \n        // Add average to each student\n        let studentsWithAvg = this.students.map(student =&gt; {\n            return {\n                name: student.name,\n                average: this.calculateAverage(student.scores),\n                attendance: student.attendance,\n                scores: student.scores\n            };\n        });\n        \n        // Sort by average (highest first)\n        studentsWithAvg.sort((a, b) =&gt; b.average - a.average);\n        \n        // Display rankings\n        console.log(\"📊 CLASS RANKINGS:\");\n        console.log(\"------------------\");\n        studentsWithAvg.forEach((student, index) =&gt; {\n            let medal = \"\";\n            if (index === 0) medal = \"🥇\";\n            else if (index === 1) medal = \"🥈\";\n            else if (index === 2) medal = \"🥉\";\n            \n            console.log(medal + \" \" + (index + 1) + \". \" + student.name);\n            console.log(\"   Average: \" + student.average.toFixed(1));\n            console.log(\"   Attendance: \" + student.attendance + \"%\");\n            console.log();\n        });\n        \n        // Honor students (average &gt;= 90)\n        console.log(\"🌟 HONOR STUDENTS (90+):\");\n        console.log(\"------------------------\");\n        let honorStudents = studentsWithAvg.filter(s =&gt; s.average &gt;= 90);\n        if (honorStudents.length &gt; 0) {\n            honorStudents.forEach(student =&gt; {\n                console.log(\"⭐ \" + student.name + \" - \" + student.average.toFixed(1));\n            });\n        } else {\n            console.log(\"No honor students this period.\");\n        }\n        console.log();\n        \n        // Attendance warnings (&lt; 90%)\n        console.log(\"⚠️ ATTENDANCE ALERTS (&lt; 90%):\");\n        console.log(\"-----------------------------\");\n        let lowAttendance = studentsWithAvg.filter(s =&gt; s.attendance &lt; 90);\n        if (lowAttendance.length &gt; 0) {\n            lowAttendance.forEach(student =&gt; {\n                console.log(\"⚠️ \" + student.name + \" - \" + student.attendance + \"%\");\n            });\n        } else {\n            console.log(\"All students have good attendance! ✅\");\n        }\n        console.log();\n        \n            ![Matrix diagram showing student classification by performance and attendance status](diagrams/attendance-matrix.png)\n        \n        // Class statistics\n        console.log(\"📈 CLASS STATISTICS:\");\n        console.log(\"--------------------\");\n        let classAvg = studentsWithAvg.reduce((sum, s) =&gt; sum + s.average, 0) / studentsWithAvg.length;\n        let avgAttendance = this.students.reduce((sum, s) =&gt; sum + s.attendance, 0) / this.students.length;\n        \n        console.log(\"Class Average: \" + classAvg.toFixed(1));\n        console.log(\"Average Attendance: \" + avgAttendance.toFixed(1) + \"%\");\n        console.log(\"Total Students: \" + this.students.length);\n        console.log(\"========================================\");\n    }\n};\n\n// Generate the report\nclassroom.generateReport();\n</code></pre>\n<p><strong>Output:</strong></p>\n<pre><code>========================================\nGRADE 9 - EINSTEIN\nCLASS PERFORMANCE REPORT\n========================================\n\n📊 CLASS RANKINGS:\n------------------\n🥇 1. Maria Santos\n   Average: 93.7\n   Attendance: 98%\n\n🥈 2. Pedro Garcia\n   Average: 93.3\n   Attendance: 100%\n\n🥉 3. Jose Cruz\n   Average: 87.7\n   Attendance: 95%\n\n4. Rosa Lopez\n   Average: 86.3\n   Attendance: 92%\n\n5. Ana Reyes\n   Average: 77.7\n   Attendance: 88%\n\n🌟 HONOR STUDENTS (90+):\n------------------------\n⭐ Maria Santos - 93.7\n⭐ Pedro Garcia - 93.3\n\n⚠️ ATTENDANCE ALERTS (&lt; 90%):\n-----------------------------\n⚠️ Ana Reyes - 88%\n\n📈 CLASS STATISTICS:\n--------------------\nClass Average: 87.7\nAverage Attendance: 94.6%\nTotal Students: 5\n========================================\n</code></pre>\n<p><strong>AMAZING!</strong> You built a complete student management system! 🎓</p>"},{"html":"<h2>Homework Assignment 📝</h2>"},{"html":"<h3><strong>Easy Level:</strong></h3>\n<ol>\n<li><p><strong>Shopping List</strong></p>\n<ul>\n<li>Create array of items</li>\n<li>Add/remove items</li>\n<li>Display the list</li>\n<li>Count total items</li>\n</ul>\n</li>\n<li><p><strong>Student Object</strong></p>\n<ul>\n<li>Create object with name, age, grade, scores</li>\n<li>Add method to calculate average</li>\n<li>Add method to check if passed</li>\n</ul>\n</li>\n</ol>"},{"html":"<h3><strong>Medium Level:</strong></h3>\n<ol start=\"3\">\n<li><p><strong>Product Catalog</strong></p>\n<ul>\n<li>Array of 5 product objects (name, price, stock)</li>\n<li>Filter available products (stock &gt; 0)</li>\n<li>Sort by price (low to high)</li>\n<li>Calculate total inventory value</li>\n</ul>\n</li>\n<li><p><strong>Grade Book</strong></p>\n<ul>\n<li>Array of student objects</li>\n<li>Find students with average &gt;= 85</li>\n<li>Calculate class average</li>\n<li>Identify highest scorer</li>\n</ul>\n</li>\n</ol>"},{"html":"<h3><strong>Challenge Level:</strong></h3>\n<ol start=\"5\">\n<li><p><strong>Baon Budget Tracker</strong></p>\n<ul>\n<li>Track daily expenses for a week</li>\n<li>Calculate total spent</li>\n<li>Find highest expense day</li>\n<li>Check if within ₱500 weekly budget</li>\n<li>Show remaining budget</li>\n</ul>\n</li>\n<li><p><strong>Game Leaderboard</strong></p>\n<ul>\n<li>Array of player objects (name, score, level)</li>\n<li>Sort by score (highest first)</li>\n<li>Show top 3 players</li>\n<li>Calculate average score</li>\n<li>Filter players above level 5</li>\n</ul>\n</li>\n</ol>\n<p><strong>Bonus Challenge:</strong> Expand the Sari-Sari Store system with new features:</p>\n<ul>\n<li>Search products by name</li>\n<li>Apply discounts to categories</li>\n<li>Track sales history</li>\n<li>Generate daily sales report</li>\n</ul>"},{"html":"<h2>Resources for Practice</h2>"},{"html":"<h3><strong>Interactive Coding:</strong></h3>\n<ul>\n<li>🌐 <strong>JavaScript.info</strong> - Array and Object chapters</li>\n<li>🌐 <strong>freeCodeCamp</strong> - ES6 section</li>\n<li>🌐 <strong>Codecademy</strong> - JavaScript arrays and objects</li>\n<li>🌐 <strong>Exercism.io</strong> - JavaScript track with mentors</li>\n</ul>"},{"html":"<h3><strong>Practice Challenges:</strong></h3>\n<ul>\n<li>🎮 <strong>LeetCode</strong> - Easy array problems</li>\n<li>🎮 <strong>HackerRank</strong> - JavaScript basics</li>\n<li>🎮 <strong>Codewars</strong> - 8kyu and 7kyu problems</li>\n</ul>"},{"html":"<h3><strong>What to Learn Next:</strong></h3>\n<ol>\n<li>✅ Master these array/object skills with practice</li>\n<li>Learn about the <strong>DOM</strong> (manipulating web pages)</li>\n<li>Learn <strong>async JavaScript</strong> (APIs, fetching data)</li>\n<li>Build projects: Todo list, Quiz app, Expense tracker</li>\n<li>Learn a framework: React, Vue, or Node.js</li>\n</ol>"},{"html":"<h2>Questions to Think About 🤔</h2>\n<ol>\n<li>When would you use an <strong>array</strong> vs an <strong>object</strong>?</li>\n<li>What's the difference between <code>map()</code> and <code>forEach()</code>?</li>\n<li>How would you combine multiple array methods?</li>\n<li>Why is <code>this</code> useful in object methods?</li>\n<li>How would you search for a student by name in an array of objects?</li>\n</ol>\n<p><strong>Discuss with your classmates!</strong></p>"},{"html":"<h2>Congratulations! 🎉🎓</h2>\n<p>You've completed <strong>JavaScript Fundamentals!</strong></p>\n<p><strong>You now have the skills to:</strong></p>\n<ul>\n<li>✅ Store and organize data efficiently</li>\n<li>✅ Process lists with powerful methods</li>\n<li>✅ Build real-world applications</li>\n<li>✅ Create interactive systems</li>\n<li>✅ Write professional JavaScript code</li>\n</ul>\n<p><strong>From Part 1 + Part 2, you know:</strong></p>\n<ol>\n<li>Variables &amp; Data Types</li>\n<li>Conditionals (if-else)</li>\n<li>Loops (for, while)</li>\n<li>Functions</li>\n<li>Arrays &amp; Methods</li>\n<li>Objects &amp; Methods</li>\n<li>Combining Everything!</li>\n</ol>\n<p><strong>You're ready to build real projects!</strong> 🚀</p>"},{"html":"<h3><strong>Next Steps:</strong></h3>\n<ol>\n<li><strong>Practice, practice, practice!</strong> Build small projects every day.</li>\n<li><strong>Learn the DOM</strong> to make websites interactive.</li>\n<li><strong>Build a portfolio</strong> of projects to showcase your skills.</li>\n<li><strong>Join coding communities</strong> to learn from others.</li>\n<li><strong>Keep coding!</strong> The more you code, the better you get.</li>\n</ol>\n<p><strong>Remember:</strong></p>\n<ul>\n<li>💪 Every expert was once a beginner</li>\n<li>🐛 Bugs are learning opportunities</li>\n<li>📚 Google is your friend (everyone uses it!)</li>\n<li>🤝 Ask for help when stuck</li>\n<li>🎯 Focus on understanding, not memorizing</li>\n</ul>"},{"html":"<h2>Thank You! 🎊</h2>\n<p>You did an <strong>amazing job</strong> completing this course! JavaScript is a powerful language, and you now have a solid foundation.</p>\n<p><strong>Keep building, keep learning, keep coding!</strong> 💻✨</p>\n<p><strong>The journey has just begun!</strong> 🌟</p>"},{"html":"<hr>\n<p><em>\"The only way to learn a new programming language is by writing programs in it.\"</em> - Dennis Ritchie</p>\n<p><strong>Now go build something awesome!</strong> 🚀</p>"}]</script>
+    <script>
+(function() {
+    'use strict';
+    
+    // Console logging helper
+    function log(msg, level) {
+        var prefix = '[Lecture Player] ';
+        if (level === 'error') console.error(prefix + msg);
+        else if (level === 'warn') console.warn(prefix + msg);
+        else console.log(prefix + msg);
+    }
+    
+    // State
+    var slides = [];
+    var currentSlide = 0;
+    var isPlaying = false;
+    var autoAdvance = true;
+    var manualMode = false;
+    var isPaused = false;
+    var availableVoices = [];
+    var selectedVoice = null;
+    
+    // DOM Elements
+    var container = document.getElementById('slide-container');
+    var startOverlay = document.getElementById('start-overlay');
+    var startButton = document.getElementById('start-button');
+    var statusMessage = document.getElementById('status-message');
+    var voiceSelect = document.getElementById('voice-select');
+    var rateInput = document.getElementById('rate');
+    var pitchInput = document.getElementById('pitch');
+    var rateValue = document.getElementById('rate-value');
+    var pitchValue = document.getElementById('pitch-value');
+    var navControls = document.getElementById('nav-controls');
+    var progressIndicator = document.getElementById('progress-indicator');
+    var prevButton = document.getElementById('prev-button');
+    var nextButton = document.getElementById('next-button');
+    var pauseButton = document.getElementById('pause-button');
+    var spinner = document.querySelector('.spinner');
+    var voiceControlsContainer = document.getElementById('voice-controls-container');
+    var speedControl = document.getElementById('speed-control');
+    var speedSlider = document.getElementById('speed-slider');
+    var speedValue = document.getElementById('speed-value');
+    
+    // Update rate/pitch displays
+    rateInput.addEventListener('input', function() {
+        rateValue.textContent = parseFloat(rateInput.value).toFixed(2) + 'x';
+    });
+    pitchInput.addEventListener('input', function() {
+        pitchValue.textContent = parseFloat(pitchInput.value).toFixed(1);
+    });
+    
+    // Update speed display (nav controls)
+    speedSlider.addEventListener('input', function() {
+        speedValue.textContent = parseFloat(speedSlider.value).toFixed(2) + 'x';
+    });
+    
+    // Setup mode selection
+    function setupModeSelection() {
+        var modeRadios = document.querySelectorAll('input[name="playback-mode"]');
+        
+        for (var i = 0; i < modeRadios.length; i++) {
+            modeRadios[i].addEventListener('change', function(e) {
+                manualMode = (e.target.value === 'manual');
+                
+                if (manualMode) {
+                    // Hide voice controls
+                    voiceControlsContainer.classList.add('hidden');
+                    
+                    // Update status and button
+                    updateStatus('Manual mode selected - ready to start', 'success');
+                    startButton.textContent = 'Start (Manual Navigation)';
+                    startButton.disabled = false;
+                    
+                    // Hide spinner
+                    spinner.style.display = 'none';
+                    
+                    log('Manual mode selected by user');
+                } else {
+                    // Show voice controls
+                    voiceControlsContainer.classList.remove('hidden');
+                    
+                    // Check voice status
+                    if (availableVoices.length > 0) {
+                        updateStatus('Auto-play mode - ' + availableVoices.length + ' voices available', 'success');
+                        startButton.textContent = 'Start Presentation';
+                        startButton.disabled = false;
+                        spinner.style.display = 'none';
+                    } else {
+                        updateStatus('Loading voices...', '');
+                        startButton.textContent = 'Initializing...';
+                        startButton.disabled = true;
+                        spinner.style.display = 'block';
+                        // Re-trigger voice loading
+                        initializeVoiceLoading();
+                    }
+                    
+                    log('Auto-play mode selected by user');
+                }
+            });
+        }
+    }
+    
+    // Load slides
+    try {
+        var slidesData = document.getElementById('slides-data');
+        if (!slidesData) {
+            throw new Error('Slides data not found');
+        }
+        slides = JSON.parse(slidesData.textContent || '[]');
+        if (!slides || slides.length === 0) {
+            throw new Error('No slides found');
+        }
+        log('Loaded ' + slides.length + ' slides');
+    } catch (e) {
+        log('Failed to load slides: ' + e.message, 'error');
+        updateStatus('Failed to load presentation', 'error');
+        startButton.textContent = 'Error: No Slides';
+        return;
+    }
+    
+    // Update status message
+    function updateStatus(msg, type) {
+        statusMessage.textContent = msg;
+        statusMessage.className = type || '';
+    }
+    
+    // Split text into sentences
+    function splitIntoSentences(text) {
+        var sentences = [];
+        var buffer = '';
+        for (var i = 0; i < text.length; i++) {
+            var ch = text[i];
+            buffer += ch;
+            if (ch === '.' || ch === '!' || ch === '?' || ch === '\n') {
+                var trimmed = buffer.trim();
+                if (trimmed) sentences.push(trimmed);
+                buffer = '';
+            }
+        }
+        var remaining = buffer.trim();
+        if (remaining) sentences.push(remaining);
+        return sentences.length > 0 ? sentences : [text];
+    }
+    
+    // Select best voice
+    function selectBestVoice(voices) {
+        if (!voices || voices.length === 0) return null;
+        
+        // Try US English first
+        for (var i = 0; i < voices.length; i++) {
+            if (/en-us/i.test(voices[i].lang)) {
+                log('Selected US English voice: ' + voices[i].name);
+                return voices[i];
+            }
+        }
+        
+        // Try any English
+        for (var j = 0; j < voices.length; j++) {
+            if (/^en/i.test(voices[j].lang)) {
+                log('Selected English voice: ' + voices[j].name);
+                return voices[j];
+            }
+        }
+        
+        // Use first available
+        log('Using first available voice: ' + voices[0].name);
+        return voices[0];
+    }
+    
+    // Populate voice select
+    function populateVoices() {
+        try {
+            availableVoices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+            voiceSelect.innerHTML = '';
+            
+            if (!availableVoices || availableVoices.length === 0) {
+                var opt = document.createElement('option');
+                opt.textContent = 'System default voice';
+                voiceSelect.appendChild(opt);
+                log('No voices available, using system default', 'warn');
+                return false;
+            }
+            
+            // Populate dropdown
+            for (var i = 0; i < availableVoices.length; i++) {
+                var voice = availableVoices[i];
+                var option = document.createElement('option');
+                option.value = i;
+                option.textContent = voice.name + ' (' + voice.lang + ')';
+                voiceSelect.appendChild(option);
+            }
+            
+            // Select best voice
+            selectedVoice = selectBestVoice(availableVoices);
+            if (selectedVoice) {
+                for (var k = 0; k < availableVoices.length; k++) {
+                    if (availableVoices[k] === selectedVoice) {
+                        voiceSelect.selectedIndex = k;
+                        break;
+                    }
+                }
+            }
+            
+            log('Populated ' + availableVoices.length + ' voices');
+            return true;
+        } catch (e) {
+            log('Error populating voices: ' + e.message, 'error');
+            return false;
+        }
+    }
+    
+    // Wait for voices with timeout
+    function waitForVoices(callback) {
+        var startTime = Date.now();
+        var maxWait = 3000; // 3 seconds
+        
+        function check() {
+            var hasVoices = populateVoices();
+            if (hasVoices) {
+                log('Voices loaded successfully');
+                callback(true);
+                return;
+            }
+            
+            if (Date.now() - startTime > maxWait) {
+                log('Voice loading timeout, continuing with defaults', 'warn');
+                callback(false);
+                return;
+            }
+            
+            setTimeout(check, 200);
+        }
+        
+        check();
+    }
+    
+    // Speak text with error handling
+    function speakText(text, onComplete) {
+        if (!text || !text.trim()) {
+            log('Empty text, skipping speech');
+            setTimeout(onComplete, 500);
+            return;
+        }
+        
+        if (!window.speechSynthesis) {
+            log('Speech synthesis not available', 'warn');
+            setTimeout(onComplete, 1000);
+            return;
+        }
+        
+        try {
+            var sentences = splitIntoSentences(text);
+            var index = 0;
+            
+            function speakNext() {
+                if (index >= sentences.length) {
+                    onComplete();
+                    return;
+                }
+                
+                var sentence = sentences[index++];
+                if (!sentence.trim()) {
+                    setTimeout(speakNext, 200);
+                    return;
+                }
+                
+                var utterance = new SpeechSynthesisUtterance(sentence);
+                
+                // Apply voice if available
+                var voiceIndex = parseInt(voiceSelect.value, 10);
+                if (!isNaN(voiceIndex) && availableVoices[voiceIndex]) {
+                    utterance.voice = availableVoices[voiceIndex];
+                } else if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+                
+                // Use speed slider if available (nav controls), otherwise use rate from overlay
+                utterance.rate = parseFloat(speedSlider ? speedSlider.value : (rateInput ? rateInput.value : 0.95));
+                utterance.pitch = parseFloat(pitchInput.value) || 1.0;
+                
+                utterance.onend = function() {
+                    setTimeout(speakNext, 220);
+                };
+                
+                utterance.onerror = function(e) {
+                    log('Speech error: ' + e.error, 'warn');
+                    setTimeout(speakNext, 250);
+                };
+                
+                window.speechSynthesis.speak(utterance);
+            }
+            
+            speakNext();
+        } catch (e) {
+            log('Error in speakText: ' + e.message, 'error');
+            setTimeout(onComplete, 500);
+        }
+    }
+    
+    // Display slide
+    function displaySlide(index) {
+        if (index < 0 || index >= slides.length) {
+            log('Invalid slide index: ' + index, 'error');
+            return;
+        }
+        
+        currentSlide = index;
+        var slide = slides[index];
+        
+        try {
+            container.innerHTML = slide.html;
+            progressIndicator.textContent = 'Slide ' + (index + 1) + ' of ' + slides.length;
+            
+            // Update navigation buttons
+            prevButton.disabled = (index === 0);
+            nextButton.disabled = (index === slides.length - 1);
+            
+            log('Displaying slide ' + (index + 1));
+        } catch (e) {
+            log('Error displaying slide: ' + e.message, 'error');
+            container.innerHTML = '<h1>Error displaying slide</h1>';
+        }
+    }
+    
+    // Play slide with speech
+    function playSlide(index) {
+        if (index >= slides.length) {
+            container.innerHTML = '<h1>End of Presentation</h1><p>Press Previous to review slides</p>';
+            isPlaying = false;
+            log('Presentation complete');
+            return;
+        }
+        
+        displaySlide(index);
+        
+        // In manual mode, just display slide and wait for user navigation
+        if (manualMode) {
+            log('Manual mode - waiting for user navigation (slide ' + (index + 1) + ')');
+            return;
+        }
+        
+        // Check if paused - wait for resume
+        if (isPaused) {
+            log('Paused - waiting for resume (slide ' + (index + 1) + ')');
+            return;
+        }
+        
+        // Extract text for speech (auto mode only)
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = slides[index].html;
+        var text = tempDiv.textContent || tempDiv.innerText || '';
+        
+        if (autoAdvance) {
+            speakText(text, function() {
+                if (isPlaying && !isPaused) {
+                    playSlide(index + 1);
+                }
+            });
+        }
+    }
+    
+    // Navigation handlers
+    function nextSlide() {
+        if (currentSlide < slides.length - 1) {
+            if (!manualMode) {
+                // In auto mode, disable auto-advance when manually overriding
+                autoAdvance = false;
+                window.speechSynthesis.cancel();
+            }
+            playSlide(currentSlide + 1);
+        }
+    }
+    
+    function prevSlide() {
+        if (currentSlide > 0) {
+            if (!manualMode) {
+                // In auto mode, disable auto-advance when manually overriding
+                autoAdvance = false;
+                window.speechSynthesis.cancel();
+            }
+            playSlide(currentSlide - 1);
+        }
+    }
+    
+    // Adjust speed with keyboard shortcuts
+    function adjustSpeed(delta) {
+        if (manualMode) return; // No speed control in manual mode
+        
+        var currentSpeed = parseFloat(speedSlider.value);
+        var newSpeed = Math.max(0.6, Math.min(1.3, currentSpeed + delta));
+        
+        speedSlider.value = newSpeed.toFixed(2);
+        speedValue.textContent = newSpeed.toFixed(2) + 'x';
+        
+        log('Speed adjusted to ' + newSpeed.toFixed(2) + 'x');
+        showSpeedToast(newSpeed);
+    }
+    
+    // Show speed toast notification
+    function showSpeedToast(speed) {
+        var toast = document.getElementById('speed-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'speed-toast';
+            document.body.appendChild(toast);
+        }
+        
+        toast.textContent = 'Speed: ' + speed.toFixed(2) + 'x';
+        toast.style.opacity = '1';
+        
+        // Fade out after 800ms
+        setTimeout(function() {
+            toast.style.opacity = '0';
+        }, 800);
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (!isPlaying) return;
+        
+        // Don't handle shortcuts while typing in input fields
+        var activeTag = document.activeElement.tagName;
+        if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT') {
+            return;
+        }
+        
+        if (e.key === ' ') {
+            e.preventDefault();
+            if (manualMode) {
+                // In manual mode, spacebar advances slide
+                nextSlide();
+            } else {
+                // In auto mode, spacebar toggles pause/resume
+                togglePause();
+            }
+        } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevSlide();
+        }
+        // Speed shortcuts (only in auto mode)
+        else if (!manualMode) {
+            if (e.key === '.' || e.key === '>') {
+                e.preventDefault();
+                adjustSpeed(0.1);
+            } else if (e.key === ',' || e.key === '<') {
+                e.preventDefault();
+                adjustSpeed(-0.1);
+            }
+        }
+    });
+    
+    // Start presentation
+    function startPresentation() {
+        log('Starting presentation in ' + (manualMode ? 'manual' : 'auto') + ' mode');
+        startOverlay.style.display = 'none';
+        navControls.classList.add('visible');
+        isPlaying = true;
+        isPaused = false;
+        
+        if (!manualMode) {
+            // Auto mode: enable auto-advance and try voice one more time
+            autoAdvance = true;
+            populateVoices();
+            
+            // Sync speed slider to start overlay value
+            if (rateInput && speedSlider) {
+                speedSlider.value = rateInput.value;
+                speedValue.textContent = parseFloat(rateInput.value).toFixed(2) + 'x';
+                log('Synced speed: ' + rateInput.value + 'x');
+            }
+            
+            // Show pause button and speed control in auto mode
+            pauseButton.classList.remove('hidden');
+            speedControl.classList.remove('hidden');
+        } else {
+            // Manual mode: no auto-advance, no voice needed
+            autoAdvance = false;
+            // Hide pause button and speed control in manual mode
+            pauseButton.classList.add('hidden');
+            speedControl.classList.add('hidden');
+        }
+        
+        playSlide(0);
+    }
+    
+    // Toggle pause/resume
+    function togglePause() {
+        if (manualMode) return; // No pause in manual mode
+        
+        isPaused = !isPaused;
+        
+        if (isPaused) {
+            // Paused state
+            window.speechSynthesis.cancel();
+            pauseButton.textContent = '▶ Resume';
+            pauseButton.classList.add('paused');
+            log('Presentation paused');
+        } else {
+            // Resumed state
+            pauseButton.textContent = '⏸ Pause';
+            pauseButton.classList.remove('paused');
+            log('Presentation resumed');
+            // Resume playing current slide
+            if (autoAdvance && currentSlide < slides.length) {
+                playSlide(currentSlide);
+            }
+        }
+    }
+    
+    // Button handlers
+    startButton.addEventListener('click', startPresentation);
+    nextButton.addEventListener('click', nextSlide);
+    prevButton.addEventListener('click', prevSlide);
+    pauseButton.addEventListener('click', togglePause);
+    
+    // Voice loading wrapper
+    function initializeVoiceLoading() {
+        if (manualMode) {
+            log('Manual mode - skipping voice initialization');
+            return;
+        }
+        
+        if (!window.speechSynthesis) {
+            log('Speech synthesis not supported', 'error');
+            updateStatus('Text-to-speech not supported in this browser', 'warning');
+            startButton.disabled = false;
+            startButton.textContent = 'Start (Manual Mode)';
+            spinner.style.display = 'none';
+            return;
+        }
+        
+        // Setup voice change listener
+        if (window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = populateVoices;
+        }
+        
+        // Wait for voices
+        waitForVoices(function(success) {
+            if (manualMode) return; // User switched to manual while loading
+            
+            spinner.style.display = 'none';
+            if (success) {
+                updateStatus('Ready! ' + availableVoices.length + ' voices available', 'success');
+                startButton.textContent = 'Start Presentation';
+            } else {
+                updateStatus('Continuing with system default voice', 'warning');
+                startButton.textContent = 'Start Anyway';
+            }
+            startButton.disabled = false;
+        });
+    }
+    
+    // Initialize
+    log('Initializing lecture player');
+    setupModeSelection();
+    updateStatus('Choose playback mode above', '');
+    
+    // Start voice loading for auto mode (default)
+    initializeVoiceLoading();
+    
+    log('Initialization complete');
+})();
+    </script>
+</body>
+</html>
