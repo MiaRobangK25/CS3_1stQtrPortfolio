@@ -1,0 +1,2303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>09-matrix-rotation</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- External Libraries -->
+  <!-- Note: Pyodide is loaded dynamically only when Python is selected -->
+  <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.49.0/min/vs/loader.js"></script>
+  <script>
+/**
+ * Minified by jsDelivr using Terser v5.37.0.
+ * Original file: /npm/canvas-confetti@1.9.2/dist/confetti.browser.js
+ *
+ * Do NOT use SRI with dynamically generated files! More information: https://www.jsdelivr.com/using-sri-with-dynamic-files
+ */
+!function(t,e){!function t(e,a,n,r){var o=!!(e.Worker&&e.Blob&&e.Promise&&e.OffscreenCanvas&&e.OffscreenCanvasRenderingContext2D&&e.HTMLCanvasElement&&e.HTMLCanvasElement.prototype.transferControlToOffscreen&&e.URL&&e.URL.createObjectURL),i="function"==typeof Path2D&&"function"==typeof DOMMatrix,l=function(){if(!e.OffscreenCanvas)return!1;var t=new OffscreenCanvas(1,1),a=t.getContext("2d");a.fillRect(0,0,1,1);var n=t.transferToImageBitmap();try{a.createPattern(n,"no-repeat")}catch(t){return!1}return!0}();function s(){}function c(t){var n=a.exports.Promise,r=void 0!==n?n:e.Promise;return"function"==typeof r?new r(t):(t(s,s),null)}var h,f,u,d,m,g,p,b,M,v,y,w=(h=l,f=new Map,{transform:function(t){if(h)return t;if(f.has(t))return f.get(t);var e=new OffscreenCanvas(t.width,t.height);return e.getContext("2d").drawImage(t,0,0),f.set(t,e),e},clear:function(){f.clear()}}),x=(m=Math.floor(1e3/60),g={},p=0,"function"==typeof requestAnimationFrame&&"function"==typeof cancelAnimationFrame?(u=function(t){var e=Math.random();return g[e]=requestAnimationFrame((function a(n){p===n||p+m-1<n?(p=n,delete g[e],t()):g[e]=requestAnimationFrame(a)})),e},d=function(t){g[t]&&cancelAnimationFrame(g[t])}):(u=function(t){return setTimeout(t,m)},d=function(t){return clearTimeout(t)}),{frame:u,cancel:d}),C=(v={},function(){if(b)return b;if(!n&&o){var e=["var CONFETTI, SIZE = {}, module = {};","("+t.toString()+")(this, module, true, SIZE);","onmessage = function(msg) {","  if (msg.data.options) {","    CONFETTI(msg.data.options).then(function () {","      if (msg.data.callback) {","        postMessage({ callback: msg.data.callback });","      }","    });","  } else if (msg.data.reset) {","    CONFETTI && CONFETTI.reset();","  } else if (msg.data.resize) {","    SIZE.width = msg.data.resize.width;","    SIZE.height = msg.data.resize.height;","  } else if (msg.data.canvas) {","    SIZE.width = msg.data.canvas.width;","    SIZE.height = msg.data.canvas.height;","    CONFETTI = module.exports.create(msg.data.canvas);","  }","}"].join("\n");try{b=new Worker(URL.createObjectURL(new Blob([e])))}catch(t){return void 0!==typeof console&&"function"==typeof console.warn&&console.warn("🎊 Could not load worker",t),null}!function(t){function e(e,a){t.postMessage({options:e||{},callback:a})}t.init=function(e){var a=e.transferControlToOffscreen();t.postMessage({canvas:a},[a])},t.fire=function(a,n,r){if(M)return e(a,null),M;var o=Math.random().toString(36).slice(2);return M=c((function(n){function i(e){e.data.callback===o&&(delete v[o],t.removeEventListener("message",i),M=null,w.clear(),r(),n())}t.addEventListener("message",i),e(a,o),v[o]=i.bind(null,{data:{callback:o}})}))},t.reset=function(){for(var e in t.postMessage({reset:!0}),v)v[e](),delete v[e]}}(b)}return b}),I={particleCount:50,angle:90,spread:45,startVelocity:45,decay:.9,gravity:1,drift:0,ticks:200,x:.5,y:.5,shapes:["square","circle"],zIndex:100,colors:["#26ccff","#a25afd","#ff5e7e","#88ff5a","#fcff42","#ffa62d","#ff36ff"],disableForReducedMotion:!1,scalar:1};function T(t,e,a){return function(t,e){return e?e(t):t}(t&&null!=t[e]?t[e]:I[e],a)}function E(t){return t<0?0:Math.floor(t)}function P(t){return parseInt(t,16)}function S(t){return t.map(O)}function O(t){var e=String(t).replace(/[^0-9a-f]/gi,"");return e.length<6&&(e=e[0]+e[0]+e[1]+e[1]+e[2]+e[2]),{r:P(e.substring(0,2)),g:P(e.substring(2,4)),b:P(e.substring(4,6))}}function k(t){t.width=document.documentElement.clientWidth,t.height=document.documentElement.clientHeight}function B(t){var e=t.getBoundingClientRect();t.width=e.width,t.height=e.height}function F(t,e){e.x+=Math.cos(e.angle2D)*e.velocity+e.drift,e.y+=Math.sin(e.angle2D)*e.velocity+e.gravity,e.velocity*=e.decay,e.flat?(e.wobble=0,e.wobbleX=e.x+10*e.scalar,e.wobbleY=e.y+10*e.scalar,e.tiltSin=0,e.tiltCos=0,e.random=1):(e.wobble+=e.wobbleSpeed,e.wobbleX=e.x+10*e.scalar*Math.cos(e.wobble),e.wobbleY=e.y+10*e.scalar*Math.sin(e.wobble),e.tiltAngle+=.1,e.tiltSin=Math.sin(e.tiltAngle),e.tiltCos=Math.cos(e.tiltAngle),e.random=Math.random()+2);var a=e.tick++/e.totalTicks,n=e.x+e.random*e.tiltCos,r=e.y+e.random*e.tiltSin,o=e.wobbleX+e.random*e.tiltCos,l=e.wobbleY+e.random*e.tiltSin;if(t.fillStyle="rgba("+e.color.r+", "+e.color.g+", "+e.color.b+", "+(1-a)+")",t.beginPath(),i&&"path"===e.shape.type&&"string"==typeof e.shape.path&&Array.isArray(e.shape.matrix))t.fill(function(t,e,a,n,r,o,i){var l=new Path2D(t),s=new Path2D;s.addPath(l,new DOMMatrix(e));var c=new Path2D;return c.addPath(s,new DOMMatrix([Math.cos(i)*r,Math.sin(i)*r,-Math.sin(i)*o,Math.cos(i)*o,a,n])),c}(e.shape.path,e.shape.matrix,e.x,e.y,.1*Math.abs(o-n),.1*Math.abs(l-r),Math.PI/10*e.wobble));else if("bitmap"===e.shape.type){var s=Math.PI/10*e.wobble,c=.1*Math.abs(o-n),h=.1*Math.abs(l-r),f=e.shape.bitmap.width*e.scalar,u=e.shape.bitmap.height*e.scalar,d=new DOMMatrix([Math.cos(s)*c,Math.sin(s)*c,-Math.sin(s)*h,Math.cos(s)*h,e.x,e.y]);d.multiplySelf(new DOMMatrix(e.shape.matrix));var m=t.createPattern(w.transform(e.shape.bitmap),"no-repeat");m.setTransform(d),t.globalAlpha=1-a,t.fillStyle=m,t.fillRect(e.x-f/2,e.y-u/2,f,u),t.globalAlpha=1}else if("circle"===e.shape)t.ellipse?t.ellipse(e.x,e.y,Math.abs(o-n)*e.ovalScalar,Math.abs(l-r)*e.ovalScalar,Math.PI/10*e.wobble,0,2*Math.PI):function(t,e,a,n,r,o,i,l,s){t.save(),t.translate(e,a),t.rotate(o),t.scale(n,r),t.arc(0,0,1,i,l,s),t.restore()}(t,e.x,e.y,Math.abs(o-n)*e.ovalScalar,Math.abs(l-r)*e.ovalScalar,Math.PI/10*e.wobble,0,2*Math.PI);else if("star"===e.shape)for(var g=Math.PI/2*3,p=4*e.scalar,b=8*e.scalar,M=e.x,v=e.y,y=5,x=Math.PI/y;y--;)M=e.x+Math.cos(g)*b,v=e.y+Math.sin(g)*b,t.lineTo(M,v),g+=x,M=e.x+Math.cos(g)*p,v=e.y+Math.sin(g)*p,t.lineTo(M,v),g+=x;else t.moveTo(Math.floor(e.x),Math.floor(e.y)),t.lineTo(Math.floor(e.wobbleX),Math.floor(r)),t.lineTo(Math.floor(o),Math.floor(l)),t.lineTo(Math.floor(n),Math.floor(e.wobbleY));return t.closePath(),t.fill(),e.tick<e.totalTicks}function A(t,a){var i,l=!t,s=!!T(a||{},"resize"),h=!1,f=T(a,"disableForReducedMotion",Boolean),u=o&&!!T(a||{},"useWorker")?C():null,d=l?k:B,m=!(!t||!u)&&!!t.__confetti_initialized,g="function"==typeof matchMedia&&matchMedia("(prefers-reduced-motion)").matches;function p(e,a,o){for(var l,s,h,f,u,m=T(e,"particleCount",E),g=T(e,"angle",Number),p=T(e,"spread",Number),b=T(e,"startVelocity",Number),M=T(e,"decay",Number),v=T(e,"gravity",Number),y=T(e,"drift",Number),C=T(e,"colors",S),I=T(e,"ticks",Number),P=T(e,"shapes"),O=T(e,"scalar"),k=!!T(e,"flat"),B=function(t){var e=T(t,"origin",Object);return e.x=T(e,"x",Number),e.y=T(e,"y",Number),e}(e),A=m,R=[],N=t.width*B.x,z=t.height*B.y;A--;)R.push((l={x:N,y:z,angle:g,spread:p,startVelocity:b,color:C[A%C.length],shape:P[(f=0,u=P.length,Math.floor(Math.random()*(u-f))+f)],ticks:I,decay:M,gravity:v,drift:y,scalar:O,flat:k},s=void 0,h=void 0,s=l.angle*(Math.PI/180),h=l.spread*(Math.PI/180),{x:l.x,y:l.y,wobble:10*Math.random(),wobbleSpeed:Math.min(.11,.1*Math.random()+.05),velocity:.5*l.startVelocity+Math.random()*l.startVelocity,angle2D:-s+(.5*h-Math.random()*h),tiltAngle:(.5*Math.random()+.25)*Math.PI,color:l.color,shape:l.shape,tick:0,totalTicks:l.ticks,decay:l.decay,drift:l.drift,random:Math.random()+2,tiltSin:0,tiltCos:0,wobbleX:0,wobbleY:0,gravity:3*l.gravity,ovalScalar:.6,scalar:l.scalar,flat:l.flat}));return i?i.addFettis(R):(i=function(t,e,a,o,i){var l,s,h=e.slice(),f=t.getContext("2d"),u=c((function(e){function c(){l=s=null,f.clearRect(0,0,o.width,o.height),w.clear(),i(),e()}l=x.frame((function e(){!n||o.width===r.width&&o.height===r.height||(o.width=t.width=r.width,o.height=t.height=r.height),o.width||o.height||(a(t),o.width=t.width,o.height=t.height),f.clearRect(0,0,o.width,o.height),(h=h.filter((function(t){return F(f,t)}))).length?l=x.frame(e):c()})),s=c}));return{addFettis:function(t){return h=h.concat(t),u},canvas:t,promise:u,reset:function(){l&&x.cancel(l),s&&s()}}}(t,R,d,a,o),i.promise)}function b(a){var n=f||T(a,"disableForReducedMotion",Boolean),r=T(a,"zIndex",Number);if(n&&g)return c((function(t){t()}));l&&i?t=i.canvas:l&&!t&&(t=function(t){var e=document.createElement("canvas");return e.style.position="fixed",e.style.top="0px",e.style.left="0px",e.style.pointerEvents="none",e.style.zIndex=t,e}(r),document.body.appendChild(t)),s&&!m&&d(t);var o={width:t.width,height:t.height};function b(){if(u){var e={getBoundingClientRect:function(){if(!l)return t.getBoundingClientRect()}};return d(e),void u.postMessage({resize:{width:e.width,height:e.height}})}o.width=o.height=null}function M(){i=null,s&&(h=!1,e.removeEventListener("resize",b)),l&&t&&(document.body.removeChild(t),t=null,m=!1)}return u&&!m&&u.init(t),m=!0,u&&(t.__confetti_initialized=!0),s&&!h&&(h=!0,e.addEventListener("resize",b,!1)),u?u.fire(a,o,M):p(a,o,M)}return b.reset=function(){u&&u.reset(),i&&i.reset()},b}function R(){return y||(y=A(null,{useWorker:!0,resize:!0})),y}a.exports=function(){return R().apply(this,arguments)},a.exports.reset=function(){R().reset()},a.exports.create=A,a.exports.shapeFromPath=function(t){if(!i)throw new Error("path confetti are not supported in this browser");var e,a;"string"==typeof t?e=t:(e=t.path,a=t.matrix);var n=new Path2D(e),r=document.createElement("canvas").getContext("2d");if(!a){for(var o,l,s=1e3,c=s,h=s,f=0,u=0,d=0;d<s;d+=2)for(var m=0;m<s;m+=2)r.isPointInPath(n,d,m,"nonzero")&&(c=Math.min(c,d),h=Math.min(h,m),f=Math.max(f,d),u=Math.max(u,m));o=f-c,l=u-h;var g=Math.min(10/o,10/l);a=[g,0,0,g,-Math.round(o/2+c)*g,-Math.round(l/2+h)*g]}return{type:"path",path:e,matrix:a}},a.exports.shapeFromText=function(t){var e,a=1,n="#000000",r='"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", "EmojiOne Color", "Android Emoji", "Twemoji Mozilla", "system emoji", sans-serif';"string"==typeof t?e=t:(e=t.text,a="scalar"in t?t.scalar:a,r="fontFamily"in t?t.fontFamily:r,n="color"in t?t.color:n);var o=10*a,i=o+"px "+r,l=new OffscreenCanvas(o,o),s=l.getContext("2d");s.font=i;var c=s.measureText(e),h=Math.ceil(c.actualBoundingBoxRight+c.actualBoundingBoxLeft),f=Math.ceil(c.actualBoundingBoxAscent+c.actualBoundingBoxDescent),u=c.actualBoundingBoxLeft+2,d=c.actualBoundingBoxAscent+2;h+=4,f+=4,(s=(l=new OffscreenCanvas(h,f)).getContext("2d")).font=i,s.fillStyle=n,s.fillText(e,u,d);var m=1/a;return{type:"bitmap",bitmap:l.transferToImageBitmap(),matrix:[m,0,0,m,-h*m/2,-f*m/2]}}}(function(){return void 0!==t?t:"undefined"!=typeof self?self:this||{}}(),e,!1),t.confetti=e.exports}(window,{});
+//# sourceMappingURL=/sm/d53f2f22b03fd579321823d70b9a568763d22cd7282cb1b3153f07dde591a548.map
+</script>
+  
+  <!-- Inline Styles for Self-Contained File -->
+  <style>
+    /* ==========================================
+   Programming Practice Platform - Student CSS
+   Design: Grade 9 Friendly, Light & Clear
+   ========================================== */
+
+/* === CSS Variables === */
+:root {
+  /* Colors */
+  --color-primary: #4A90E2;
+  --color-primary-dark: #357ABD;
+  --color-success: #28a745;
+  --color-success-light: #d4edda;
+  --color-error: #dc3545;
+  --color-error-light: #f8d7da;
+  --color-warning: #ffc107;
+  --color-info: #17a2b8;
+  
+  --color-bg: #f7f9fc;
+  --color-card-bg: #ffffff;
+  --color-border: #dee2e6;
+  --color-border-light: #e9ecef;
+  
+  --color-text-primary: #2c3e50;
+  --color-text-body: #495057;
+  --color-text-muted: #6c757d;
+  --color-code-inline: #e83e8c;
+  
+  /* Input/Output box backgrounds */
+  --color-input-bg: #e7f3ff;
+  --color-output-bg: #e7ffe7;
+  
+  /* Typography */
+  --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-family-mono: 'Fira Code', 'Monaco', 'Consolas', 'Courier New', monospace;
+  
+  --font-size-base: 16px;
+  --font-size-large: 18px;
+  --font-size-small: 14px;
+  --font-size-h1: 28px;
+  --font-size-h2: 22px;
+  --font-size-h3: 20px;
+  
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  --line-height-base: 1.6;
+  --line-height-heading: 1.3;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-hover: 0 4px 12px rgba(74, 144, 226, 0.15);
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* === Reset & Base Styles === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--font-size-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text-body);
+  background-color: var(--color-bg);
+  min-height: 100vh;
+}
+
+/* === Typography === */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-heading);
+  margin-bottom: var(--spacing-md);
+}
+
+h1 { font-size: var(--font-size-h1); }
+h2 { font-size: var(--font-size-h2); }
+h3 { font-size: var(--font-size-h3); }
+
+p {
+  margin-bottom: var(--spacing-md);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+code {
+  font-family: var(--font-family-mono);
+  font-size: 0.9em;
+  color: var(--color-code-inline);
+  background-color: var(--color-border-light);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+pre {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-small);
+  background-color: #f8f9fa;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  overflow-x: auto;
+  margin-bottom: var(--spacing-md);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* === Container & Layout === */
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+.problem-container {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+.problem-panel {
+  background-color: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+}
+
+.solution-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  position: sticky;
+  top: var(--spacing-lg);
+}
+
+/* === Cards === */
+.card {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--color-border-light);
+}
+
+.card-content {
+  color: var(--color-text-body);
+}
+
+/* Special card backgrounds */
+.card-input {
+  background-color: var(--color-input-bg);
+  border-left: 4px solid var(--color-primary);
+}
+
+.card-output {
+  background-color: var(--color-output-bg);
+  border-left: 4px solid var(--color-success);
+}
+
+/* === Problem Header === */
+.problem-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.problem-title {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.problem-meta {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+/* === Badges === */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+.badge-easy {
+  background-color: var(--color-success-light);
+  color: #155724;
+}
+
+.badge-medium {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.badge-hard {
+  background-color: var(--color-error-light);
+  color: #721c24;
+}
+
+.badge-time {
+  background-color: var(--color-border-light);
+  color: var(--color-text-body);
+}
+
+/* === Examples Section === */
+.example-card {
+  background-color: #f8f9fa;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.example-header {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-large);
+}
+
+.example-io {
+  display: grid;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.example-io-label {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-small);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.example-io-box {
+  background-color: white;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-small);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.example-explanation {
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-body);
+  font-style: italic;
+}
+
+/* === Expandable Sections === */
+.expandable {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+  overflow: hidden;
+}
+
+.expandable-header {
+  background-color: var(--color-border-light);
+  padding: var(--spacing-md);
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: var(--font-weight-medium);
+  transition: background-color var(--transition-fast);
+}
+
+.expandable-header:hover {
+  background-color: #dde1e6;
+}
+
+.expandable-content {
+  padding: var(--spacing-lg);
+  background-color: white;
+}
+
+details summary {
+  cursor: pointer;
+  user-select: none;
+  padding: var(--spacing-md);
+  background-color: var(--color-border-light);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  list-style: none;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details summary::before {
+  content: '▶ ';
+  display: inline-block;
+  transition: transform var(--transition-fast);
+}
+
+details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+details[open] summary {
+  margin-bottom: var(--spacing-md);
+}
+
+/* === Language Selector === */
+.language-selector {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.language-selector label {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  display: block;
+  margin-bottom: var(--spacing-sm);
+}
+
+.language-options {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.language-option {
+  flex: 1;
+}
+
+.language-option input[type="radio"] {
+  display: none;
+}
+
+.language-option label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background-color: white;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-weight: var(--font-weight-medium);
+}
+
+.language-option label:hover {
+  border-color: var(--color-primary);
+  background-color: rgba(74, 144, 226, 0.05);
+}
+
+.language-option input[type="radio"]:checked + label {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+/* === Code Editor === */
+.editor-container {
+  background-color: var(--color-card-bg);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  height: 450px;
+  transition: border-color var(--transition-fast);
+}
+
+.editor-container:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+/* === Buttons === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: 12px 24px;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-sans);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #5a6268;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-hover);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-large {
+  width: 100%;
+  padding: 16px 24px;
+  font-size: var(--font-size-large);
+}
+
+.btn-success {
+  background-color: var(--color-success);
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+/* Loading state */
+.btn-loading {
+  position: relative;
+  color: transparent;
+}
+
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* === Progress Bar === */
+.progress-container {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 24px;
+  background-color: var(--color-border-light);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-success), #20c997);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: var(--spacing-sm);
+  color: white;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* === Timer === */
+.timer-box {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin: var(--spacing-md) 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
+.timer-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.timer-display {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-large);
+  background: #f8f9fa;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+}
+
+.timer-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+/* === Test Results === */
+.results-container {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.results-header {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.test-result {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+  overflow: hidden;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.test-result-header {
+  padding: var(--spacing-md);
+  font-weight: var(--font-weight-medium);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.test-result.passed {
+  border-left: 4px solid var(--color-success);
+}
+
+.test-result.passed .test-result-header {
+  background-color: var(--color-success-light);
+  color: #155724;
+}
+
+.test-result.failed {
+  border-left: 4px solid var(--color-error);
+}
+
+.test-result.failed .test-result-header {
+  background-color: var(--color-error-light);
+  color: #721c24;
+}
+
+.test-result-details {
+  padding: var(--spacing-lg);
+  background-color: white;
+  border-top: 1px solid var(--color-border);
+}
+
+.test-input {
+  margin-bottom: var(--spacing-md);
+}
+
+.test-input-label {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-small);
+}
+
+.test-input-value {
+  background-color: #f8f9fa;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-small);
+  white-space: pre-wrap;
+  margin-left: var(--spacing-md);
+}
+
+.test-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.test-output-column {
+  background-color: #f8f9fa;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
+}
+
+.test-output-label {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-small);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.test-output-value {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-small);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.test-output-column.your-output {
+  border-left: 3px solid var(--color-error);
+}
+
+.test-output-column.expected-output {
+  border-left: 3px solid var(--color-success);
+}
+
+.friendly-message {
+  background-color: #fff3cd;
+  border-left: 4px solid var(--color-warning);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  color: #856404;
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+/* === Success Celebration === */
+.success-celebration {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-md);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.success-celebration h2 {
+  color: white;
+  font-size: 32px;
+  margin-bottom: var(--spacing-md);
+}
+
+.success-celebration p {
+  font-size: var(--font-size-large);
+  margin-bottom: var(--spacing-lg);
+}
+
+.success-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* === Responsive Design === */
+@media (max-width: 1200px) {
+  .problem-container {
+    grid-template-columns: 38% 62%;
+    gap: var(--spacing-md);
+  }
+  
+  .container {
+    padding: var(--spacing-md);
+  }
+}
+
+@media (max-width: 968px) {
+  .problem-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .solution-panel {
+    position: static;
+  }
+  
+  .problem-panel {
+    max-height: none;
+  }
+  
+  .test-comparison {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --font-size-base: 15px;
+    --font-size-h1: 24px;
+    --font-size-h2: 20px;
+    --font-size-h3: 18px;
+  }
+  
+  .container {
+    padding: var(--spacing-sm);
+  }
+  
+  .problem-panel {
+    padding: var(--spacing-lg);
+  }
+  
+  .card {
+    padding: var(--spacing-md);
+  }
+  
+  .editor-container {
+    height: 350px;
+  }
+  
+  .language-options {
+    flex-direction: column;
+  }
+}
+
+/* === Utility Classes === */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.mb-0 { margin-bottom: 0; }
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+
+/* === Protocol Warning Banner === */
+.protocol-warning {
+  position: relative;
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+  border: 2px solid #e17055;
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  padding-right: 48px; /* Make room for close button */
+  margin-bottom: var(--spacing-lg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.4s ease-out;
+}
+
+.protocol-warning-content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.protocol-warning-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+.protocol-warning-text {
+  flex: 1;
+}
+
+.protocol-warning-text h3 {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: #d63031;
+  font-size: 1.1rem;
+}
+
+.protocol-warning-text p {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: #2d3436;
+  line-height: 1.6;
+}
+
+.protocol-warning-text p:last-child {
+  margin-bottom: 0;
+}
+
+.protocol-warning-text strong {
+  color: #d63031;
+  font-weight: 600;
+}
+
+.protocol-warning-text code {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.protocol-warning-instructions {
+  margin-top: var(--spacing-sm);
+  padding-left: var(--spacing-md);
+  border-left: 3px solid #e17055;
+}
+
+.protocol-warning-instructions li {
+  margin-bottom: var(--spacing-xs);
+  color: #2d3436;
+}
+
+.warning-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: #d63031;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  min-width: 32px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.warning-close-btn:hover {
+  opacity: 1;
+  background-color: rgba(214, 48, 49, 0.1);
+  transform: scale(1.1);
+}
+
+.warning-close-btn:active {
+  transform: scale(0.95);
+}
+
+.warning-close-btn:focus {
+  outline: 2px solid #d63031;
+  outline-offset: 2px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Pyodide Loading Overlay === */
+.pyodide-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.pyodide-loading-overlay.hidden {
+  display: none;
+}
+
+.pyodide-loading-content {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: var(--spacing-xl);
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  animation: scaleIn 0.3s ease-out;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto var(--spacing-md) auto;
+  border: 4px solid var(--color-border);
+  border-top: 4px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.pyodide-loading-content h3 {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--color-primary);
+  font-size: 1.2rem;
+}
+
+.loading-submessage {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* === Responsive adjustments for warnings/overlays === */
+@media (max-width: 768px) {
+  .protocol-warning {
+    padding: var(--spacing-sm);
+  }
+  
+  .protocol-warning-content {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .protocol-warning-icon {
+    font-size: 1.2rem;
+  }
+  
+  .pyodide-loading-content {
+    margin: var(--spacing-md);
+    padding: var(--spacing-lg);
+    max-width: calc(100% - 2 * var(--spacing-md));
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Protocol Warning Banner (for file:// protocol) -->
+  <div id="protocol-warning" class="protocol-warning" style="display: none;">
+    <button class="warning-close-btn" onclick="dismissProtocolWarning()" title="Close warning" aria-label="Close warning">✕</button>
+    <div class="protocol-warning-content">
+      <strong>⚠️ Python Disabled (File Protocol)</strong>
+      <p>Python requires a web server due to browser security restrictions.</p>
+      <details style="margin-top: 8px;">
+        <summary style="cursor: pointer; font-weight: 500;">How to enable Python?</summary>
+        <ol style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9em;">
+          <li>Open terminal in the folder containing this HTML file</li>
+          <li>Run: <code>python3 -m http.server 8003</code></li>
+          <li>Open: <code>http://localhost:8003/[filename].html</code></li>
+        </ol>
+        <p style="margin: 8px 0 0 0; font-size: 0.9em;">✅ JavaScript works without a server.</p>
+      </details>
+    </div>
+  </div>
+
+  <!-- Pyodide Loading Overlay -->
+  <div id="pyodide-loading" class="pyodide-loading-overlay" style="display: none;">
+    <div class="pyodide-loading-content">
+      <div class="loading-spinner"></div>
+      <p id="pyodide-loading-message">Loading Python environment...</p>
+      <p class="loading-submessage">This may take a moment on first load</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="problem-container">
+      
+      <!-- LEFT PANEL: Problem Description -->
+      <div class="problem-panel">
+        <!-- Problem Header -->
+        <div class="problem-header">
+          <h1 class="problem-title">🎯 09-matrix-rotation</h1>
+          <div class="problem-meta">
+            <span class="badge badge-hard" id="difficulty-badge">⭐⭐⭐ Hard</span>
+            <span class="badge badge-time">⏱️ 30-45 minutes</span>
+          </div>
+        </div>
+
+        <!-- Problem Description -->
+        <div class="card">
+          <div class="card-header">
+            📝 Problem Description
+          </div>
+          <div class="card-content" id="problem-description">
+            <h1>Rotate Matrix 90 Degrees Clockwise</h1>
+<h2>Problem Description</h2>
+<p>Given an N×N matrix (2D array), rotate it 90 degrees clockwise <strong>in-place</strong> or return a new rotated matrix.</p>
+<p>For example, if you have:</p>
+<pre><code>1 2 3
+4 5 6
+7 8 9
+</code></pre>
+<p>After rotating 90° clockwise, it becomes:</p>
+<pre><code>7 4 1
+8 5 2
+9 6 3
+</code></pre>
+<p>Notice how:</p>
+<ul>
+<li>The first column becomes the first row</li>
+<li>The second column becomes the second row</li>
+<li>The third column becomes the third row</li>
+<li>But they&#39;re read from bottom to top!</li>
+</ul>
+<h2>Input Format</h2>
+<ul>
+<li>First line: Integer N (size of the matrix, 1 ≤ N ≤ 20)</li>
+<li>Next N lines: N space-separated integers representing each row</li>
+</ul>
+<h2>Output Format</h2>
+<ul>
+<li>N lines: The rotated matrix, with N space-separated integers per row</li>
+</ul>
+<h2>Example 1</h2>
+<p><strong>Input:</strong></p>
+<pre><code>3
+1 2 3
+4 5 6
+7 8 9
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>7 4 1
+8 5 2
+9 6 3
+</code></pre>
+<h2>Example 2</h2>
+<p><strong>Input:</strong></p>
+<pre><code>2
+1 2
+3 4
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>3 1
+4 2
+</code></pre>
+<h2>Example 3</h2>
+<p><strong>Input:</strong></p>
+<pre><code>1
+5
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>5
+</code></pre>
+<h2>Constraints</h2>
+<ul>
+<li>1 ≤ N ≤ 20</li>
+<li>-1000 ≤ matrix elements ≤ 1000</li>
+</ul>
+<h2>Hints</h2>
+<details>
+<summary>Hint 1: Understanding the Pattern</summary>
+
+<p>Look at where each element moves:</p>
+<ul>
+<li><code>matrix[0][0]</code> → <code>rotated[0][N-1]</code></li>
+<li><code>matrix[0][1]</code> → <code>rotated[1][N-1]</code></li>
+<li><code>matrix[i][j]</code> → <code>rotated[j][N-1-i]</code></li>
+</ul>
+<p>Can you see the pattern?</p>
+</details>
+
+<details>
+<summary>Hint 2: Two-Step Approach</summary>
+
+<p>Rotating 90° clockwise can be done in two steps:</p>
+<ol>
+<li><strong>Transpose</strong> the matrix (swap rows and columns)</li>
+<li><strong>Reverse</strong> each row</li>
+</ol>
+<p>Try this on paper with a small example!</p>
+</details>
+
+<details>
+<summary>Hint 3: Implementation Strategy</summary>
+
+<pre><code>Step 1: Transpose
+for i = 0 to N-1:
+    for j = i+1 to N-1:
+        swap matrix[i][j] and matrix[j][i]
+
+Step 2: Reverse each row
+for i = 0 to N-1:
+    reverse row i (swap first with last, second with second-last, etc.)
+</code></pre>
+</details>
+
+          </div>
+        </div>
+
+        <!-- Input Format -->
+        <div class="card card-input" id="input-format-section">
+          <div class="card-header">
+            📥 Input Format
+          </div>
+          <div class="card-content">
+            <p>Details about the input format will appear here.</p>
+          </div>
+        </div>
+
+        <!-- Output Format -->
+        <div class="card card-output" id="output-format-section">
+          <div class="card-header">
+            📤 Output Format
+          </div>
+          <div class="card-content">
+            <p>Details about the output format will appear here.</p>
+          </div>
+        </div>
+
+        <!-- Examples -->
+        <div id="examples-section">
+          <!-- Examples will be dynamically inserted here -->
+        </div>
+
+        <!-- Constraints (Expandable) -->
+        <details class="expandable" id="constraints-section" style="display: none;">
+          <summary>📊 Constraints</summary>
+          <div class="card-content">
+            <p>Constraints will appear here if provided.</p>
+          </div>
+        </details>
+
+        <!-- Hints (Expandable) -->
+        <details class="expandable" id="hints-section" style="display: none;">
+          <summary>💡 Need a hint? Click to reveal</summary>
+          <div class="card-content">
+            <p>Hints will appear here if provided.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- RIGHT PANEL: Solution & Testing -->
+      <div class="solution-panel">
+        
+        <!-- Language Selector -->
+        <div class="language-selector">
+          <label>Choose Your Language:</label>
+          <div class="language-options">
+            <div class="language-option">
+              <input type="radio" name="language" value="javascript" id="lang-javascript" checked>
+              <label for="lang-javascript">⚡ JavaScript</label>
+            </div>
+            <div class="language-option">
+              <input type="radio" name="language" value="python" id="lang-python">
+              <label for="lang-python">🐍 Python</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Code Editor -->
+        <div>
+          <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--color-text-primary);">
+            Your Solution
+          </label>
+          <div class="editor-container" id="editor-container"></div>
+        </div>
+
+        <!-- Timer -->
+        <div class="timer-box" aria-label="Problem timer">
+          <div class="timer-left">
+            <span>⏱️ Time:</span>
+            <span id="timer-display" class="timer-display" aria-live="polite">00:00</span>
+          </div>
+          <div class="timer-controls">
+            <button class="btn btn-secondary" id="timer-toggle" aria-pressed="false" title="Start/Pause (Alt+T)">Start</button>
+            <button class="btn" id="timer-reset" title="Reset timer">Reset</button>
+          </div>
+        </div>
+
+        <!-- Run Button -->
+        <button class="btn btn-primary btn-large" id="run-btn">
+          🚀 Run Tests
+          <span style="font-size: 12px; opacity: 0.8;">(Ctrl+Enter)</span>
+        </button>
+
+        <!-- Progress Bar (hidden initially) -->
+        <div class="progress-container" id="progress-container" style="display: none;">
+          <div class="progress-header">
+            <span>📊 Test Progress</span>
+            <span id="progress-text">0/0 passed</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Test Results -->
+        <div class="results-container" id="results-container">
+          <div class="results-header">
+            📋 Test Results
+          </div>
+          <p class="text-muted">Click "Run Tests" to check your solution.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================
+    // Test Cases (Filled by Generator)
+    // ============================================
+    const testCases = [
+  {
+    "input": "3\n1 2 3\n4 5 6\n7 8 9",
+    "expectedOutput": "7 4 1\n8 5 2\n9 6 3"
+  },
+  {
+    "input": "2\n1 2\n3 4",
+    "expectedOutput": "3 1\n4 2"
+  },
+  {
+    "input": "1\n5",
+    "expectedOutput": "5"
+  },
+  {
+    "input": "2\n0 0\n0 0",
+    "expectedOutput": "0 0\n0 0"
+  },
+  {
+    "input": "3\n1 1 1\n1 1 1\n1 1 1",
+    "expectedOutput": "1 1 1\n1 1 1\n1 1 1"
+  },
+  {
+    "input": "4\n1 2 3 4\n5 6 7 8\n9 10 11 12\n13 14 15 16",
+    "expectedOutput": "13 9 5 1\n14 10 6 2\n15 11 7 3\n16 12 8 4"
+  },
+  {
+    "input": "2\n-1 -2\n-3 -4",
+    "expectedOutput": "-3 -1\n-4 -2"
+  },
+  {
+    "input": "3\n-5 0 5\n-10 0 10\n-15 0 15",
+    "expectedOutput": "-15 -10 -5\n0 0 0\n15 10 5"
+  },
+  {
+    "input": "1\n-999",
+    "expectedOutput": "-999"
+  },
+  {
+    "input": "3\n1 0 0\n0 1 0\n0 0 1",
+    "expectedOutput": "0 0 1\n0 1 0\n1 0 0"
+  },
+  {
+    "input": "5\n1 2 3 4 5\n6 7 8 9 10\n11 12 13 14 15\n16 17 18 19 20\n21 22 23 24 25",
+    "expectedOutput": "21 16 11 6 1\n22 17 12 7 2\n23 18 13 8 3\n24 19 14 9 4\n25 20 15 10 5"
+  },
+  {
+    "input": "2\n100 200\n300 400",
+    "expectedOutput": "300 100\n400 200"
+  },
+  {
+    "input": "6\n85 97 -49 -3 -84 -15\n27 -84 59 -64 45 49\n73 -95 -55 70 56 8\n78 -81 -89 -46 84 45\n86 -82 11 -12 32 22\n88 -9 54 -43 51 -43",
+    "expectedOutput": "88 86 78 73 27 85\n-9 -82 -81 -95 -84 97\n54 11 -89 -55 59 -49\n-43 -12 -46 70 -64 -3\n51 32 84 56 45 -84\n-43 22 45 8 49 -15"
+  },
+  {
+    "input": "7\n4 88 13 -87 -54 41 -17\n-27 -35 -58 80 25 5 -19\n81 26 -23 -37 23 30 53\n35 -63 -82 -43 36 90 -80\n58 38 51 8 92 11 82\n-3 -68 -63 77 -95 -78 87\n25 -44 69 77 1 20 -93",
+    "expectedOutput": "25 -3 58 35 81 -27 4\n-44 -68 38 -63 26 -35 88\n69 -63 51 -82 -23 -58 13\n77 77 8 -43 -37 80 -87\n1 -95 92 36 23 25 -54\n20 -78 11 90 30 5 41\n-93 87 82 -80 53 -19 -17"
+  },
+  {
+    "input": "8\n-42 -21 35 -77 -7 82 67 -82\n-5 -40 81 68 100 57 -12 -44\n66 -13 97 -36 -58 -13 -1 -33\n95 -80 -19 -43 8 -63 -36 -88\n99 -59 6 -21 38 -37 -6 -30\n-78 8 -42 2 79 -80 56 4\n35 27 83 -11 -1 -69 13 31\n-8 53 52 36 50 73 -83 -57",
+    "expectedOutput": "-8 35 -78 99 95 66 -5 -42\n53 27 8 -59 -80 -13 -40 -21\n52 83 -42 6 -19 97 81 35\n36 -11 2 -21 -43 -36 68 -77\n50 -1 79 38 8 -58 100 -7\n73 -69 -80 -37 -63 -13 57 82\n-83 13 56 -6 -36 -1 -12 67\n-57 31 4 -30 -88 -33 -44 -82"
+  },
+  {
+    "input": "10\n61 -20 28 -7 -3 -10 29 54 91 14\n-40 -19 10 -28 91 47 -84 -85 54 -63\n5 -50 38 5 97 -4 -96 97 -96 -22\n61 53 89 -91 -3 15 53 72 84 45\n-6 2 -87 -48 -19 -70 -13 36 -72 67\n-13 -41 86 44 29 5 -39 -8 13 17\n24 67 47 95 44 78 57 59 45 -13\n-97 -36 23 -21 -67 44 -79 -67 91 76\n20 -45 61 -46 30 -68 19 97 -83 39\n-87 -16 -54 78 -40 7 33 42 -98 91",
+    "expectedOutput": "-87 20 -97 24 -13 -6 61 5 -40 61\n-16 -45 -36 67 -41 2 53 -50 -19 -20\n-54 61 23 47 86 -87 89 38 10 28\n78 -46 -21 95 44 -48 -91 5 -28 -7\n-40 30 -67 44 29 -19 -3 97 91 -3\n7 -68 44 78 5 -70 15 -4 47 -10\n33 19 -79 57 -39 -13 53 -96 -84 29\n42 97 -67 59 -8 36 72 97 -85 54\n-98 -83 91 45 13 -72 84 -96 54 91\n91 39 76 -13 17 67 45 -22 -63 14"
+  },
+  {
+    "input": "12\n-35 74 1 9 -34 43 -79 28 72 -1 32 -19\n90 97 -38 -52 79 99 -90 -38 71 94 -15 56\n11 38 -63 -94 93 20 18 91 9 -61 8 52\n12 -26 65 -7 24 56 -39 -36 -54 89 -46 -70\n66 15 -77 93 92 -65 -82 79 -96 -1 69 81\n-51 -58 -38 38 50 8 47 33 7 67 27 93\n-87 -48 76 55 -63 44 -53 94 -26 -46 -87 -15\n49 93 71 26 -100 65 -45 53 81 40 -89 -31\n92 91 50 -69 -35 39 6 -8 -22 -58 -67 63\n-55 41 -4 87 65 48 -19 -21 18 54 -2 79\n-43 90 -88 -1 76 -94 -20 98 26 -5 80 -48\n-28 -45 -98 5 80 -39 -53 -43 -81 15 -40 -57",
+    "expectedOutput": "-28 -43 -55 92 49 -87 -51 66 12 11 90 -35\n-45 90 41 91 93 -48 -58 15 -26 38 97 74\n-98 -88 -4 50 71 76 -38 -77 65 -63 -38 1\n5 -1 87 -69 26 55 38 93 -7 -94 -52 9\n80 76 65 -35 -100 -63 50 92 24 93 79 -34\n-39 -94 48 39 65 44 8 -65 56 20 99 43\n-53 -20 -19 6 -45 -53 47 -82 -39 18 -90 -79\n-43 98 -21 -8 53 94 33 79 -36 91 -38 28\n-81 26 18 -22 81 -26 7 -96 -54 9 71 72\n15 -5 54 -58 40 -46 67 -1 89 -61 94 -1\n-40 80 -2 -67 -89 -87 27 69 -46 8 -15 32\n-57 -48 79 63 -31 -15 93 81 -70 52 56 -19"
+  },
+  {
+    "input": "15\n-71 32 -39 -61 68 -84 -94 19 24 12 -67 92 -50 -26 -17\n-68 -10 18 -98 98 -79 83 52 -67 -68 95 93 7 49 -65\n4 5 -75 -83 -100 96 -15 18 96 83 17 -45 -61 38 -36\n-9 21 -22 -7 35 -71 -67 100 52 12 -22 71 43 -6 -25\n-61 -9 -35 -9 -37 -28 -16 -38 -66 67 8 59 -11 24 -34\n92 -53 68 92 30 -40 39 55 -46 -88 -54 -36 94 -89 -71\n-10 -13 -79 76 -9 77 -29 85 -49 -75 -81 55 -87 -10 -51\n10 37 37 42 -6 -14 60 -69 -62 -43 -48 40 5 -7 3\n-59 -38 68 78 94 -71 -41 -89 11 100 -29 -63 15 75 84\n-88 -44 -49 -28 45 34 -98 -12 0 62 -31 -93 33 35 85\n44 -7 -66 39 63 -60 -57 72 -98 32 -84 78 -87 -12 -76\n42 61 51 84 -66 57 23 0 73 30 -79 -75 -28 6 59\n7 98 -40 -6 -26 87 0 -68 60 -69 14 -81 -6 -13 17\n37 90 18 1 46 10 82 41 30 -78 -75 -38 6 -49 -74\n26 61 75 -83 -99 17 82 8 33 72 -27 71 68 -70 -79",
+    "expectedOutput": "26 37 7 42 44 -88 -59 10 -10 92 -61 -9 4 -68 -71\n61 90 98 61 -7 -44 -38 37 -13 -53 -9 21 5 -10 32\n75 18 -40 51 -66 -49 68 37 -79 68 -35 -22 -75 18 -39\n-83 1 -6 84 39 -28 78 42 76 92 -9 -7 -83 -98 -61\n-99 46 -26 -66 63 45 94 -6 -9 30 -37 35 -100 98 68\n17 10 87 57 -60 34 -71 -14 77 -40 -28 -71 96 -79 -84\n82 82 0 23 -57 -98 -41 60 -29 39 -16 -67 -15 83 -94\n8 41 -68 0 72 -12 -89 -69 85 55 -38 100 18 52 19\n33 30 60 73 -98 0 11 -62 -49 -46 -66 52 96 -67 24\n72 -78 -69 30 32 62 100 -43 -75 -88 67 12 83 -68 12\n-27 -75 14 -79 -84 -31 -29 -48 -81 -54 8 -22 17 95 -67\n71 -38 -81 -75 78 -93 -63 40 55 -36 59 71 -45 93 92\n68 6 -6 -28 -87 33 15 5 -87 94 -11 43 -61 7 -50\n-70 -49 -13 6 -12 35 75 -7 -10 -89 24 -6 38 49 -26\n-79 -74 17 59 -76 85 84 3 -51 -71 -34 -25 -36 -65 -17"
+  },
+  {
+    "input": "3\n1000 1000 1000\n1000 1000 1000\n1000 1000 1000",
+    "expectedOutput": "1000 1000 1000\n1000 1000 1000\n1000 1000 1000"
+  },
+  {
+    "input": "3\n-1000 -1000 -1000\n-1000 -1000 -1000\n-1000 -1000 -1000",
+    "expectedOutput": "-1000 -1000 -1000\n-1000 -1000 -1000\n-1000 -1000 -1000"
+  },
+  {
+    "input": "4\n-1000 1000 -1000 1000\n1000 -1000 1000 -1000\n-1000 1000 -1000 1000\n1000 -1000 1000 -1000",
+    "expectedOutput": "1000 -1000 1000 -1000\n-1000 1000 -1000 1000\n1000 -1000 1000 -1000\n-1000 1000 -1000 1000"
+  },
+  {
+    "input": "9\n105 219 17 -262 16 -385 346 278 59\n-298 -88 -221 -336 143 -200 -180 10 454\n25 -271 -350 134 -411 223 -310 150 -16\n336 46 -282 135 -138 165 486 -22 8\n-112 -233 -74 -302 277 281 305 -463 274\n-373 419 55 287 -172 -357 211 -417 111\n-83 -225 -84 273 229 -35 341 -206 -153\n404 437 364 -313 111 -470 -139 -262 240\n-70 -105 440 313 -426 -42 -246 -338 429",
+    "expectedOutput": "-70 404 -83 -373 -112 336 25 -298 105\n-105 437 -225 419 -233 46 -271 -88 219\n440 364 -84 55 -74 -282 -350 -221 17\n313 -313 273 287 -302 135 134 -336 -262\n-426 111 229 -172 277 -138 -411 143 16\n-42 -470 -35 -357 281 165 223 -200 -385\n-246 -139 341 211 305 486 -310 -180 346\n-338 -262 -206 -417 -463 -22 150 10 278\n429 240 -153 111 274 8 -16 454 59"
+  },
+  {
+    "input": "11\n2 -321 -487 -2 -170 -359 -86 -250 -142 341 299\n444 -164 -453 221 131 219 359 -188 -269 407 136\n351 -193 -34 -485 -309 -155 96 295 488 126 -10\n356 -335 363 -416 -130 479 348 -182 420 -14 -148\n400 289 -238 -189 179 23 103 -186 49 164 -488\n229 -236 482 -141 -481 317 -413 315 -361 98 375\n423 144 290 -311 230 -309 421 55 -368 -293 38\n-250 404 -451 -224 490 256 98 79 385 -20 386\n-467 246 84 253 -408 200 -26 -195 470 -141 -287\n490 10 323 -38 -232 -328 422 150 64 181 -1\n362 -229 -481 250 286 177 254 493 -452 59 97",
+    "expectedOutput": "362 490 -467 -250 423 229 400 356 351 444 2\n-229 10 246 404 144 -236 289 -335 -193 -164 -321\n-481 323 84 -451 290 482 -238 363 -34 -453 -487\n250 -38 253 -224 -311 -141 -189 -416 -485 221 -2\n286 -232 -408 490 230 -481 179 -130 -309 131 -170\n177 -328 200 256 -309 317 23 479 -155 219 -359\n254 422 -26 98 421 -413 103 348 96 359 -86\n493 150 -195 79 55 315 -186 -182 295 -188 -250\n-452 64 470 385 -368 -361 49 420 488 -269 -142\n59 181 -141 -20 -293 98 164 -14 126 407 341\n97 -1 -287 386 38 375 -488 -148 -10 136 299"
+  },
+  {
+    "input": "13\n322 -375 380 499 -347 487 169 -31 116 -349 -422 -441 211\n-416 87 291 -183 -347 -459 -132 361 371 -456 -240 -488 -257\n96 -309 21 -194 333 -178 -212 -345 184 -271 -123 -464 450\n4 418 -19 -152 -319 201 -242 -470 444 -75 -139 106 150\n374 333 432 -189 451 -215 -472 -37 -115 333 283 -301 -489\n283 31 -494 158 226 -395 366 315 174 -327 -165 11 -63\n-309 197 -486 175 -304 268 204 337 152 -72 114 -222 -187\n-70 -351 125 -374 -399 -272 -448 39 -446 246 -8 61 218\n-214 221 -108 -373 -211 336 234 248 -152 -197 261 -23 80\n-86 58 -332 -394 -12 487 171 -140 -297 50 252 276 207\n-291 161 12 60 495 -14 155 311 258 325 307 13 111\n-474 206 263 22 280 253 198 359 -318 148 -386 -444 -407\n194 256 -443 356 355 436 -135 -148 324 -241 -384 4 198",
+    "expectedOutput": "194 -474 -291 -86 -214 -70 -309 283 374 4 96 -416 322\n256 206 161 58 221 -351 197 31 333 418 -309 87 -375\n-443 263 12 -332 -108 125 -486 -494 432 -19 21 291 380\n356 22 60 -394 -373 -374 175 158 -189 -152 -194 -183 499\n355 280 495 -12 -211 -399 -304 226 451 -319 333 -347 -347\n436 253 -14 487 336 -272 268 -395 -215 201 -178 -459 487\n-135 198 155 171 234 -448 204 366 -472 -242 -212 -132 169\n-148 359 311 -140 248 39 337 315 -37 -470 -345 361 -31\n324 -318 258 -297 -152 -446 152 174 -115 444 184 371 116\n-241 148 325 50 -197 246 -72 -327 333 -75 -271 -456 -349\n-384 -386 307 252 261 -8 114 -165 283 -139 -123 -240 -422\n4 -444 13 276 -23 61 -222 11 -301 106 -464 -488 -441\n198 -407 111 207 80 218 -187 -63 -489 150 450 -257 211"
+  },
+  {
+    "input": "14\n-330 -195 335 -62 117 492 360 -261 -178 -349 -92 -82 267 153\n-231 -443 -35 -134 335 249 -315 -258 465 -194 386 -226 -100 162\n-149 -197 -223 -190 -428 -224 108 20 264 313 477 -472 344 -164\n267 486 78 -358 -6 149 342 -164 -44 -24 79 95 -302 123\n-163 187 -437 183 -72 426 -447 -463 123 132 -484 500 286 240\n-19 -120 -111 359 457 -7 -252 91 -236 -403 -172 -201 306 27\n153 440 378 -385 -382 2 167 -241 -116 53 231 -214 -294 162\n-183 294 439 -261 -207 210 492 499 -334 245 -347 -145 -229 445\n-220 355 -275 -174 194 -399 -463 -306 429 31 -104 465 145 31\n11 466 17 467 251 225 106 197 -191 -442 234 -213 -436 -291\n94 354 374 -414 -450 -118 445 226 257 -262 471 178 262 -372\n-93 -325 -254 115 469 89 221 212 -299 -156 415 291 353 296\n-486 -289 0 313 376 -444 -464 -217 -343 321 233 -482 -454 -90\n-490 461 83 288 491 -405 216 121 -403 234 -349 -138 -154 -18",
+    "expectedOutput": "-490 -486 -93 94 11 -220 -183 153 -19 -163 267 -149 -231 -330\n461 -289 -325 354 466 355 294 440 -120 187 486 -197 -443 -195\n83 0 -254 374 17 -275 439 378 -111 -437 78 -223 -35 335\n288 313 115 -414 467 -174 -261 -385 359 183 -358 -190 -134 -62\n491 376 469 -450 251 194 -207 -382 457 -72 -6 -428 335 117\n-405 -444 89 -118 225 -399 210 2 -7 426 149 -224 249 492\n216 -464 221 445 106 -463 492 167 -252 -447 342 108 -315 360\n121 -217 212 226 197 -306 499 -241 91 -463 -164 20 -258 -261\n-403 -343 -299 257 -191 429 -334 -116 -236 123 -44 264 465 -178\n234 321 -156 -262 -442 31 245 53 -403 132 -24 313 -194 -349\n-349 233 415 471 234 -104 -347 231 -172 -484 79 477 386 -92\n-138 -482 291 178 -213 465 -145 -214 -201 500 95 -472 -226 -82\n-154 -454 353 262 -436 145 -229 -294 306 286 -302 344 -100 267\n-18 -90 296 -372 -291 31 445 162 27 240 123 -164 162 153"
+  },
+  {
+    "input": "20\n-463 -948 -354 -652 -572 805 68 -939 -114 -337 -483 -709 -90 -798 -294 977 458 607 -467 -581\n333 -432 359 515 349 -453 -195 614 385 47 -631 -962 -684 338 -3 -404 739 426 -836 -597\n-158 -215 -781 775 768 235 -665 27 -393 749 -484 -836 289 687 -591 419 469 -242 -217 -248\n943 -330 -672 108 747 -583 644 -565 887 330 -926 395 191 732 -184 -813 637 -845 -676 -25\n907 -805 506 449 -616 -694 -822 -990 50 292 -93 -34 196 120 -159 909 137 927 -314 732\n-810 354 -673 -572 524 894 -265 958 198 -150 -254 609 -942 -552 523 875 -255 -460 -581 -132\n371 983 -283 557 -766 -724 -685 -315 -511 -422 -958 -598 -960 380 -70 889 229 653 -705 680\n494 -617 -800 -411 -555 -214 -925 30 -801 547 842 -92 -126 -809 739 -70 983 -346 -204 598\n670 621 -92 -635 225 983 620 712 774 -622 -956 747 79 789 656 940 -885 -681 126 -507\n607 -754 18 337 -959 -419 -732 -872 506 -168 393 413 933 595 815 876 620 -71 119 414\n-268 564 344 347 138 -17 -534 -663 -748 256 -241 838 282 637 -912 258 -745 232 755 341\n12 579 -542 979 606 -390 973 652 -440 -416 -865 943 -132 350 749 -382 198 975 -944 572\n639 -674 696 -612 299 -822 -404 390 483 175 503 802 -563 767 69 -441 882 -516 -188 697\n-325 -361 -429 114 997 -782 596 603 -851 -243 838 -445 356 -572 -821 -382 725 -557 850 552\n-265 -870 828 991 -306 756 -344 -448 572 774 46 225 -426 554 -698 325 706 784 307 -159\n700 -207 -961 -289 198 530 -193 -703 653 773 -425 -530 -636 848 226 -632 559 863 -222 -488\n-626 273 -977 -731 -876 -239 -291 -461 694 149 -907 -509 577 908 132 -840 842 788 -823 696\n-410 992 506 -955 654 2 62 -538 538 520 161 332 -534 231 -618 -130 -926 204 379 238\n-424 105 802 -292 -300 -199 687 -965 861 603 -404 -261 677 803 -746 -774 523 -872 542 -621\n-584 -244 -626 -903 870 -859 -644 830 -7 634 542 -293 199 404 730 -535 206 -472 -6 -410",
+    "expectedOutput": "-584 -424 -410 -626 700 -265 -325 639 12 -268 607 670 494 371 -810 907 943 -158 333 -463\n-244 105 992 273 -207 -870 -361 -674 579 564 -754 621 -617 983 354 -805 -330 -215 -432 -948\n-626 802 506 -977 -961 828 -429 696 -542 344 18 -92 -800 -283 -673 506 -672 -781 359 -354\n-903 -292 -955 -731 -289 991 114 -612 979 347 337 -635 -411 557 -572 449 108 775 515 -652\n870 -300 654 -876 198 -306 997 299 606 138 -959 225 -555 -766 524 -616 747 768 349 -572\n-859 -199 2 -239 530 756 -782 -822 -390 -17 -419 983 -214 -724 894 -694 -583 235 -453 805\n-644 687 62 -291 -193 -344 596 -404 973 -534 -732 620 -925 -685 -265 -822 644 -665 -195 68\n830 -965 -538 -461 -703 -448 603 390 652 -663 -872 712 30 -315 958 -990 -565 27 614 -939\n-7 861 538 694 653 572 -851 483 -440 -748 506 774 -801 -511 198 50 887 -393 385 -114\n634 603 520 149 773 774 -243 175 -416 256 -168 -622 547 -422 -150 292 330 749 47 -337\n542 -404 161 -907 -425 46 838 503 -865 -241 393 -956 842 -958 -254 -93 -926 -484 -631 -483\n-293 -261 332 -509 -530 225 -445 802 943 838 413 747 -92 -598 609 -34 395 -836 -962 -709\n199 677 -534 577 -636 -426 356 -563 -132 282 933 79 -126 -960 -942 196 191 289 -684 -90\n404 803 231 908 848 554 -572 767 350 637 595 789 -809 380 -552 120 732 687 338 -798\n730 -746 -618 132 226 -698 -821 69 749 -912 815 656 739 -70 523 -159 -184 -591 -3 -294\n-535 -774 -130 -840 -632 325 -382 -441 -382 258 876 940 -70 889 875 909 -813 419 -404 977\n206 523 -926 842 559 706 725 882 198 -745 620 -885 983 229 -255 137 637 469 739 458\n-472 -872 204 788 863 784 -557 -516 975 232 -71 -681 -346 653 -460 927 -845 -242 426 607\n-6 542 379 -823 -222 307 850 -188 -944 755 119 126 -204 -705 -581 -314 -676 -217 -836 -467\n-410 -621 238 696 -488 -159 552 697 572 341 414 -507 598 680 -132 732 -25 -248 -597 -581"
+  },
+  {
+    "input": "20\n-851 -943 272 -849 703 993 -132 -857 -321 -805 467 723 860 995 417 -934 -547 685 409 285\n-387 -112 454 607 -814 -214 -142 -517 -27 632 -83 376 338 821 -917 723 484 -109 -808 -684\n654 -398 886 114 -403 -439 -694 -996 -432 -288 797 317 904 -215 -779 -284 949 -993 808 371\n-297 -866 -100 798 795 -411 -386 -130 941 928 805 57 -411 783 331 -232 -874 717 716 962\n61 -429 749 271 151 -190 -499 824 -65 -398 650 -8 -336 -810 413 -821 -514 -660 -281 804\n669 -705 -207 -56 -745 -133 -567 -918 346 479 -935 414 -148 460 -326 -767 -218 -972 775 -582\n845 -252 -729 46 13 378 -142 310 503 -626 740 453 221 -787 -1000 852 570 371 959 244\n661 -363 -648 -356 -455 368 -56 -981 801 637 453 842 677 529 407 27 993 499 -596 -443\n91 806 -13 -941 282 590 952 975 -973 427 -122 -645 -254 417 721 -307 -666 -876 -58 558\n-152 -602 319 330 -550 817 -646 -764 149 893 -842 -956 -912 -514 912 819 934 -379 822 483\n673 325 629 -239 294 -229 -158 -501 82 330 -264 128 -437 5 480 -169 525 927 -209 -472\n-263 48 563 -663 -492 -517 930 -541 350 938 522 -474 -259 524 483 -436 229 -304 529 969\n718 -757 -365 588 -899 -762 -349 -794 -260 -226 436 521 -244 -662 -335 966 737 -326 -952 -325\n238 -273 -447 -986 970 560 -807 490 413 -614 445 925 679 -507 639 -645 -652 -736 -677 588\n274 791 -438 756 -122 -770 -430 770 564 -531 917 266 321 -712 -245 -713 463 -379 -207 -327\n158 -749 303 371 -700 -451 35 -817 770 993 -343 338 29 854 999 321 89 -987 -792 -470\n805 68 -996 324 753 22 647 -380 273 -548 756 -658 347 304 513 596 -859 594 697 738\n-444 394 -705 -963 31 -969 474 593 360 959 -623 920 -660 161 -168 -661 169 -35 295 687\n-814 580 -821 -91 42 -475 -752 -500 624 209 629 -307 -777 -946 -170 -930 688 -323 256 304\n-111 737 -703 478 790 630 -843 -138 519 405 -409 -257 -431 -191 -552 -127 -176 -882 -843 -780",
+    "expectedOutput": "-111 -814 -444 805 158 274 238 718 -263 673 -152 91 661 845 669 61 -297 654 -387 -851\n737 580 394 68 -749 791 -273 -757 48 325 -602 806 -363 -252 -705 -429 -866 -398 -112 -943\n-703 -821 -705 -996 303 -438 -447 -365 563 629 319 -13 -648 -729 -207 749 -100 886 454 272\n478 -91 -963 324 371 756 -986 588 -663 -239 330 -941 -356 46 -56 271 798 114 607 -849\n790 42 31 753 -700 -122 970 -899 -492 294 -550 282 -455 13 -745 151 795 -403 -814 703\n630 -475 -969 22 -451 -770 560 -762 -517 -229 817 590 368 378 -133 -190 -411 -439 -214 993\n-843 -752 474 647 35 -430 -807 -349 930 -158 -646 952 -56 -142 -567 -499 -386 -694 -142 -132\n-138 -500 593 -380 -817 770 490 -794 -541 -501 -764 975 -981 310 -918 824 -130 -996 -517 -857\n519 624 360 273 770 564 413 -260 350 82 149 -973 801 503 346 -65 941 -432 -27 -321\n405 209 959 -548 993 -531 -614 -226 938 330 893 427 637 -626 479 -398 928 -288 632 -805\n-409 629 -623 756 -343 917 445 436 522 -264 -842 -122 453 740 -935 650 805 797 -83 467\n-257 -307 920 -658 338 266 925 521 -474 128 -956 -645 842 453 414 -8 57 317 376 723\n-431 -777 -660 347 29 321 679 -244 -259 -437 -912 -254 677 221 -148 -336 -411 904 338 860\n-191 -946 161 304 854 -712 -507 -662 524 5 -514 417 529 -787 460 -810 783 -215 821 995\n-552 -170 -168 513 999 -245 639 -335 483 480 912 721 407 -1000 -326 413 331 -779 -917 417\n-127 -930 -661 596 321 -713 -645 966 -436 -169 819 -307 27 852 -767 -821 -232 -284 723 -934\n-176 688 169 -859 89 463 -652 737 229 525 934 -666 993 570 -218 -514 -874 949 484 -547\n-882 -323 -35 594 -987 -379 -736 -326 -304 927 -379 -876 499 371 -972 -660 717 -993 -109 685\n-843 256 295 697 -792 -207 -677 -952 529 -209 822 -58 -596 959 775 -281 716 808 -808 409\n-780 304 687 738 -470 -327 588 -325 969 -472 483 558 -443 244 -582 804 962 371 -684 285"
+  },
+  {
+    "input": "20\n962 114 874 294 -496 -919 -259 519 -895 477 484 307 -116 -338 1000 359 400 274 -144 -288\n87 278 -567 -19 -101 -814 -712 963 813 -186 -408 -207 900 39 260 947 622 -369 -126 -709\n122 574 -692 549 987 763 249 900 186 737 -140 164 89 598 -730 -631 -875 -593 -540 -899\n362 -429 390 930 -690 -475 -51 818 70 -202 -860 828 -175 280 -13 -864 -296 -705 -838 -722\n182 -954 148 -614 -110 -381 -479 -554 601 -135 -547 -526 620 783 -587 482 837 462 -232 -379\n822 344 -450 -777 143 165 -431 767 -855 -309 -625 -554 864 -879 -255 836 827 -902 -971 -157\n849 -686 -181 -56 652 -741 -578 472 -270 -123 364 -120 -265 -244 694 77 -418 823 -370 431\n842 -296 926 -598 -751 651 392 842 578 86 812 -340 -591 808 195 793 -436 -630 547 -424\n155 -494 -508 -719 21 253 186 852 -917 919 700 447 870 -435 484 662 -985 459 173 460\n601 340 717 -583 -966 -67 -409 2 165 -886 449 -633 -807 754 -112 -395 456 162 529 -488\n-950 -401 38 -673 -947 -681 724 582 -901 -994 654 -594 -526 -862 642 -751 -606 -76 570 141\n-843 -223 129 542 -660 -104 263 530 440 -902 -539 -942 -65 156 546 -592 -60 -520 -862 -433\n183 -173 797 -80 572 802 -938 167 -604 433 -477 -82 -52 399 -312 -791 -20 -934 348 868\n-382 569 -955 686 -909 175 -963 -428 869 517 -841 293 -817 503 969 704 744 -233 561 -124\n-508 256 92 -829 -268 -497 -275 517 -442 -619 -431 -531 -259 789 389 872 673 -42 950 568\n66 141 426 865 771 -42 -805 121 -978 616 -25 -538 926 -709 -144 185 884 -807 594 -268\n877 734 674 971 359 -488 105 255 754 -761 -248 642 -554 -342 -954 358 287 -687 472 352\n74 -792 -271 -489 -950 223 -866 397 -562 -481 632 -444 -971 674 452 619 141 795 425 -933\n999 -791 325 532 -486 -504 -79 -765 -678 18 -147 34 -430 -128 246 -300 -267 367 -311 142\n152 154 -443 -776 -740 -742 166 -678 -416 -130 804 -842 -942 -125 854 -376 881 543 -123 826",
+    "expectedOutput": "152 999 74 877 66 -508 -382 183 -843 -950 601 155 842 849 822 182 362 122 87 962\n154 -791 -792 734 141 256 569 -173 -223 -401 340 -494 -296 -686 344 -954 -429 574 278 114\n-443 325 -271 674 426 92 -955 797 129 38 717 -508 926 -181 -450 148 390 -692 -567 874\n-776 532 -489 971 865 -829 686 -80 542 -673 -583 -719 -598 -56 -777 -614 930 549 -19 294\n-740 -486 -950 359 771 -268 -909 572 -660 -947 -966 21 -751 652 143 -110 -690 987 -101 -496\n-742 -504 223 -488 -42 -497 175 802 -104 -681 -67 253 651 -741 165 -381 -475 763 -814 -919\n166 -79 -866 105 -805 -275 -963 -938 263 724 -409 186 392 -578 -431 -479 -51 249 -712 -259\n-678 -765 397 255 121 517 -428 167 530 582 2 852 842 472 767 -554 818 900 963 519\n-416 -678 -562 754 -978 -442 869 -604 440 -901 165 -917 578 -270 -855 601 70 186 813 -895\n-130 18 -481 -761 616 -619 517 433 -902 -994 -886 919 86 -123 -309 -135 -202 737 -186 477\n804 -147 632 -248 -25 -431 -841 -477 -539 654 449 700 812 364 -625 -547 -860 -140 -408 484\n-842 34 -444 642 -538 -531 293 -82 -942 -594 -633 447 -340 -120 -554 -526 828 164 -207 307\n-942 -430 -971 -554 926 -259 -817 -52 -65 -526 -807 870 -591 -265 864 620 -175 89 900 -116\n-125 -128 674 -342 -709 789 503 399 156 -862 754 -435 808 -244 -879 783 280 598 39 -338\n854 246 452 -954 -144 389 969 -312 546 642 -112 484 195 694 -255 -587 -13 -730 260 1000\n-376 -300 619 358 185 872 704 -791 -592 -751 -395 662 793 77 836 482 -864 -631 947 359\n881 -267 141 287 884 673 744 -20 -60 -606 456 -985 -436 -418 827 837 -296 -875 622 400\n543 367 795 -687 -807 -42 -233 -934 -520 -76 162 459 -630 823 -902 462 -705 -593 -369 274\n-123 -311 425 472 594 950 561 348 -862 570 529 173 547 -370 -971 -232 -838 -540 -126 -144\n826 142 -933 352 -268 568 -124 868 -433 141 -488 460 -424 431 -157 -379 -722 -899 -709 -288"
+  },
+  {
+    "input": "20\n768 896 337 749 155 -149 553 497 330 331 -848 -626 -568 680 783 794 51 780 408 762\n823 827 -850 287 -726 -588 6 -973 839 -143 -420 666 -306 -939 244 -110 548 43 -575 762\n-188 -666 872 -22 -148 -819 902 -18 173 803 134 849 285 768 903 997 241 -677 -244 -259\n597 856 95 711 -57 163 234 941 -930 -825 -854 -749 -508 336 -289 -101 -755 577 -396 -1\n-713 819 -996 -425 -452 889 -991 -727 958 -433 173 -679 -605 -777 -968 -959 -204 180 -181 -178\n-441 537 566 -623 -294 -453 -695 795 -227 -621 -615 197 -381 261 -493 187 -715 -872 -98 -824\n742 -743 245 218 885 226 -135 523 -242 692 -958 -8 -732 -214 637 -360 831 66 454 -554\n432 192 494 -356 509 51 496 -391 465 -620 -918 -525 946 -835 975 -126 175 64 391 -761\n-709 -757 612 -220 -648 -335 -316 -662 -429 -525 676 148 915 -334 -754 119 -886 75 215 569\n447 9 752 515 827 -201 274 380 -975 21 -210 834 276 893 -947 -145 -68 769 387 566\n-711 -335 179 -597 -509 -344 -428 -194 640 -491 334 636 -619 -126 -991 361 132 283 -946 -441\n-268 702 510 -53 158 -614 657 528 26 231 707 739 -863 -850 -623 690 -462 144 -66 796\n-356 -223 215 416 680 29 -989 -919 129 352 -94 -528 63 -830 357 927 -268 -556 512 191\n-713 495 -742 -636 977 260 -296 797 -591 -529 654 -190 -709 366 415 -408 -886 478 691 896\n238 671 -758 -126 368 -225 53 -358 -943 863 -981 273 323 237 68 -627 -536 -669 -158 113\n-603 16 159 -634 297 440 308 -141 -645 488 65 -574 -522 -973 9 445 278 812 235 841\n849 -959 286 4 980 -131 -347 265 -36 122 506 -599 -827 531 545 394 230 408 32 -129\n566 -690 947 -638 -823 162 -25 857 237 -368 21 893 -736 455 -506 -375 -534 -287 219 409\n-466 157 566 815 535 -946 25 427 157 -821 803 -219 -899 -513 -140 622 436 -150 -867 -119\n164 46 -295 407 26 881 950 -902 -646 365 -656 572 537 -669 -686 550 -530 -973 660 -344",
+    "expectedOutput": "164 -466 566 849 -603 238 -713 -356 -268 -711 447 -709 432 742 -441 -713 597 -188 823 768\n46 157 -690 -959 16 671 495 -223 702 -335 9 -757 192 -743 537 819 856 -666 827 896\n-295 566 947 286 159 -758 -742 215 510 179 752 612 494 245 566 -996 95 872 -850 337\n407 815 -638 4 -634 -126 -636 416 -53 -597 515 -220 -356 218 -623 -425 711 -22 287 749\n26 535 -823 980 297 368 977 680 158 -509 827 -648 509 885 -294 -452 -57 -148 -726 155\n881 -946 162 -131 440 -225 260 29 -614 -344 -201 -335 51 226 -453 889 163 -819 -588 -149\n950 25 -25 -347 308 53 -296 -989 657 -428 274 -316 496 -135 -695 -991 234 902 6 553\n-902 427 857 265 -141 -358 797 -919 528 -194 380 -662 -391 523 795 -727 941 -18 -973 497\n-646 157 237 -36 -645 -943 -591 129 26 640 -975 -429 465 -242 -227 958 -930 173 839 330\n365 -821 -368 122 488 863 -529 352 231 -491 21 -525 -620 692 -621 -433 -825 803 -143 331\n-656 803 21 506 65 -981 654 -94 707 334 -210 676 -918 -958 -615 173 -854 134 -420 -848\n572 -219 893 -599 -574 273 -190 -528 739 636 834 148 -525 -8 197 -679 -749 849 666 -626\n537 -899 -736 -827 -522 323 -709 63 -863 -619 276 915 946 -732 -381 -605 -508 285 -306 -568\n-669 -513 455 531 -973 237 366 -830 -850 -126 893 -334 -835 -214 261 -777 336 768 -939 680\n-686 -140 -506 545 9 68 415 357 -623 -991 -947 -754 975 637 -493 -968 -289 903 244 783\n550 622 -375 394 445 -627 -408 927 690 361 -145 119 -126 -360 187 -959 -101 997 -110 794\n-530 436 -534 230 278 -536 -886 -268 -462 132 -68 -886 175 831 -715 -204 -755 241 548 51\n-973 -150 -287 408 812 -669 478 -556 144 283 769 75 64 66 -872 180 577 -677 43 780\n660 -867 219 32 235 -158 691 512 -66 -946 387 215 391 454 -98 -181 -396 -244 -575 408\n-344 -119 409 -129 841 113 896 191 796 -441 566 569 -761 -554 -824 -178 -1 -259 762 762"
+  },
+  {
+    "input": "20\n501 703 36 713 -941 -115 944 530 424 826 -535 492 992 746 899 686 -291 -478 -256 -62\n638 27 -734 -890 -499 -6 -829 580 -567 987 492 -772 280 -981 -422 199 347 318 -37 440\n713 871 -707 -382 473 890 -430 87 -578 332 905 193 386 920 -339 -486 741 945 131 636\n590 480 592 -433 -757 18 -610 -128 4 653 -88 220 344 -429 747 263 -288 837 975 -839\n621 -603 322 755 -994 -424 555 576 -493 442 -280 -12 260 435 861 -528 854 -70 143 663\n545 -807 212 272 -274 -101 -701 -898 -953 -670 -379 -87 90 -44 592 103 -174 -975 359 -210\n-228 503 207 726 -778 619 -808 619 45 -909 505 174 -580 304 -96 -211 -396 541 -751 534\n-823 -638 -659 112 -654 -406 -637 -968 -487 -816 971 -388 -899 348 410 -336 242 -40 786 -863\n973 436 -673 358 -627 -965 -161 980 294 706 594 -250 223 -227 660 36 -414 340 -687 287\n-624 531 -23 801 162 -379 222 902 -22 -903 596 -164 124 896 -811 -847 -298 812 -403 323\n-100 605 -110 -32 -539 474 120 -535 623 -238 787 -757 -928 -585 202 -635 -191 956 278 -853\n417 -93 58 -1000 65 -110 -656 264 418 361 -234 -435 20 -363 -726 -947 -884 -534 53 -343\n105 785 -481 972 820 -683 -843 950 -187 -104 711 -852 434 194 191 868 99 551 692 -697\n449 187 201 1000 167 635 -918 -525 -318 -159 -670 -314 51 -320 -820 365 -247 -880 199 -879\n613 358 -881 926 359 256 -359 704 190 320 957 -814 -50 -577 -634 28 613 316 -682 69\n-473 -532 -754 -461 724 -565 -473 81 -603 -467 -543 -567 64 -97 -811 323 886 -549 214 -286\n-823 792 -735 117 928 803 -954 332 -14 695 421 543 592 -257 -611 -421 -814 470 441 442\n746 -513 966 169 -656 795 205 -811 -155 691 496 409 -542 -194 274 934 -210 948 218 514\n799 581 453 -675 306 129 -234 805 -666 -786 -500 470 -951 839 766 -902 566 96 -801 -12\n680 126 795 114 -12 -793 -30 431 -152 -501 -160 318 -835 778 -274 977 -674 256 -993 -523",
+    "expectedOutput": "680 799 746 -823 -473 613 449 105 417 -100 -624 973 -823 -228 545 621 590 713 638 501\n126 581 -513 792 -532 358 187 785 -93 605 531 436 -638 503 -807 -603 480 871 27 703\n795 453 966 -735 -754 -881 201 -481 58 -110 -23 -673 -659 207 212 322 592 -707 -734 36\n114 -675 169 117 -461 926 1000 972 -1000 -32 801 358 112 726 272 755 -433 -382 -890 713\n-12 306 -656 928 724 359 167 820 65 -539 162 -627 -654 -778 -274 -994 -757 473 -499 -941\n-793 129 795 803 -565 256 635 -683 -110 474 -379 -965 -406 619 -101 -424 18 890 -6 -115\n-30 -234 205 -954 -473 -359 -918 -843 -656 120 222 -161 -637 -808 -701 555 -610 -430 -829 944\n431 805 -811 332 81 704 -525 950 264 -535 902 980 -968 619 -898 576 -128 87 580 530\n-152 -666 -155 -14 -603 190 -318 -187 418 623 -22 294 -487 45 -953 -493 4 -578 -567 424\n-501 -786 691 695 -467 320 -159 -104 361 -238 -903 706 -816 -909 -670 442 653 332 987 826\n-160 -500 496 421 -543 957 -670 711 -234 787 596 594 971 505 -379 -280 -88 905 492 -535\n318 470 409 543 -567 -814 -314 -852 -435 -757 -164 -250 -388 174 -87 -12 220 193 -772 492\n-835 -951 -542 592 64 -50 51 434 20 -928 124 223 -899 -580 90 260 344 386 280 992\n778 839 -194 -257 -97 -577 -320 194 -363 -585 896 -227 348 304 -44 435 -429 920 -981 746\n-274 766 274 -611 -811 -634 -820 191 -726 202 -811 660 410 -96 592 861 747 -339 -422 899\n977 -902 934 -421 323 28 365 868 -947 -635 -847 36 -336 -211 103 -528 263 -486 199 686\n-674 566 -210 -814 886 613 -247 99 -884 -191 -298 -414 242 -396 -174 854 -288 741 347 -291\n256 96 948 470 -549 316 -880 551 -534 956 812 340 -40 541 -975 -70 837 945 318 -478\n-993 -801 218 441 214 -682 199 692 53 278 -403 -687 786 -751 359 143 975 131 -37 -256\n-523 -12 514 442 -286 69 -879 -697 -343 -853 323 287 -863 534 -210 663 -839 636 440 -62"
+  }
+];
+    
+    // ============================================
+    // Starter Code Templates
+    // ============================================
+    const defaultCode = {
+      python: `# Starter code: Read input and echo it back
+# This verifies the code runner is working!
+
+def solve():
+    line = input()  # Read one line
+    print(line)     # Print it back
+
+solve()`,
+      javascript: `// Starter code: Read input and echo it back
+// This verifies the code runner is working!
+
+function solve() {
+    const line = readln();  // Read one line
+    console.log(line);      // Print it back
+}
+
+solve();`
+    };
+
+    // ============================================
+    // I/O Instructions for Blue/Green Boxes
+    // ============================================
+    const ioInstructions = {
+      javascript: {
+        input: `<p><strong>Reading Input:</strong></p>
+<p>Use <code>readln()</code> to read one line from stdin.</p>
+<pre><code>const line = readln();
+const number = Number(readln());</code></pre>`,
+        output: `<p><strong>Writing Output:</strong></p>
+<p>Use <code>console.log()</code> to write to stdout.</p>
+<pre><code>console.log("Hello");
+console.log(42);</code></pre>`
+      },
+      python: {
+        input: `<p><strong>Reading Input:</strong></p>
+<p>Use <code>input()</code> to read one line from stdin.</p>
+<pre><code>line = input()
+number = int(input())</code></pre>`,
+        output: `<p><strong>Writing Output:</strong></p>
+<p>Use <code>print()</code> to write to stdout.</p>
+<pre><code>print("Hello")
+print(42)</code></pre>`
+      }
+    };
+
+    // ============================================
+    // DOM Elements
+    // ============================================
+    const langRadios = document.getElementsByName('language');
+    const runBtn = document.getElementById('run-btn');
+    const resultsContainer = document.getElementById('results-container');
+    const progressContainer = document.getElementById('progress-container');
+    const progressFill = document.getElementById('progress-fill');
+    const progressText = document.getElementById('progress-text');
+  const timerDisplay = document.getElementById('timer-display');
+  const timerToggleBtn = document.getElementById('timer-toggle');
+  const timerResetBtn = document.getElementById('timer-reset');
+    
+    let monacoEditor;
+    let pyodide;
+    let pyodideLoading = false;
+    let pyodideLoaded = false;
+    let currentLanguage = 'javascript'; // Default to JavaScript for instant page load
+
+    // ============================================
+    // Update I/O Instruction Boxes
+    // ============================================
+    function updateIOInstructions(language) {
+      const inputSection = document.querySelector('#input-format-section .card-content');
+      const outputSection = document.querySelector('#output-format-section .card-content');
+      
+      if (inputSection && ioInstructions[language]) {
+        inputSection.innerHTML = ioInstructions[language].input;
+      }
+      
+      if (outputSection && ioInstructions[language]) {
+        outputSection.innerHTML = ioInstructions[language].output;
+      }
+    }
+
+    // ============================================
+    // Protocol Detection & Pyodide Management
+    // ============================================
+    function isFileProtocol() {
+      return window.location.protocol === 'file:';
+    }
+
+    function showProtocolWarning() {
+      const warningDiv = document.getElementById('protocol-warning');
+      if (warningDiv) {
+        warningDiv.style.display = 'block';
+      }
+    }
+
+    function hideProtocolWarning() {
+      const warningDiv = document.getElementById('protocol-warning');
+      if (warningDiv) {
+        warningDiv.style.display = 'none';
+      }
+    }
+
+    function dismissProtocolWarning() {
+      // User manually dismissed the warning
+      hideProtocolWarning();
+      // Note: Warning will reappear if user tries to click Python button
+      // (showProtocolWarning is called in the Python language handler)
+    }
+
+    function showPyodideLoading(message = 'Loading Python environment...') {
+      const loadingDiv = document.getElementById('pyodide-loading');
+      const messageP = document.getElementById('pyodide-loading-message');
+      if (loadingDiv) loadingDiv.style.display = 'flex';
+      if (messageP) messageP.textContent = message;
+    }
+
+    function hidePyodideLoading() {
+      const loadingDiv = document.getElementById('pyodide-loading');
+      if (loadingDiv) loadingDiv.style.display = 'none';
+    }
+
+    // Dynamically load Pyodide script
+    function loadPyodideScript() {
+      return new Promise((resolve, reject) => {
+        if (window.loadPyodide) {
+          resolve(); // Already loaded
+          return;
+        }
+        
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js';
+        script.onload = resolve;
+        script.onerror = () => reject(new Error('Failed to load Pyodide script from CDN'));
+        document.head.appendChild(script);
+      });
+    }
+
+    // Lazy load and initialize Pyodide
+    async function ensurePyodideLoaded(showLoading = true) {
+      if (pyodideLoaded) {
+        return pyodide; // Already loaded
+      }
+      
+      if (pyodideLoading) {
+        // Wait for existing load to complete
+        while (pyodideLoading && !pyodideLoaded) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        return pyodide;
+      }
+      
+      // Start loading
+      pyodideLoading = true;
+      if (showLoading) {
+        showPyodideLoading('Loading Python environment...');
+      }
+      
+      try {
+        // Load the Pyodide script first
+        await loadPyodideScript();
+        
+        // Initialize Pyodide
+        pyodide = await loadPyodide();
+        
+        pyodideLoaded = true;
+        pyodideLoading = false;
+        
+        if (showLoading) {
+          hidePyodideLoading();
+        }
+        
+        return pyodide;
+      } catch (error) {
+        pyodideLoading = false;
+        if (showLoading) {
+          hidePyodideLoading();
+        }
+        throw error;
+      }
+    }
+
+    // Background preload (on web servers only)
+    function preloadPyodideInBackground() {
+      if (isFileProtocol() || pyodideLoaded || pyodideLoading) {
+        return; // Don't preload on file:// or if already loaded/loading
+      }
+      
+      // Silent load in background (no loading indicator)
+      ensurePyodideLoaded(false).catch(err => {
+        console.log('Background Pyodide preload failed:', err);
+        // Don't show error - will load on-demand if user clicks Python
+      });
+    }
+
+    // ============================================
+    // Timer State & Helpers
+    // ============================================
+    const timer = {
+      startTs: null,
+      elapsedMs: 0,
+      intervalId: null,
+      state: 'idle' // 'idle' | 'running' | 'paused'
+    };
+
+    function formatTime(ms) {
+      const totalSec = Math.floor(ms / 1000);
+      const mm = String(Math.floor(totalSec / 60)).padStart(2, '0');
+      const ss = String(totalSec % 60).padStart(2, '0');
+      return `${mm}:${ss}`;
+    }
+
+    function updateTimerDisplay() {
+      const now = Date.now();
+      let ms = timer.elapsedMs;
+      if (timer.state === 'running' && timer.startTs) {
+        ms += (now - timer.startTs);
+      }
+      timerDisplay.textContent = formatTime(ms);
+    }
+
+    function startTimer() {
+      if (timer.state === 'running') return;
+      timer.startTs = Date.now();
+      timer.state = 'running';
+      timerToggleBtn.textContent = 'Pause';
+      timerToggleBtn.setAttribute('aria-pressed', 'true');
+      if (timer.intervalId) clearInterval(timer.intervalId);
+      timer.intervalId = setInterval(updateTimerDisplay, 1000);
+      updateTimerDisplay();
+    }
+
+    function pauseTimer() {
+      if (timer.state !== 'running') return;
+      if (timer.intervalId) clearInterval(timer.intervalId);
+      timer.intervalId = null;
+      const now = Date.now();
+      timer.elapsedMs += (now - (timer.startTs || now));
+      timer.startTs = null;
+      timer.state = 'paused';
+      timerToggleBtn.textContent = 'Start';
+      timerToggleBtn.setAttribute('aria-pressed', 'false');
+      updateTimerDisplay();
+    }
+
+    function resetTimer() {
+      if (timer.intervalId) clearInterval(timer.intervalId);
+      timer.intervalId = null;
+      timer.startTs = null;
+      timer.elapsedMs = 0;
+      timer.state = 'idle';
+      timerToggleBtn.textContent = 'Start';
+      timerToggleBtn.setAttribute('aria-pressed', 'false');
+      updateTimerDisplay();
+    }
+
+    function getElapsedMs() {
+      if (timer.state === 'running' && timer.startTs) {
+        return timer.elapsedMs + (Date.now() - timer.startTs);
+      }
+      return timer.elapsedMs;
+    }
+
+    function parseTimeEstimate() {
+      const el = document.querySelector('.badge-time');
+      if (!el) return null;
+      const raw = el.textContent || '';
+      const matchPlus = raw.match(/(\d+)\s*\+\s*minutes/i);
+      const matchRange = raw.match(/(\d+)\s*-\s*(\d+)\s*minutes/i);
+      if (matchPlus) {
+        return { min: parseInt(matchPlus[1], 10), max: null };
+      }
+      if (matchRange) {
+        return { min: parseInt(matchRange[1], 10), max: parseInt(matchRange[2], 10) };
+      }
+      return null;
+    }
+
+    function compareElapsedToEstimate(ms, range) {
+      if (!range || range.min == null) return 'unknown';
+      const minutes = ms / 60000;
+      if (range.max == null) {
+        return minutes < range.min ? 'within' : 'over';
+      }
+      if (minutes < range.min) return 'under';
+      if (minutes <= range.max) return 'within';
+      return 'over';
+    }
+
+    // Timer UI wiring
+    timerToggleBtn.addEventListener('click', () => {
+      if (timer.state === 'running') {
+        pauseTimer();
+      } else {
+        startTimer();
+      }
+    });
+
+    timerResetBtn.addEventListener('click', () => {
+      resetTimer();
+    });
+
+    // ============================================
+    // Initialize UI Components Immediately
+    // ============================================
+    // Initialize I/O instruction boxes with default language (instant!)
+    updateIOInstructions(currentLanguage);
+
+    // Check protocol and disable Python if on file:// (instant!)
+    if (isFileProtocol()) {
+      showProtocolWarning();
+      document.getElementById('lang-python').disabled = true;
+      document.getElementById('lang-python').style.opacity = '0.5';
+    } else {
+      // On web server - preload Pyodide in background after 5 seconds
+      setTimeout(preloadPyodideInBackground, 5000);
+    }
+
+    // ============================================
+    // Monaco Editor Initialization
+    // ============================================
+    require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.49.0/min/vs' }});
+    require(['vs/editor/editor.main'], function() {
+      monacoEditor = monaco.editor.create(document.getElementById('editor-container'), {
+        value: defaultCode.javascript,
+        language: 'javascript',
+        theme: 'vs-light',  // Light theme for student-friendly appearance
+        fontSize: 15,
+        lineHeight: 22,
+        automaticLayout: true,
+        minimap: { enabled: false },  // Remove minimap for cleaner look
+        scrollBeyondLastLine: false,
+        renderLineHighlight: 'all',
+        padding: { top: 10, bottom: 10 }
+      });
+
+      // Language change handler with lazy Pyodide loading
+      langRadios.forEach(radio => {
+        radio.addEventListener('change', async (e) => {
+          if (e.target.checked) {
+            const newLang = e.target.value;
+            
+            // Check if switching to Python
+            if (newLang === 'python') {
+              // Check protocol first
+              if (isFileProtocol()) {
+                // Show warning and stay on JavaScript
+                showProtocolWarning();
+                // Revert to JavaScript
+                document.getElementById('lang-javascript').checked = true;
+                return;
+              }
+              
+              // On web server - load Pyodide if needed
+              try {
+                await ensurePyodideLoaded(true); // Show loading indicator
+                // Success - switch language
+                currentLanguage = newLang;
+                monaco.editor.setModelLanguage(monacoEditor.getModel(), currentLanguage);
+                monacoEditor.setValue(defaultCode[currentLanguage]);
+                updateIOInstructions(currentLanguage); // Update I/O instruction boxes
+              } catch (error) {
+                // Failed to load Pyodide
+                showResults(`<p style="color: var(--color-error);">❌ Failed to load Python: ${error.message}</p>`);
+                // Revert to JavaScript
+                document.getElementById('lang-javascript').checked = true;
+                currentLanguage = 'javascript';
+              }
+            } else {
+              // Switching to JavaScript - no Pyodide needed
+              hideProtocolWarning();
+              currentLanguage = newLang;
+              monaco.editor.setModelLanguage(monacoEditor.getModel(), currentLanguage);
+              monacoEditor.setValue(defaultCode[currentLanguage]);
+              updateIOInstructions(currentLanguage); // Update I/O instruction boxes
+            }
+          }
+        });
+      });
+    });
+
+    // ============================================
+    // Keyboard Shortcuts
+    // ============================================
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        if (!runBtn.disabled) {
+          onRunTests();
+        }
+      }
+    });
+
+    // Timer keyboard shortcut: Alt+T to toggle Start/Pause
+    document.addEventListener('keydown', (e) => {
+      const isAltT = e.altKey && (e.key.toLowerCase() === 't');
+      if (isAltT) {
+        e.preventDefault();
+        if (timer.state === 'running') pauseTimer(); else startTimer();
+      }
+    });
+
+    // ============================================
+    // Main Test Runner
+    // ============================================
+    runBtn.addEventListener('click', onRunTests);
+
+    async function onRunTests() {
+      const code = monacoEditor.getValue();
+      
+      // Show loading state
+      runBtn.disabled = true;
+      runBtn.classList.add('btn-loading');
+      progressContainer.style.display = 'block';
+      
+      showResults('<p class="text-muted">⏳ Running tests...</p>');
+
+      let allTestsPassed = true;
+      let testResults = [];
+
+      for (let i = 0; i < testCases.length; i++) {
+        const testCase = testCases[i];
+        let result = {
+          id: i + 1,
+          input: testCase.input,
+          passed: false,
+          output: '',
+          expected: testCase.expectedOutput,
+          error: null
+        };
+
+        try {
+          if (currentLanguage === 'python') {
+            result.output = await runPythonTest(code, testCase.input);
+          } else if (currentLanguage === 'javascript') {
+            result.output = await runJavaScriptTest(code, testCase.input);
+          }
+
+          // Normalize whitespace for comparison
+          const normalizedOutput = result.output.trim().replace(/\r\n/g, '\n');
+          const normalizedExpected = testCase.expectedOutput.trim().replace(/\r\n/g, '\n');
+
+          if (normalizedOutput === normalizedExpected) {
+            result.passed = true;
+          } else {
+            allTestsPassed = false;
+          }
+
+        } catch (error) {
+          result.error = error.message || String(error);
+          allTestsPassed = false;
+        }
+        
+        testResults.push(result);
+        updateProgress(testResults);
+        displayResults(testResults, false);
+      }
+      
+      // Show final results
+      displayResults(testResults, true);
+      
+      // Celebrate if all tests passed
+      if (allTestsPassed) {
+        showSuccessCelebration();
+      }
+      
+      runBtn.disabled = false;
+      runBtn.classList.remove('btn-loading');
+    }
+
+    // ============================================
+    // Python Test Execution
+    // ============================================
+    async function runPythonTest(code, input) {
+      // Ensure Pyodide is loaded (should already be loaded if Python is selected)
+      if (!pyodideLoaded) {
+        await ensurePyodideLoaded(true);
+      }
+      
+      if (!pyodide) {
+        throw new Error('Pyodide failed to load.');
+      }
+      
+      const inputs = (input || "").split('\n');
+      let inputIndex = 0;
+      pyodide.setStdin({ 
+        stdin: () => {
+          if (inputIndex < inputs.length) {
+            return inputs[inputIndex++];
+          }
+          return null;
+        }
+      });
+
+      let capturedOutput = "";
+      pyodide.setStdout({ batched: (str) => capturedOutput += str + "\n" });
+      pyodide.setStderr({ batched: (str) => capturedOutput += `[ERROR] ${str}\n` });
+      
+      try {
+        await pyodide.runPythonAsync(code);
+        return capturedOutput;
+      } catch (error) {
+        throw new Error(capturedOutput + `\n[RUNTIME ERROR] ${error.message}`);
+      }
+    }
+
+    // ============================================
+    // JavaScript Test Execution
+    // ============================================
+    function runJavaScriptTest(code, input) {
+      return new Promise((resolve, reject) => {
+        const workerCode = `
+          self.onmessage = function(e) {
+            const { code, input } = e.data;
+            const inputs = (input || "").split('\\n');
+            let inputIndex = 0;
+            
+            const readln = () => {
+              if (inputIndex < inputs.length) {
+                return inputs[inputIndex++];
+              }
+              return null;
+            };
+
+            let capturedOutput = "";
+            const console = {
+              log: (...args) => {
+                capturedOutput += args.map(String).join(' ') + '\\n';
+              }
+            };
+            
+            try {
+              new Function('console', 'readln', code)(console, readln);
+              self.postMessage({ output: capturedOutput.trim() });
+            } catch (error) {
+              self.postMessage({ error: error.message });
+            }
+          }
+        `;
+        
+        const blob = new Blob([workerCode], { type: 'application/javascript' });
+        const worker = new Worker(URL.createObjectURL(blob));
+
+        const timeout = setTimeout(() => {
+          worker.terminate();
+          reject(new Error('⏱️ Test timed out (5 seconds). Possible infinite loop.'));
+        }, 5000);
+
+        worker.onmessage = (e) => {
+          clearTimeout(timeout);
+          worker.terminate();
+          if (e.data.error) {
+            reject(new Error(e.data.error));
+          } else {
+            resolve(e.data.output);
+          }
+        };
+
+        worker.onerror = (e) => {
+          clearTimeout(timeout);
+          worker.terminate();
+          reject(new Error(`[Worker Error] ${e.message}`));
+        };
+
+        worker.postMessage({ code: code, input: input });
+      });
+    }
+
+    // ============================================
+    // Progress Bar Update
+    // ============================================
+    function updateProgress(results) {
+      const totalTests = testCases.length;
+      const passedTests = results.filter(r => r.passed).length;
+      const percentage = (passedTests / totalTests) * 100;
+      
+      progressFill.style.width = `${percentage}%`;
+      progressText.textContent = `${passedTests}/${totalTests} passed`;
+    }
+
+    // ============================================
+    // Display Test Results
+    // ============================================
+    function displayResults(results, isFinal) {
+      let html = '<div class="results-header">📋 Test Results</div>';
+      
+      results.forEach(result => {
+        const statusClass = result.passed ? 'passed' : 'failed';
+        const statusIcon = result.passed ? '✅' : '❌';
+        const statusText = result.passed ? 'Passed' : 'Failed';
+        
+        html += `<div class="test-result ${statusClass}">`;
+        html += `  <div class="test-result-header">`;
+        html += `    ${statusIcon} Test Case ${result.id}: ${statusText}`;
+        html += `  </div>`;
+        
+        if (!result.passed) {
+          html += `<div class="test-result-details">`;
+          
+          // Show input
+          html += `<div class="test-input">`;
+          html += `  <div class="test-input-label">Input:</div>`;
+          html += `  <div class="test-input-value">${escapeHtml(result.input)}</div>`;
+          html += `</div>`;
+          
+          // Show side-by-side comparison
+          html += `<div class="test-comparison">`;
+          html += `  <div class="test-output-column your-output">`;
+          html += `    <div class="test-output-label">Your Output</div>`;
+          html += `    <div class="test-output-value">${escapeHtml(result.output || '(no output)')}</div>`;
+          html += `  </div>`;
+          html += `  <div class="test-output-column expected-output">`;
+          html += `    <div class="test-output-label">Expected Output</div>`;
+          html += `    <div class="test-output-value">${escapeHtml(result.expected)}</div>`;
+          html += `  </div>`;
+          html += `</div>`;
+          
+          // Friendly error message
+          const friendlyMsg = getFriendlyMessage(result);
+          html += `<div class="friendly-message">💬 ${friendlyMsg}</div>`;
+          
+          html += `</div>`;
+        }
+        
+        html += `</div>`;
+      });
+      
+      resultsContainer.innerHTML = html;
+    }
+
+    // ============================================
+    // Helper Functions
+    // ============================================
+    function showResults(html) {
+      resultsContainer.innerHTML = '<div class="results-header">📋 Test Results</div>' + html;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function getFriendlyMessage(result) {
+      if (result.error) {
+        if (result.error.includes('timeout')) {
+          return 'Your code took too long to run. Check for infinite loops!';
+        } else if (result.error.includes('RUNTIME ERROR') || result.error.includes('ERROR')) {
+          return 'Your code had an error. Check the error message above.';
+        }
+        return result.error;
+      }
+      
+      const yourOut = (result.output || '').trim();
+      const expected = result.expected.trim();
+      
+      if (yourOut === '') {
+        return 'Your code didn\'t print anything. Did you forget to print the result?';
+      }
+      
+      return `Your answer was "${yourOut}", but we expected "${expected}". Double-check your logic!`;
+    }
+
+    function resetProblem() {
+      // Reset editor to default starter code for current language
+      if (monacoEditor && currentLanguage && defaultCode[currentLanguage]) {
+        monacoEditor.setValue(defaultCode[currentLanguage]);
+      }
+      // Reset results area
+      resultsContainer.innerHTML = `
+          <div class="results-header">
+            📋 Test Results
+          </div>
+          <p class="text-muted">Click \"Run Tests\" to check your solution.</p>
+      `;
+      // Reset progress bar
+      progressContainer.style.display = 'none';
+      progressFill.style.width = '0%';
+      progressText.textContent = '0/0 passed';
+      // Reset timer
+      resetTimer();
+      // Focus editor
+      setTimeout(() => {
+        const editorContainer = document.getElementById('editor-container');
+        if (editorContainer) editorContainer.focus();
+      }, 0);
+    }
+
+    function showSuccessCelebration() {
+      // Auto-stop timer if running
+      if (timer.state === 'running') {
+        pauseTimer();
+      }
+
+      const elapsedMs = getElapsedMs();
+      const hasTime = elapsedMs > 0;
+      const estimate = parseTimeEstimate();
+      const cmp = hasTime ? compareElapsedToEstimate(elapsedMs, estimate) : 'unknown';
+      const elapsedText = hasTime ? `You finished in ${formatTime(elapsedMs)}.` : 'Time not recorded.';
+      let compareText = '';
+      if (hasTime && estimate) {
+        if (cmp === 'under') compareText = 'Faster than the estimate — nice!';
+        else if (cmp === 'within') compareText = 'Within the expected time.';
+        else if (cmp === 'over') compareText = 'A bit over the estimate — keep practicing!';
+      }
+      // Confetti animation
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+        
+        setTimeout(() => {
+          confetti({
+            particleCount: 50,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 }
+          });
+        }, 200);
+        
+        setTimeout(() => {
+          confetti({
+            particleCount: 50,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 }
+          });
+        }, 400);
+      }
+      
+      // Success message
+      const successHtml = `
+        <div class=\"success-celebration\">
+          <h2>🎉 Congratulations! 🎉</h2>
+          <p>All test cases passed! You've solved the problem correctly!</p>
+          <p>${elapsedText} ${compareText}</p>
+          <div class=\"success-actions\">
+            <button class=\"btn btn-success\" id=\"reset-try-again\">↻ Reset and Try Again</button>
+          </div>
+        </div>
+      `;
+      
+      resultsContainer.innerHTML = successHtml;
+      const resetBtn = document.getElementById('reset-try-again');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          resetProblem();
+        });
+      }
+    }
+
+  </script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>
