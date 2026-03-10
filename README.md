@@ -3,7 +3,8 @@
 ![Portfolio](https://wiztoonz.com/wp-content/uploads/2022/04/Blog-Post-Portfolio.jpg)
 
 
-Hi MIA!
+Hi MIA! This is added on March 10; for Q4 GRADED 1
+
 ## Instructions to create your CS3_1st Qtr Portfolio
 1. Make a copy of this repository to your computer and your github account.  This repository will be used to contain all your graded and non-graded exercises to create your CS3 first quarter portfolio.  
 2. Open the VSCode application from your computer. Seach for the application.  If you do not have a VSCode inside your computer.  Please install it first.
