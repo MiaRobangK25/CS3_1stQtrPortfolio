@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+
+<title>Movie Rating List</title>
+
+<style>
+    body
+    {
+        font-family: Arial, Helvetica, sans-serif;
+        background-image: 
+                linear-gradient(rgba(186, 154, 174, 0.531), rgba(48, 22, 38, 0.822)), 
+                url('PurpleLilac.JPG');
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+
+
+    }
+
+    h1
+    {
+        
+        font-family:Arial, Helvetica, sans-serif; 
+                text-align: center;
+                font-size: 50px;
+                color: rgb(52, 41, 54);
+                margin-top: 0;
+    }
+
+    h4
+    {
+        font-family: Arial, Helvetica, sans-serif;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+    }
+
+    .card
+    {
+        background-color: rgb(255, 255, 255);
+                width: 700px;
+                margin: 20px auto;
+                padding: 20px 20px;
+                border-radius: 18px;
+                box-shadow: 0 6px 18px rgba(44, 27, 36, 0.906); 
+    }
+
+    .star
+    {
+        font-size: 25px;
+        cursor: pointer;
+        color: rgb(42, 30, 28);
+    }
+
+    .star.active
+    {
+        color:gold;
+    }
+
+    button
+            {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 25px;
+                font-weight: bold;
+                padding: 10px 18px;
+                border-radius: 8px;
+                background-color: rgba(217, 202, 215, 0.285);
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.2s ease, transform 0.1s ease;
+            }
+
+    #movieList
+    {
+        text-align: center;
+    }
+
+    #movieList p
+    {
+        font-size: 24px;
+    }
+
+    label
+    {
+        font-size: 24px;
+        font-weight: bold;
+        align-items: center;
+    }
+
+</style>
+
+</head>
+
+<body>
+
+    <div class="card">
+
+        <h1>⋆°✩✦ Adding a Movie⋆°✩✦ </h1>
+        <h4>__________________________________</h4>
+    
+        <form id="movieForm">
+    
+            <label>Movie Title</label><br>
+            <input type="text" id="title" required>
+    
+            <br><br>
+    
+            <label>Genre</label><br>
+                <select id="genre">
+                    <option>Action</option>
+                    <option>Horror</option>
+                    <option>Comedy</option>
+                    <option>Drama</option>
+                </select>
+    
+            <br><br>
+    
+            <label>Rating: </label><br>
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+            <input type="hidden" id="rating">
+    
+            <br><br>
+    
+            <button type="submit">Add Movie</button>
+    
+        </form>
+    
+    </div>
+    
+    <div class="card">
+    
+        <h1>⋆｡°✩₊✦ Movie List⋆｡°✩₊✦ </h1>
+        <h4>______________________________</h4>
+        
+        <div id="movieList"></div>
+
+<script>
+
+// so in general, here we're literally js doing CRUD-- where C is CREATING new data, and R is READING/SHOWING existing data
+
+//
+  
+
+    let stars = document.querySelectorAll(".star");
+    // like the usuaL, find all of the elements labelled or has a class of star
+    let ratingInput = document.getElementById("rating");
+    // stores the actual data rating, from the values assigned before
+
+    stars.forEach(function(star)
+    // basically, for every star (the 5 stars)-- we do this 
+    {
+        star.addEventListener("click", function()
+        // on the CLICK, this runs which YK naman lul
+        {
+        let rating = this.dataset.value;
+        // assigning rating as a value and retrieving it based on the values 
+        ratingInput.value = rating;
+        // saving it into the variable you made earlier 
+
+        stars.forEach(function(s)
+        {
+            s.classList.remove("active"); 
+            // we do this to reset the stars
+        });
+
+        for(let i=0;i<rating;i++)
+        {
+
+            stars[i].classList.add("active");
+            // loops through the stars & such during the reset, 
+            // calling on the .star.active done earlier in STYLE
+        }
+
+        });
+
+    });
+
+
+// Using local storagee to save the added movies!! js like the Q3 Club SignUps 
+
+
+    document.getElementById("movieForm").addEventListener("submit", function(e){
+    // BASICALLY, when a movie is ADDED this runs!! (because of the event listener yk)
+
+    e.preventDefault();
+    // this is IMPORTANT because it prevents the page from refreshing so the JS can actually work,,,,
+
+    let title = document.getElementById("title").value;
+    let genre = document.getElementById("genre").value;
+    let rating = document.getElementById("rating").value;
+    // saving all of the inputs of the user!
+    // again, the things done earlier in <form>
+
+    let movie = 
+    {
+        title: title,
+        genre: genre,
+        rating: rating
+    };
+    // I assigned it in an object.. because i NEEDED to /JK 
+    // I did this to save all of the input into an object, because of all of the different keys/sets for EACH MOVIE ADDED
+
+    let movies = JSON.parse(localStorage.getItem("movies")) || [];
+    // we're getting the saved object ( & its data ) from the movie list, so use getItem 
+    // NOTE: we have to use [] to save it to an empty array when there's NADA 
+
+    movies.push(movie);
+    // gotta PUSH allat data for all of the latest additions & whatnot 
+
+    localStorage.setItem("movies", JSON.stringify(movies));
+    // convert them, because it's also required-- so use .stringify
+    // otherwise... stuff won't be stored
+
+    showMovies();
+
+});
+
+
+// Fixing the... Actual Movie List 
+
+    function showMovies()
+    {
+        let movieList = document.getElementById("movieList");
+        // getting the DIV where movie list will be shown 
+        let movies = JSON.parse(localStorage.getItem("movies")) || [];
+        // the same explanaton as the one above!!
+        movieList.innerHTML = "";
+        // remove the old stuff, start new PRAMIS 
+        
+        movies.forEach(function(movie){
+        let stars = "★".repeat(movie.rating);
+        // we just display the star symbol on repeat 
+
+        movieList.innerHTML +=
+        // using += to add to existing stuff, more specifically the HTML  
+        "<p><b>" + movie.title + "</b> (" + movie.genre + ")<br>" +
+        "<span style='color:gold'>" + stars + "</span></p>";
+        // here, you're literally just trying to make it display what you already SAVED in the JS above
+        });
+
+    }
+
+    showMovies();
+
+</script>
+
+</body>
+
+</html>
