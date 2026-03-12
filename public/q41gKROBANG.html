@@ -144,112 +144,120 @@
 
 <script>
 
-// so in general, here we're literally js doing CRUD-- where C is CREATING new data, and R is READING/SHOWING existing data
+// had to do a HARD reset because for Graded 2 I kept running into ISSUES, oh my lord
 
-//
-  
+// Selecting all of the elements, that we will be USING-- using the their Ids and .getElem
+let stars = document.querySelectorAll(".star");
+let ratingInput = document.getElementById("rating");
+const movieForm = document.getElementById("movieForm");
+const movieList = document.getElementById("movieList");
 
-    let stars = document.querySelectorAll(".star");
-    // like the usuaL, find all of the elements labelled or has a class of star
-    let ratingInput = document.getElementById("rating");
-    // stores the actual data rating, from the values assigned before
+// STAR CLICK! 
 
-    stars.forEach(function(star)
-    // basically, for every star (the 5 stars)-- we do this 
+stars.forEach(function(star) 
+{
+    star.addEventListener("click", function() 
     {
-        star.addEventListener("click", function()
-        // on the CLICK, this runs which YK naman lul
-        {
-        let rating = this.dataset.value;
-        // assigning rating as a value and retrieving it based on the values 
+        let rating = Number(this.dataset.value);
+        // gets the value inputted from user, the rating & saves it in the line below NUMERICALLY ykyk
         ratingInput.value = rating;
-        // saving it into the variable you made earlier 
 
-        stars.forEach(function(s)
+        stars.forEach(s => s.classList.remove("active")); 
+        // reset the gold stars, clears it
+        for (let i = 0; i < rating; i++) 
         {
-            s.classList.remove("active"); 
-            // we do this to reset the stars
-        });
-
-        for(let i=0;i<rating;i++)
-        {
-
-            stars[i].classList.add("active");
-            // loops through the stars & such during the reset, 
-            // calling on the .star.active done earlier in STYLE
+            stars[i].classList.add("active"); 
+            // highlight selected stars once they're ACTIVE on click
         }
-
-        });
-
     });
-
-
-// Using local storagee to save the added movies!! js like the Q3 Club SignUps 
-
-
-    document.getElementById("movieForm").addEventListener("submit", function(e){
-    // BASICALLY, when a movie is ADDED this runs!! (because of the event listener yk)
-
-    e.preventDefault();
-    // this is IMPORTANT because it prevents the page from refreshing so the JS can actually work,,,,
-
-    let title = document.getElementById("title").value;
-    let genre = document.getElementById("genre").value;
-    let rating = document.getElementById("rating").value;
-    // saving all of the inputs of the user!
-    // again, the things done earlier in <form>
-
-    let movie = 
-    {
-        title: title,
-        genre: genre,
-        rating: rating
-    };
-    // I assigned it in an object.. because i NEEDED to /JK 
-    // I did this to save all of the input into an object, because of all of the different keys/sets for EACH MOVIE ADDED
-
-    let movies = JSON.parse(localStorage.getItem("movies")) || [];
-    // we're getting the saved object ( & its data ) from the movie list, so use getItem 
-    // NOTE: we have to use [] to save it to an empty array when there's NADA 
-
-    movies.push(movie);
-    // gotta PUSH allat data for all of the latest additions & whatnot 
-
-    localStorage.setItem("movies", JSON.stringify(movies));
-    // convert them, because it's also required-- so use .stringify
-    // otherwise... stuff won't be stored
-
-    showMovies();
-
 });
 
+// SHOW MOVIES FUNCTION!
 
-// Fixing the... Actual Movie List 
+function showMovies() 
+{
+    const movies = JSON.parse(localStorage.getItem("movies")) || [];
+    // goes through the saved movies in local storage, saved in movies
+    movieList.innerHTML = "";
+    // clears movie List before doing allat again
 
-    function showMovies()
+    movies.forEach(function(movie, index) 
     {
-        let movieList = document.getElementById("movieList");
-        // getting the DIV where movie list will be shown 
+        let starCount = Math.round(Number(movie.rating));
+        // makes them WHOLE NUMBERS, no fixed decimal place...
+        let starsHTML = "★".repeat(starCount);
+        // using the star count-- it shows the avrged value
+
+        movieList.innerHTML += `
+            <p>
+                <b>${movie.title}</b> (${movie.genre})<br>
+                <span style="color: gold">${starsHTML}</span> (${Number(movie.rating)})<br>
+                <button onclick="deleteMovie(${index})">Delete</button>
+            </p>
+        `;
+        // this is the literal way to tie it back to HTML, & the formatting you do see 
+    });
+}
+
+// DELETE MOVIE FUNCTION!
+
+function deleteMovie(index) 
+{
+    if (confirm("Really? You're going to delete this movie?")) 
+    // confirming if you do want to delete it 
+    {
         let movies = JSON.parse(localStorage.getItem("movies")) || [];
-        // the same explanaton as the one above!!
-        movieList.innerHTML = "";
-        // remove the old stuff, start new PRAMIS 
-        
-        movies.forEach(function(movie){
-        let stars = "★".repeat(movie.rating);
-        // we just display the star symbol on repeat 
+        movies.splice(index, 1);
+        // it just removes that item you got from localStorage 
+        localStorage.setItem("movies", JSON.stringify(movies));
+        //turns it into a string again to use 
+        showMovies();
+    }
+}
 
-        movieList.innerHTML +=
-        // using += to add to existing stuff, more specifically the HTML  
-        "<p><b>" + movie.title + "</b> (" + movie.genre + ")<br>" +
-        "<span style='color:gold'>" + stars + "</span></p>";
-        // here, you're literally just trying to make it display what you already SAVED in the JS above
-        });
+// FORM SUBMIT LOGIC / FORM SUBMIT LOGIC!
 
+movieForm.addEventListener("submit", function(e) 
+{
+    e.preventDefault();
+    // IT'S THE SAME EXPLANATIOON AS BEFORE! added so the page doesn't refregesh on submission
+
+    let title = document.getElementById("title").value.trim();
+    let genre = document.getElementById("genre").value;
+    let rating = Number(ratingInput.value);
+    // makes the rating a NUMBER, not js a value u got from the previous like a strng 
+
+    if (!title || !rating) 
+    {
+        alert("Please enter a title and select a rating.");
+        // makes sure BOTH are present when u try to make a submission 
+        return;
     }
 
-    showMovies();
+    let movies = JSON.parse(localStorage.getItem("movies")) || [];
+    let existingMovie = movies.find(m => m.title.toLowerCase() === title.toLowerCase());
 
+    if (existingMovie) 
+    {
+        // If movie exists, we will UPDATE the rating here with average
+        existingMovie.rating = Math.round(
+            ((existingMovie.rating * existingMovie.ratingCount) + rating) / (existingMovie.ratingCount + 1));
+        existingMovie.ratingCount += 1;
+    } else 
+    {
+        // First time movie added, and it's not a repeat-- 
+        movies.push({ title, genre, rating: rating, ratingCount: 1 });
+    }
+
+    localStorage.setItem("movies", JSON.stringify(movies));
+
+    // Resets the form & stars
+    movieForm.reset();
+    ratingInput.value = "";
+    stars.forEach(s => s.classList.remove("active"));
+
+    showMovies();
+});
 </script>
 
 </body>
