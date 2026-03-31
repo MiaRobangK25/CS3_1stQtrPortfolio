@@ -56,63 +56,82 @@
       </tr>
       <tr>
         <td> 1 </td> 
-        <td> </td> 
-        <td> </td>
-        <td> </td>
+        <td> code line #1, JS</td> 
+        <td> There was a missing curly brace at the end of the function code.</td>
+        <td> To correct it, I added the missing brace that would fully enclose the JS function.</td>
       </tr>
       <tr>
         <td> 2 </td> 
-        <td> </td> 
-        <td> </td>
-        <td> </td>
+        <td> code line #1, JS </td> 
+        <td> The function parameters were not added inside of the parantheses, therefore the values being processed stayed undefined.</td>
+        <td> Change line #1 to, function plotPoint(x0, y0, x, y) with the curly bracket</td>
       </tr>
       <tr>
         <td> 3 </td> 
-        <td> </td> 
-        <td> </td>
-        <td> </td>
+        <td> code line #8, JS</td> 
+        <td> The property name written is incorrectly, as it was originally point.styleleft = ... but must be point.style.left= ... It is a syntax error. </td>
+        <td> Replace point.styleleft = ... with point.style.left = ...</td>
       </tr>
       <tr>
         <td> 4 </td> 
-        <td> </td> 
-        <td> </td>
-        <td> </td>
+        <td> code line #9, JS</td> 
+        <td> The property written is wrong, point.stylebottom = ... must be point.style.bottom = ...</td>
+        <td> Replace point.stylebottom = ... with  point.style.bottom = ...</td>
       </tr>
       <tr>
         <td> 5 </td> 
-        <td> </td> 
-        <td> </td>
-        <td> </td>
+        <td> code line #52, CSS</td> 
+        <td> The property left and bottom won't work, and not affect the element unless we insert the line position:absolute. Otherwise, the element will not be placed correctly.</td>
+        <td> Insert the line position:absolute into the curly brackets </td>
       </tr>
       <tr>
         <td> 6 </td> 
-        <td> </td> 
-        <td> </td>
-        <td> </td>
+        <td> code line #39, CSS </td> 
+        <td> There was a space that affected the navbar, which won't target the actual link itself</td>
+        <td> Remove the space from "nav a :hover" to "nav a:hover"</td>
       </tr>
       <tr>
         <td> 7 </td> 
-        <td> </td> 
-        <td> </td>
-        <td> </td>
+        <td> code line #32, CSS</td> 
+        <td> They are stacking the wrong way, since it's only "display: block;" </td>
+        <td> Change "display: block;" to "display: inline-block;"</td>
       </tr>
       <tr>
         <td> 8 </td> 
-        <td> </td> 
-        <td> </td>
-        <td> </td>
+        <td> code line #76, HTML</td> 
+        <td> The ID's are the same for both the section and the h2 id, even if they should be unique. </td>
+        <td> To fix this, I redid line 76 to id="outputTitle"> Output </td>
       </tr>
       <tr>
         <td> 9 </td> 
-        <td> </td> 
-        <td> </td>
-        <td> </td>
+        <td> code line #26, CSS</td> 
+        <td> The navbar must not scroll and stay fixed; however, in the actual CSS it was not fixed.</td>
+        <td> To fix this change everything inside nav{} to 
+            
+            nav 
+            {
+            width: 100%;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            }
+
+            All of this was added to be SURE that the navbar will stay fixed and still properly placed at the top. 
+        </td>
       </tr>
       <tr>
         <td> 10 </td> 
-        <td> </td> 
-        <td> </td>
-        <td> </td>
+        <td> code line #11, JS</td> 
+        <td> The code or function does not deal with the case if the user inputs something blank.</td>
+        <td> To fix this, I added the following code-- 
+            if (isNaN(x0) || isNaN(y0) || isNaN(x) || isNaN(y)) 
+            {
+            alert("Please enter valid numbers!");
+            return;
+            }
+        </td>
       </tr>
      
     </table>
