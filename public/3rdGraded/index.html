@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <!-- change the authors name to both your names-->
+  <meta name="author" content="Sir Roy/Al Mendoza">
+  <meta name="description" content="testing and debugging">
+  <meta name="keywords" content="testing and debugging">
+  <title>CS 3 </title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins:wght@300&family=Roboto&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="#start">Table</a>
+      <a href="#input">Input</a>
+      <a href="#output">Output</a>
+      <a href="errorlogs.html">Error Logs</a>
+    </nav>
+    
+    <h1 style="padding: 30px">Your Name/Section  - Mar 2026 </h1>
+    <h2 id="start"> Nlogonia </h2>
+  </header>
+
+  <section id="table">
+    <table> 
+      <tr class="rColor">
+        <th> input </th> <th> output</th>
+      </tr>
+      <tr class="rColor"> 
+        <td colspan="2"> Sample Data</td>
+      </tr>
+      <tr> 
+        <td> 2 1 10 10 </td> <td> NE</td>
+      </tr>
+      <tr> 
+        <td> 2 1 -10 1 </td> <td> divisa</td>
+      </tr>
+      <tr> 
+        <td> 2 1 0 33 </td> <td> NO </td>
+      </tr>
+      <tr  class="rColor"> 
+        <td colspan="2"> For current Input</td>
+      </tr>
+      <tr> 
+        <td id="in1"> 0 0 0 0 </td> <td id="out1"> divisa </td>
+      </tr>
+    </table>
+    <hr>
+  </section>
+  
+  <section id="input">
+    <h2> Input </h2>
+  
+    <h4>Axis Reference:</h4>
+    <p>
+      <input type="number" id="x0" placeholder="0">
+      <input type="number" id="y0" placeholder="0">
+    </p>
+    
+    <h4>Point Coordinates:</h4>
+    <p>
+      <input type="number" id="x" placeholder="x"> 
+      <input type="number" id="y" placeholder="y">
+    </p>
+    <button onclick="plotPoint(Number(x0.value),Number(y0.value),Number(x.value), Number(y.value))"> Plot </button>
+  </section>
+  
+  <section id="output">
+    <h2 id="output"> Output </h2>
+  
+    <div id="coordinatePlane">
+        <div id="xAxis" class="axis"></div>
+        <div id="yAxis" class="axis"></div>
+    </div>
+    <hr>
+  </section>
+  
+  <!--- anchors for socmed site are done with image sprites -->
+  <footer>
+    <a href="https://facebook.com"> 
+    <div class="icon facebook"></div>
+    </a>
+    <a href="https://twitter.com">
+    <div class="icon twitter"></div>
+    </a>
+    <a href="https://github.com">
+    <div class="icon github"></div>
+    </a>
+  </footer>
+  <script defer src="script.js"></script>
+</body>
+
+</html>
